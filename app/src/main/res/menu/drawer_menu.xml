@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/homeFragment"
+            android:title="@string/View1"
+            android:icon="@drawable/homeicon"/>
+
+        <item
+            android:id="@+id/addMemberFragment"
+            android:title="@string/View2"
+            android:icon="@drawable/addmembericon"/>
+
+        <item
+            android:id="@+id/memberListFragment"
+            android:title="@string/View3"
+            android:icon="@drawable/memberlisticon"/>
+
+        <item
+            android:id="@+id/memberTypeFragment"
+            android:title="@string/View4"
+            android:icon="@drawable/membertypeicon"/>
+
+        <item
+            android:id="@+id/expiredMembersFragment"
+            android:title="@string/View5"
+            android:icon="@drawable/membertypeicon"/>
+
+    </group>
+</menu>

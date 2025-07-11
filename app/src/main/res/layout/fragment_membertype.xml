@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingVertical="@dimen/_10sdp"
+    android:paddingHorizontal="@dimen/_20sdp"
+    tools:context=".MemberTypeFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvAddMemberTypeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/AddNewMembershipType"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10ssp"
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/_8sdp"/>
+
+        <EditText
+            android:id="@+id/editTextMemberTypeName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvAddMemberTypeTitle"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:hint="@string/MembershipTypeName"
+            android:inputType="textCapWords"
+            android:background="@drawable/border_background_grey"
+            android:padding="@dimen/_8sdp" />
+
+        <EditText
+            android:id="@+id/editTextDurationDays"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editTextMemberTypeName"
+
+            android:hint="@string/MembershipDuration"
+            android:inputType="number"
+            android:background="@drawable/border_background_grey"
+            android:padding="@dimen/_8sdp" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:textColor="@color/black"
+            android:id="@+id/isTwoInOneCheckbox"
+            android:buttonTint="@color/grey"
+            android:layout_marginVertical="@dimen/_6sdp"
+            android:layout_below="@id/editTextDurationDays"
+            android:text="@string/TwoInOnePackage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/buttonSaveMemberType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/isTwoInOneCheckbox"
+            android:textColor="@color/black"
+            android:text="@string/SaveMembershipType"
+            app:backgroundTint="@color/grey"
+            android:background="@drawable/border_background_grey"/>
+
+        <TextView
+            android:id="@+id/tvActiveMemberTypesTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ActiveMembershipTypes"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10ssp"
+            android:textStyle="bold"
+            android:layout_below="@id/buttonSaveMemberType"
+            android:layout_marginVertical="@dimen/_10sdp"/>
+
+        <!-- RecyclerView to display existing member types -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMemberTypes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvActiveMemberTypesTitle"
+            android:layout_alignParentBottom="true"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_member_type" />
+
+    </RelativeLayout>
+
+</ScrollView>

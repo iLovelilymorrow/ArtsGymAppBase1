@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.artsgymapp_solo.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home"/>
+
+    <fragment
+        android:id="@+id/addMemberFragment"
+        android:name="com.example.artsgymapp_solo.AddMemberFragment"
+        android:label="Add Member"
+        tools:layout="@layout/fragment_addmember"/>
+
+    <fragment
+        android:id="@+id/memberListFragment"
+        android:name="com.example.artsgymapp_solo.MemberListFragment"
+        android:label="Member List"
+        tools:layout="@layout/fragment_memberlist">
+
+        <action
+            android:id="@+id/action_memberListFragment_to_memberEditFragment"
+            app:destination="@id/MemberEditFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/memberTypeFragment"
+        android:name="com.example.artsgymapp_solo.MemberTypeFragment"
+        android:label="Member Type"
+        tools:layout="@layout/fragment_membertype"/>
+
+    <fragment
+        android:id="@+id/MemberEditFragment"
+        android:name="com.example.artsgymapp_solo.MemberEditFragment"
+        android:label="Edit Member"
+        tools:layout="@layout/fragment_memberedit">
+
+    <argument
+        android:name="memberID"
+        app:argType="string"
+        app:nullable="false" />
+
+        <argument
+            android:name="periodID"
+            app:argType="integer"
+            app:nullable="false" />
+
+        <action
+            android:id="@+id/action_memberEditFragment_to_renewMembershipFragment"
+            app:destination="@id/RenewMembershipFragment">
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/expiredMembersFragment"
+        android:name="com.example.artsgymapp_solo.ExpiredMembersFragment"
+        android:label="Expired Members"
+        tools:layout="@layout/fragment_expiredmembers">
+
+        <action
+            android:id="@+id/action_expiredMembersFragment_to_renewMembershipFragment"
+            app:destination="@id/RenewMembershipFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/RenewMembershipFragment"
+        android:name="com.example.artsgymapp_solo.RenewMembershipFragment"
+        android:label="Renew Membership"
+        tools:layout="@layout/fragment_renewmembership">
+
+        <argument
+            android:name="memberID"
+            app:argType="string" />
+
+        <argument
+            android:name="selectedMemberTypeID"
+            app:argType="integer"
+            android:defaultValue="-1" />
+
+    </fragment>
+</navigation>

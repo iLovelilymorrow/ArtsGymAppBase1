@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--  Define paths for your app's private external files directory in the "Pictures" subfolder -->
+    <external-files-path name="my_images" path="Pictures/" />
+    <!-- You can add other paths here if needed, e.g., for cache directory -->
+    <!-- <cache-path name="my_cache_images" path="images/" /> -->
+</paths>

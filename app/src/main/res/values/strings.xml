@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">ArtsGymApp_Solo</string>
+
+    <string name="Open">Open</string>
+    <string name="Close">Close</string>
+    <string name="adminModeText">Admin Mode</string>
+    <string name="headerTitle">Art\'s Gym App</string>
+    <string name="headerSubtitle">Gym Management App</string>
+
+    <string name="View1">Home</string>
+    <string name="View2">Add Member</string>
+    <string name="View3">Member List </string>
+    <string name="View4">Member Types</string>
+    <string name="View5">Expired Members</string>
+    <string name="memberList_NameEmpty">Member Name: N/A</string>
+    <string name="memberList_AgeEmpty">Age: N/A</string>
+    <string name="memberList_SearchMembers">Search Members ....</string>
+
+    <string name="Identification_UpperCase">IDENTIFICATION</string>
+    <string name="MemberPicture">Member Picture</string>
+    <string name="Membership">Membership</string>
+    <string name="SearchExpiredMembers">Search Expired Members ....</string>
+    <string name="MemberId">Member ID</string>
+    <string name="FirstName">First Name</string>
+    <string name="LastName">Last Name</string>
+    <string name="MembershipType">Membership Type</string>
+    <string name="ReceiptNumber">Receipt Number</string>
+    <string name="Age">Age</string>
+    <string name="Gender">Gender</string>
+    <string name="PhoneNumber">Phone Number</string>
+    <string name="DeleteMember">Delete Member</string>
+    <string name="ConfirmEdit">Confirm Edit</string>
+    <string name="CancelEdit">Cancel Edit</string>
+    <string name="AddNewMembershipType">Add New Membership Type</string>
+    <string name="MembershipTypeName">Membership Type Name</string>
+    <string name="MembershipDuration">Membership Duration (in days)</string>
+    <string name="SaveMembershipType">Save Membership Type</string>
+    <string name="ActiveMembershipTypes">Active Membership Types</string>
+    <string name="TwoInOnePackage">Two In One Package?</string>
+    <string name="StartDate">Start Date</string>
+    <string name="EndDate">End Date</string>
+    <string name="Partner">Partner</string>
+    <string name="AddMember">Add Member</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Name">Name</string>
+    <string name="MembershipStarted">Membership Started on</string>
+    <string name="MembershipExpiring">Membership Expiring on</string>
+    <string name="DaysLeft">Days Left</string>
+
+    <string name="renewMembership_Title">Renew Membership</string>
+    <string name="renewMembership_MemberInfo">Member Information</string>
+    <string name="renewMembership_MemberImage">Member Image</string>
+    <string name="renewMembership_NewReceiptNumber">New Receipt Number</string>
+    <string name="renewMembership_ConfirmRenew">Confirm Renew</string>
+    <string name="renewMembership_CancelRenew">Cancel Renew</string>
+    <string name="renewMembership_ConfirmExistingMember">Confirm Existing Member</string>
+    <string name="renewMembership_Partner">Partner</string>
+
+    <string name="importButton">Import Data</string>
+    <string name="exportButton">Export Data</string>
+
+    <string name="hint_firstname">First Name*</string>
+    <string name="hint_lastname">Last Name*</string>
+    <string name="hint_age">Age*</string>
+    <string name="hint_receiptnumber">Receipt Number*</string>
+    <string name="hint_memberId">Existing Member ID*</string>
+
+</resources>

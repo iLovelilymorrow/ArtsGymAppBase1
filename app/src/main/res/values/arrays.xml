@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="gender_array">
+        <item>Select Gender*</item>
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+    <string-array name="member_array">
+        <item>New Member or Existing Member</item>
+        <item>New Member</item>
+        <item>Existing Member</item>
+    </string-array>
+
+</resources>

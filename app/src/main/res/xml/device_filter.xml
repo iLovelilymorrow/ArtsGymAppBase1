@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Replace VENDOR_ID and PRODUCT_ID with your ZKTeco scanner's actual IDs -->
+    <!-- You might find these from the ZKTeco SDK documentation, a device info app, -->
+    <!-- or by connecting it to a PC and checking device properties. -->
+    <!-- The ZKTeco sample likely uses 0x1b55 (VID) and 0x0180 (PID) for some models.-->
+    <usb-device vendor-id="6997" product-id="288" />
+    <!-- You can add multiple <usb-device> tags if you support multiple scanner models -->
+</resources>

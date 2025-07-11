@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingVertical="@dimen/_30sdp"
+    android:paddingHorizontal="@dimen/_60sdp"
+    android:background="@color/greytransparent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/memberImageView"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_launcher_round" />
+
+        <TextView
+            android:id="@+id/memberIdTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_below="@id/memberImageView"
+
+            android:textStyle="bold"
+            android:text="@string/MemberId"
+            android:textSize="@dimen/_7ssp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonDeleteMember"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/memberIdTextView"
+            android:layout_marginTop="@dimen/_3sdp"
+
+            android:text="@string/DeleteMember"
+            android:background="@drawable/border_background_grey"
+            app:backgroundTint="@color/grey"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/registrationDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/buttonDeleteMember"
+            android:layout_marginTop="@dimen/_4sdp"
+
+            android:text="Start Date"
+            android:textSize="@dimen/_7ssp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:id="@+id/expirationDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/registrationDateTextView"
+
+            android:text="End Date"
+            android:textSize="@dimen/_7ssp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/firstNameEditText_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/memberImageView"
+            android:layout_marginStart="@dimen/_10sdp"
+
+            android:text="@string/FirstName"
+            android:textSize="@dimen/_7ssp"/>
+
+        <EditText
+            android:id="@+id/firstNameEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/_200sdp"
+            android:layout_below="@id/firstNameEditText_Title"
+            android:layout_alignStart="@id/firstNameEditText_Title"
+            android:layout_marginTop="@dimen/_2sdp"
+
+            android:hint="@string/hint_firstname"
+            android:background="@drawable/border_background_grey"
+            android:singleLine="true"
+            android:inputType="text"/>
+
+        <TextView
+            android:id="@+id/lastNameEditText_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/memberImageView"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_below="@id/firstNameEditText"
+            android:layout_marginTop="@dimen/_6sdp"
+
+            android:text="@string/LastName"
+            android:textSize="@dimen/_7ssp"/>
+
+        <EditText
+            android:id="@+id/lastNameEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/_200sdp"
+            android:layout_below="@id/lastNameEditText_Title"
+            android:layout_alignStart="@id/firstNameEditText_Title"
+            android:layout_marginTop="@dimen/_2sdp"
+
+            android:hint="@string/hint_lastname"
+            android:background="@drawable/border_background_grey"
+            android:singleLine="true"
+            android:inputType="text"/>
+
+        <TextView
+            android:id="@+id/membershipTypeSpinner_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/memberImageView"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_below="@id/lastNameEditText"
+            android:layout_marginTop="@dimen/_6sdp"
+
+            android:text="@string/MembershipType"
+            android:textSize="@dimen/_7ssp"/>
+
+        <Spinner
+            android:id="@+id/membershipTypeSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/_200sdp"
+            android:layout_below="@id/membershipTypeSpinner_Title"
+            android:layout_alignStart="@id/membershipTypeSpinner_Title"
+            android:layout_marginTop="@dimen/_3sdp"
+
+            android:background="@drawable/border_background_grey" />
+
+        <TextView
+            android:id="@+id/genderSpinner_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/memberImageView"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_below="@id/membershipTypeSpinner"
+            android:layout_marginTop="@dimen/_6sdp"
+
+            android:text="@string/Gender"
+            android:textSize="@dimen/_7ssp"/>
+
+        <Spinner
+            android:id="@+id/genderSpinner2ndMember"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/_200sdp"
+            android:layout_below="@id/genderSpinner_Title"
+            android:layout_alignStart="@id/genderSpinner_Title"
+            android:layout_marginTop="@dimen/_3sdp"
+
+            android:background="@drawable/border_background_grey" />
+
+        <TextView
+            android:id="@+id/receiptNumberEditText_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/memberImageView"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_below="@id/genderSpinner2ndMember"
+            android:layout_marginTop="@dimen/_6sdp"
+
+            android:text="@string/ReceiptNumber"
+            android:textSize="@dimen/_7ssp"/>
+
+        <EditText
+            android:id="@+id/receiptNumberEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/_200sdp"
+            android:layout_below="@id/receiptNumberEditText_Title"
+            android:layout_alignStart="@id/receiptNumberEditText_Title"
+            android:layout_marginTop="@dimen/_2sdp"
+
+            android:hint="@string/hint_receiptnumber"
+            android:background="@drawable/border_background_grey"
+            android:singleLine="true"
+            android:inputType="number"/>
+
+        <TextView
+            android:id="@+id/ageEditText_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/memberImageView"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_below="@id/receiptNumberEditText"
+            android:layout_marginTop="@dimen/_6sdp"
+
+            android:text="@string/Age"
+            android:textSize="@dimen/_7ssp"/>
+
+        <EditText
+            android:id="@+id/ageEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/_200sdp"
+            android:layout_below="@id/ageEditText_Title"
+            android:layout_alignStart="@id/ageEditText_Title"
+            android:layout_marginTop="@dimen/_2sdp"
+
+            android:hint="@string/hint_age"
+            android:background="@drawable/border_background_grey"
+            android:singleLine="true"
+            android:inputType="text"/>
+
+        <TextView
+            android:id="@+id/phoneNumberEditText_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/memberImageView"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_below="@id/ageEditText"
+            android:layout_marginTop="@dimen/_6sdp"
+
+            android:text="@string/PhoneNumber"
+            android:textSize="@dimen/_7ssp"/>
+
+        <EditText
+            android:id="@+id/phoneNumberEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/_200sdp"
+            android:layout_below="@id/phoneNumberEditText_Title"
+            android:layout_alignStart="@id/phoneNumberEditText_Title"
+            android:layout_marginTop="@dimen/_2sdp"
+
+            android:hint="@string/PhoneNumber"
+            android:background="@drawable/border_background_grey"
+            android:singleLine="true"
+            android:inputType="phone"/>
+
+        <LinearLayout
+            android:id="@+id/buttonsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/phoneNumberEditText"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonConfirmEdit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+
+                android:text="@string/ConfirmEdit"
+                android:background="@drawable/border_background_grey"
+                app:backgroundTint="@color/grey"
+                android:textColor="@color/black"
+                android:layout_marginEnd="@dimen/_4sdp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonCancelEdit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+
+                android:text="@string/CancelEdit"
+                android:background="@drawable/border_background_grey"
+                app:backgroundTint="@color/grey"
+                android:textColor="@color/black"
+                android:layout_marginStart="@dimen/_4sdp"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

@@ -1,0 +1,188 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/_30sdp">
+
+    <ImageView
+        android:id="@+id/memberPictureImageView"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_150sdp"
+        android:background="@drawable/border_background_grey"
+        android:scaleType="fitXY"/>
+
+    <TextView
+        android:id="@+id/memberId_Title_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/MemberId"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_8ssp"
+        android:textStyle="bold"
+
+        android:layout_below="@id/memberPictureImageView"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_alignStart="@id/memberPictureImageView"
+        android:layout_alignEnd="@id/memberPictureImageView"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/memberId_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="id here"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_7ssp"
+
+        android:layout_below="@id/memberId_Title_TextView"
+        android:layout_alignStart="@id/memberPictureImageView"
+        android:layout_alignEnd="@id/memberPictureImageView"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/membershipType_Title_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/MembershipType"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_8ssp"
+        android:textStyle="bold"
+
+        android:layout_below="@id/memberId_TextView"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_alignStart="@id/memberPictureImageView"
+        android:layout_alignEnd="@id/memberPictureImageView"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/membershipType_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="membership type here"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_7ssp"
+
+        android:layout_below="@id/membershipType_Title_TextView"
+        android:layout_alignStart="@id/memberPictureImageView"
+        android:layout_alignEnd="@id/memberPictureImageView"
+        android:gravity="center"/>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toEndOf="@+id/memberPictureImageView"
+        android:layout_marginStart="@dimen/_20sdp">
+
+        <TextView
+            android:id="@+id/fullName_Title_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/Name"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8ssp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/fullName_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="fullname here"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_7ssp"/>
+
+        <TextView
+            android:id="@+id/age_Title_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/Age"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8ssp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/age_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="age here"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_7ssp"/>
+
+        <TextView
+            android:id="@+id/phoneNumber_Title_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/PhoneNumber"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8ssp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/phoneNumber_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="phonenumber here"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_7ssp"/>
+
+        <TextView
+            android:id="@+id/membershipStarted_Title_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/MembershipStarted"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8ssp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/membershipStarted_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="membership date started here"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_7ssp"/>
+
+        <TextView
+            android:id="@+id/expiring_Title_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/MembershipExpiring"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8ssp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/expiring_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="membership date expiring here"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_7ssp"/>
+
+        <TextView
+            android:id="@+id/daysLeft_Title_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/DaysLeft"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8ssp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/daysLeft_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="days left here"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_7ssp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
