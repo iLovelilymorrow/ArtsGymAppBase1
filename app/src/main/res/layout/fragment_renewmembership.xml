@@ -304,7 +304,7 @@
                     android:layout_below="@id/firstNameTextView_Title2"
                     android:layout_alignStart="@id/firstNameTextView_Title2"
 
-                    android:text="FIRSTNAME"
+                    android:hint="@string/hint_firstname"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_7ssp"
                     android:singleLine="true"
@@ -331,7 +331,7 @@
                     android:layout_below="@id/lastNameTextView_Title2"
                     android:layout_alignStart="@id/lastNameTextView_Title2"
 
-                    android:text="LASTNAME"
+                    android:hint="@string/hint_lastname"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_7ssp"
                     android:singleLine="true"
@@ -342,14 +342,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@id/firstNameTextView_Title2"
-                    android:layout_toEndOf="@id/firstNameEditText2ndMember"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="0dp"
                     android:layout_marginBottom="@dimen/_3sdp"
-                    android:layout_marginStart="@dimen/_20sdp"
 
+                    android:layout_toEndOf="@id/firstNameEditText2ndMember"
                     android:text="@string/Gender"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/_7ssp"/>
+                    android:textSize="@dimen/_7ssp"
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/genderSpinner2ndMember"
@@ -381,7 +382,7 @@
                     android:layout_below="@id/phoneNumberTextView_Title2"
                     android:layout_alignStart="@id/phoneNumberTextView_Title2"
 
-                    android:text="PHONE NUMBER"
+                    android:hint="@string/PhoneNumber"
                     android:inputType="phone"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_7ssp"
@@ -409,12 +410,51 @@
                     android:layout_below="@id/ageTextView_Title2"
                     android:layout_alignStart="@id/ageTextView_Title2"
 
-                    android:text="AGE"
+                    android:hint="@string/hint_age"
                     android:inputType="number"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_7ssp"
                     android:singleLine="true"
                     android:background="@drawable/border_background_grey"/>
+
+                <TextView
+                    android:id="@+id/fingerprintTitle_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/genderSpinner2ndMember"
+                    android:layout_marginStart="@dimen/_10sdp"
+
+                    android:text="@string/Fingerprint"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_8ssp"
+                    android:textStyle="bold"/>
+
+                <ImageView
+                    android:id="@+id/fingerprintImageView"
+                    android:layout_width="@dimen/_88sdp"
+                    android:layout_height="@dimen/_88sdp"
+                    android:layout_below="@id/fingerprintTitle_TextView"
+                    android:layout_alignStart="@id/fingerprintTitle_TextView"
+
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="-2dp"
+                    android:background="@drawable/border_background_grey"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/addfingerprint" />
+
+                <TextView
+                    android:id="@+id/fingerprintStatusTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/StartCapture"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_8ssp"
+                    android:textStyle="bold"
+
+                    android:layout_below="@id/fingerprintImageView"
+                    android:layout_alignStart="@id/fingerprintImageView"
+                    android:layout_alignEnd="@id/fingerprintImageView"
+                    android:gravity="center"/>
 
             </RelativeLayout>
 

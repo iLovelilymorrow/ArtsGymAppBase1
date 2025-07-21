@@ -45,7 +45,14 @@
     <string name="Name">Name</string>
     <string name="MembershipStarted">Membership Started on</string>
     <string name="MembershipExpiring">Membership Expiring on</string>
-    <string name="DaysLeft">Days Left</string>
+    <string name="DaysLeft">Your Monthly Membership has:</string>
+    <string name="Fingerprint">Fingerprint</string>
+    <string name="RecaptureFingerprint">Recapture Fingerprint</string>
+    <string name="ClearPage">Clear page</string>
+    <string name="FingerprintCaptured">Fingerprint Captured!</string>
+    <string name="StartCapture">Tap to Scan Fingerprint</string>
+    <string name="CapturingTemplate">Capturing Template...</string>
+    <string name="PlaceFinger">Place your finger on the sensor.</string>
 
     <string name="renewMembership_Title">Renew Membership</string>
     <string name="renewMembership_MemberInfo">Member Information</string>

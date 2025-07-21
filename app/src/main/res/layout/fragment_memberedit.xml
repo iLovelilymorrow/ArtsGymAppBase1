@@ -65,6 +65,18 @@
             android:textStyle="bold"
             android:textColor="@color/black"/>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonRecaptureFingerprint"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/expirationDateTextView"
+            android:layout_marginTop="@dimen/_3sdp"
+
+            android:text="@string/RecaptureFingerprint"
+            android:background="@drawable/border_background_grey"
+            app:backgroundTint="@color/grey"
+            android:textColor="@color/black"/>
+
         <TextView
             android:id="@+id/firstNameEditText_Title"
             android:layout_width="wrap_content"
@@ -211,7 +223,7 @@
             android:hint="@string/hint_age"
             android:background="@drawable/border_background_grey"
             android:singleLine="true"
-            android:inputType="text"/>
+            android:inputType="number"/>
 
         <TextView
             android:id="@+id/phoneNumberEditText_Title"
@@ -250,7 +262,7 @@
             android:layout_alignParentEnd="true">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonConfirmEdit"
+                android:id="@+id/buttonClearPage"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

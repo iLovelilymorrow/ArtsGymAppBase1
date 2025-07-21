@@ -8,7 +8,7 @@ public class Member {
     private String gender;
     private int age;
     private String imageFilePath;
-    private String fingerprintTemplate; //NEW
+    private byte[] fingerprintTemplate;
 
     // Constructors
     public Member()
@@ -84,7 +84,12 @@ public class Member {
     public void setImageFilePath(String imageFilePath) {
         this.imageFilePath = imageFilePath;
     }
-
+    public byte[] getFingerprintTemplate() {
+        return fingerprintTemplate;
+    }
+    public void setFingerprintTemplate(byte[] fingerprintTemplate) {
+        this.fingerprintTemplate = fingerprintTemplate;
+    }
     @Override
     public String toString() {
         return "Member{" +

@@ -3,7 +3,7 @@ package com.example.artsgymapp_solo;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -55,13 +55,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class RenewMembershipFragment extends Fragment {
+public class RenewMembershipFragment extends Fragment implements  FingerprintEnrollmentCallback {
 
     private static final String TAG = "RenewMembershipFragment";
 
     // Views for displaying member info
     private ImageView memberImageView;
-    private TextView firstNameTextView, lastNameTextView, genderTextView, phoneNumberTextView, ageTextView, memberIdTextView;
+    private TextView firstNameTextView, lastNameTextView, genderTextView, phoneNumberTextView, ageTextView, memberIdTextView, fingerprintStatusTextView;
     private Spinner memberTypeSpinner;
     private EditText receiptNumberEditText;
     private TextView startDateTextView, endDateTextView;
@@ -70,7 +70,7 @@ public class RenewMembershipFragment extends Fragment {
     private RelativeLayout secondMemberContainer;
     private RelativeLayout secondMemberViews;
     private EditText firstNameEditText2, lastNameEditText2, phoneNumberEditText2, ageEditText2, existingMemberIdEditText;
-    private ImageView memberImageView2ndMember;
+    private ImageView memberImageView2ndMember, fingerprintImageView;
     private Spinner genderSpinner2, secondMemberSpinner;
     private Member selectedExistingPartner;
 
@@ -101,6 +101,7 @@ public class RenewMembershipFragment extends Fragment {
     private ActivityResultLauncher<Intent> pickImageLauncherForNewPartner;
     private ActivityResultLauncher<String[]> requestPermissionsLauncherForNewPartner;
 
+    private byte[] capturedFingerprintTemplateForNewPartner;
 
     public RenewMembershipFragment() {
         // Required empty public constructor
@@ -223,6 +224,16 @@ public class RenewMembershipFragment extends Fragment {
             navController.popBackStack(); // Go back if no ID
         }
 
+        // Set click listeners for fingerprint image views
+        fingerprintImageView.setOnClickListener(v -> {
+            Log.d(TAG, "Fingerprint 1 clicked. Starting enrollment.");
+            MainActivity mainActivity = (MainActivity) getActivity();
+            if (mainActivity != null)
+            {
+                mainActivity.startFingerprintEnrollment(2, this);
+            }
+        });
+
         // Set default start date to today
         selectedStartDate = LocalDate.now();
         startDateTextView.setText(selectedStartDate.format(displayDateFormatter));
@@ -230,6 +241,45 @@ public class RenewMembershipFragment extends Fragment {
         secondMemberViews.setVisibility(View.GONE);
         existingMemberIdEditText.setVisibility(View.GONE);
         verifyExistingMemberButton.setVisibility(View.GONE);
+    }
+
+    // --- Implement FingerprintEnrollmentCallback methods ---
+    @Override
+    public void onEnrollmentProgress(int target, int progress, int total, String message) {
+
+        if (target == 2) { // Ensure it's for the new partner
+            Log.d(TAG, "Enrollment Progress (New Partner): " + message);
+            // Update UI, e.g., a TextView near the fingerprint image
+            if (fingerprintStatusTextView != null) {
+                fingerprintStatusTextView.setText(message);
+            }
+        }
+    }
+    @Override
+    public void onEnrollmentComplete(int target, Bitmap capturedImage, byte[] mergedTemplate) {
+        if (target == 2) { // Ensure it's for the new partner
+            Log.d(TAG, "Enrollment Complete (New Partner). Template size: " + mergedTemplate.length);
+            capturedFingerprintTemplateForNewPartner = mergedTemplate; // Store the new template
+            Toast.makeText(getContext(), "New partner fingerprint captured successfully!", Toast.LENGTH_LONG).show();
+            if (fingerprintStatusTextView != null) {
+                fingerprintStatusTextView.setText("Fingerprint Captured!");
+            }
+            // Optionally, display the captured image on fingerprintImageView if desired
+            if (capturedImage != null) {
+                fingerprintImageView.setImageBitmap(capturedImage);
+            }
+        }
+    }
+    @Override
+    public void onEnrollmentFailed(int target, String errorMessage) {
+        if (target == 2) { // Ensure it's for the new partner
+            Log.e(TAG, "Enrollment Failed (New Partner): " + errorMessage);
+            capturedFingerprintTemplateForNewPartner = null; // Clear any partial template
+            Toast.makeText(getContext(), "New partner fingerprint capture failed: " + errorMessage, Toast.LENGTH_LONG).show();
+            if (fingerprintStatusTextView != null) {
+                fingerprintStatusTextView.setText("Capture Failed!");
+            }
+        }
     }
 
     public void setupSpinners() {
@@ -279,6 +329,9 @@ public class RenewMembershipFragment extends Fragment {
         phoneNumberEditText2 = view.findViewById(R.id.phoneNumberEditText2ndMember);
         ageEditText2 = view.findViewById(R.id.ageEditText2ndMember);
         existingMemberIdEditText = view.findViewById(R.id.existingMemberIdEditText);
+
+        fingerprintStatusTextView = view.findViewById(R.id.fingerprintStatusTextView);
+        fingerprintImageView = view.findViewById(R.id.fingerprintImageView);
     }
 
     private void setupListeners() {
@@ -286,7 +339,7 @@ public class RenewMembershipFragment extends Fragment {
         endDateTextView.setOnClickListener(v -> showDatePickerDialog(false));
         renewMemberButton.setOnClickListener(v -> attemptRenewal());
         cancelButton.setOnClickListener(v -> navController.popBackStack());
-        verifyExistingMemberButton.setOnClickListener(v -> fetchAndDisplayExistingPartner());
+        verifyExistingMemberButton.setOnClickListener(v -> fetchExistingPartner());
 
         memberImageView2ndMember.setOnClickListener(v -> {
             if (secondMemberViews.getVisibility() == View.VISIBLE && firstNameEditText2.isEnabled()) {
@@ -365,263 +418,11 @@ public class RenewMembershipFragment extends Fragment {
                 verifyExistingMemberButton.setVisibility(View.GONE);
             }
         });
-    }
 
-    private void showImagePickDialogForNewPartner() {
-        // Check if the new partner section is actually for a "new" partner
-        // and not displaying an existing, non-editable partner.
-        if (!firstNameEditText2.isEnabled()) { // A simple check; adjust if your logic for "editable" is different
-            Toast.makeText(getContext(), "Partner details are not editable.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Set Image for Partner");
-        builder.setItems(options, (dialog, item) -> {
-            if (options[item].equals("Take Photo")) {
-                Log.d(TAG, "Attempting to open camera for new partner.");
-                checkCameraPermissionAndOpenCameraForNewPartner();
-            } else if (options[item].equals("Choose from Gallery")) {
-                Log.d(TAG, "Attempting to open gallery for new partner.");
-                checkStoragePermissionAndOpenGalleryForNewPartner();
-            } else if (options[item].equals("Cancel")) {
-                dialog.dismiss();
-            }
+        fingerprintImageView.setOnClickListener(v -> {
+            Log.d(TAG, "Fingerprint image clicked for new partner. Starting enrollment.");
+            MainActivity.startFingerprintEnrollment(2, this);
         });
-        builder.show();
-    }
-
-    private void checkCameraPermissionAndOpenCameraForNewPartner() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                // You might also want to check WRITE_EXTERNAL_STORAGE for older APIs if saving to public gallery
-                // but for app-specific directory (via FileProvider), it's often not strictly needed after target API 29+
-                openCameraForNewPartner();
-            } else {
-                // Request permission
-                requestPermissionsLauncherForNewPartner.launch(new String[]{Manifest.permission.CAMERA});
-            }
-        } else {
-            openCameraForNewPartner(); // No runtime permission needed before Marshmallow
-        }
-    }
-
-    private void openCameraForNewPartner() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFileForNewPartner();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-                Log.e(TAG, "IOException creating image file for new partner", ex);
-                Toast.makeText(getContext(), "Error preparing for camera.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                // Store the path for later use if needed (e.g., for saving directly without Glide processing)
-                // currentPhotoPathForNewPartner is already set in createImageFileForNewPartner
-
-                capturedImageUriForNewPartner = FileProvider.getUriForFile(requireContext(),
-                        requireContext().getPackageName() + ".provider", // Make sure this matches your provider authority
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, capturedImageUriForNewPartner);
-                Log.d(TAG, "Launching camera for new partner. Output URI: " + capturedImageUriForNewPartner);
-                takePictureLauncherForNewPartner.launch(takePictureIntent);
-            }
-        } else {
-            Toast.makeText(getContext(), "No camera app found.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private File createImageFileForNewPartner() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_PARTNER_";
-        File storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES); // App-specific storage
-
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPathForNewPartner = image.getAbsolutePath();
-        Log.d(TAG, "New partner image file created: " + currentPhotoPathForNewPartner);
-        return image;
-    }
-
-    private void checkStoragePermissionAndOpenGalleryForNewPartner() {
-        String permissionToRequest;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // API 33+
-            permissionToRequest = Manifest.permission.READ_MEDIA_IMAGES;
-        } else { // Below API 33
-            permissionToRequest = Manifest.permission.READ_EXTERNAL_STORAGE;
-        }
-
-        if (ContextCompat.checkSelfPermission(requireContext(), permissionToRequest) == PackageManager.PERMISSION_GRANTED) {
-            openGalleryForNewPartner();
-        } else {
-            requestPermissionsLauncherForNewPartner.launch(new String[]{permissionToRequest});
-        }
-    }
-
-    private void openGalleryForNewPartner() {
-        Intent pickIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickImageLauncherForNewPartner.launch(pickIntent);
-        Log.d(TAG, "Launching gallery for new partner.");
-    }
-
-    private String getPathFromUri(Uri contentUri) {
-        String[] projection = {MediaStore.Images.Media.DATA};
-        Cursor cursor = null;
-        try {
-            cursor = requireActivity().getContentResolver().query(contentUri, projection, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                return cursor.getString(columnIndex);
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Error getting path from URI: " + contentUri, e);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-        return null; // Fallback if path couldn't be retrieved
-    }
-
-    private String saveImageFromUriToInternalStorage(Uri sourceUri, String partnerName) {
-        if (sourceUri == null) return null;
-
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "PARTNER_" + partnerName.replaceAll("\\s+", "_") + "_" + timeStamp + ".jpg";
-        File storageDir = requireContext().getFilesDir(); // Internal storage - private to the app
-
-        File destinationFile = new File(storageDir, imageFileName);
-
-        try (InputStream inputStream = requireContext().getContentResolver().openInputStream(sourceUri);
-             FileOutputStream outputStream = new FileOutputStream(destinationFile)) {
-
-            if (inputStream == null) {
-                Log.e(TAG, "Failed to get InputStream from URI for partner: " + sourceUri);
-                return null;
-            }
-
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = inputStream.read(buf)) > 0) {
-                outputStream.write(buf, 0, len);
-            }
-            Log.d(TAG, "Partner image saved to internal storage: " + destinationFile.getAbsolutePath());
-            return destinationFile.getAbsolutePath();
-        } catch (IOException e) {
-            Log.e(TAG, "Failed to save partner image from URI to internal storage", e);
-            Toast.makeText(getContext(), "Error saving partner image.", Toast.LENGTH_SHORT).show();
-            return null;
-        }
-    }
-
-    private void fetchAndDisplayExistingPartner() {
-        String partnerIdToVerify = existingMemberIdEditText.getText().toString().trim();
-        if (TextUtils.isEmpty(partnerIdToVerify)) {
-            Toast.makeText(getContext(), "Enter Partner Member ID", Toast.LENGTH_SHORT).show();
-            existingMemberIdEditText.setError("Required");
-            return;
-        }
-        if (partnerIdToVerify.equals(currentMemberIdString)) {
-            Toast.makeText(getContext(), "Partner cannot be the same as the primary member.", Toast.LENGTH_LONG).show();
-            existingMemberIdEditText.setError("Cannot be primary member");
-            return;
-        }
-        existingMemberIdEditText.setError(null); // Clear previous error
-
-        executorService.execute(() -> {
-            Member fetchedPartner = dbHelper.getMemberById(partnerIdToVerify);
-            mainThreadHandler.post(() -> {
-                if (fetchedPartner != null) {
-                    selectedExistingPartner = fetchedPartner;
-                    Toast.makeText(getContext(), "Partner " + fetchedPartner.getFirstName() + " " + fetchedPartner.getLastName() + " found.", Toast.LENGTH_SHORT).show();
-                    populateNewPartnerFieldsWithExisting(fetchedPartner); // Populate the common fields
-                    secondMemberViews.setVisibility(View.VISIBLE);      // Show the fields
-                    setPartnerDetailsEditable(false);                   // Make them non-editable
-                } else {
-                    selectedExistingPartner = null;
-                    existingMemberIdEditText.setError("Not Found");
-                    Toast.makeText(getContext(), "Existing Member ID not found.", Toast.LENGTH_SHORT).show();
-                    secondMemberViews.setVisibility(View.GONE); // Hide if previously shown or for a new attempt
-                    clearNewPartnerInputs(); // Clear if we hide, ensure editable state for next time
-                }
-            });
-        });
-    }
-
-    private void populateNewPartnerFieldsWithExisting(Member partner) {
-        firstNameEditText2.setText(partner.getFirstName());
-        lastNameEditText2.setText(partner.getLastName());
-        ageEditText2.setText(String.valueOf(partner.getAge()));
-        phoneNumberEditText2.setText(partner.getPhoneNumber());
-
-        if (partner.getGender() != null && genderAdapter2 != null) {
-            int genderPosition = genderAdapter2.getPosition(partner.getGender());
-            if (genderPosition >= 0) {
-                genderSpinner2.setSelection(genderPosition);
-            } else {
-                genderSpinner2.setSelection(0); // Default if gender not found in adapter
-                Log.w(TAG, "Gender for existing partner not found in adapter: " + partner.getGender());
-            }
-        } else {
-            genderSpinner2.setSelection(0);
-        }
-
-        selectedImageUriForNewPartner = null; // Existing members don't get a new image selection here
-        if (partner.getImageFilePath() != null && !partner.getImageFilePath().isEmpty()) {
-            Glide.with(this)
-                    .load(new File(partner.getImageFilePath()))
-                    .placeholder(R.drawable.addimage)
-                    .error(R.mipmap.ic_launcher_round)
-                    .into(memberImageView2ndMember);
-        } else {
-            Glide.with(this)
-                    .load(R.drawable.addimage)
-                    .into(memberImageView2ndMember);
-        }
-    }
-
-    private void setPartnerDetailsEditable(boolean editable) {
-        firstNameEditText2.setEnabled(editable);
-        lastNameEditText2.setEnabled(editable);
-        ageEditText2.setEnabled(editable);
-        phoneNumberEditText2.setEnabled(editable);
-        genderSpinner2.setEnabled(editable);
-        memberImageView2ndMember.setClickable(editable);
-    }
-
-    private void clearNewPartnerInputs()
-    {
-        firstNameEditText2.setText("");
-        lastNameEditText2.setText("");
-        ageEditText2.setText("");
-        phoneNumberEditText2.setText("");
-        genderSpinner2.setSelection(0);
-        Glide.with(this).clear(memberImageView2ndMember); // Clear image
-        selectedImageUriForNewPartner = null; // if you have URI tracking
-        setPartnerDetailsEditable(true); // Make them editable again for a new entry
-    }
-
-    private void clearNewPartnerInputsErrors() {
-        firstNameEditText2.setError(null);
-        lastNameEditText2.setError(null);
-        ageEditText2.setError(null);
-        phoneNumberEditText2.setError(null);
-        if (genderSpinner2.getSelectedView() != null) {
-            ((TextView) genderSpinner2.getSelectedView()).setError(null);
-        }
     }
 
     private boolean validateNewPartnerInputs() {
@@ -661,7 +462,14 @@ public class RenewMembershipFragment extends Fragment {
             Toast.makeText(getContext(), "Please select gender for the partner.", Toast.LENGTH_SHORT).show();
             isValid = false;
         }
-        // No validation for image, it's optional
+
+        // --- Fingerprint Validation for Member 1 --- //PASTED THIS
+        if (capturedFingerprintTemplateForNewPartner == null) {
+            Toast.makeText(getContext(), "Fingerprint scan is required for the new partner.", Toast.LENGTH_LONG).show();
+            if (fingerprintStatusTextView != null) fingerprintStatusTextView.setText("Fingerprint required!");
+            Log.w(TAG, "Validation failed (New Partner): Fingerprint not captured.");
+            return false; // Add this line to fail validation
+        }
 
         return isValid;
     }
@@ -793,9 +601,10 @@ public class RenewMembershipFragment extends Fragment {
         final String primaryMemberId = currentMember.getMemberID();
         final int memberTypeId = selectedMemberType.getId();
 
-        executorService.execute(() -> {
+        executorService.execute(() ->
+        {
             boolean success = dbHelper.renewTwoInOneWithNewPartner(primaryMemberId,
-                    pFirstName, pLastName, pPhone, pGender, pAge, pImagePath,
+                    pFirstName, pLastName, pPhone, pGender, pAge, pImagePath, capturedFingerprintTemplateForNewPartner,
                     memberTypeId, selectedStartDate, selectedEndDate, receiptNumber);
             mainThreadHandler.post(() -> {
                 if (success) {
@@ -808,6 +617,215 @@ public class RenewMembershipFragment extends Fragment {
                 }
             });
         });
+    }
+
+    //IMAGE STUFF
+    private void showImagePickDialogForNewPartner() {
+        // Check if the new partner section is actually for a "new" partner
+        // and not displaying an existing, non-editable partner.
+        if (!firstNameEditText2.isEnabled()) { // A simple check; adjust if your logic for "editable" is different
+            Toast.makeText(getContext(), "Partner details are not editable.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Set Image for Partner");
+        builder.setItems(options, (dialog, item) -> {
+            if (options[item].equals("Take Photo")) {
+                Log.d(TAG, "Attempting to open camera for new partner.");
+                checkCameraPermissionAndOpenCameraForNewPartner();
+            } else if (options[item].equals("Choose from Gallery")) {
+                Log.d(TAG, "Attempting to open gallery for new partner.");
+                checkStoragePermissionAndOpenGalleryForNewPartner();
+            } else if (options[item].equals("Cancel")) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    private void checkCameraPermissionAndOpenCameraForNewPartner() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                // You might also want to check WRITE_EXTERNAL_STORAGE for older APIs if saving to public gallery
+                // but for app-specific directory (via FileProvider), it's often not strictly needed after target API 29+
+                openCameraForNewPartner();
+            } else {
+                // Request permission
+                requestPermissionsLauncherForNewPartner.launch(new String[]{Manifest.permission.CAMERA});
+            }
+        } else {
+            openCameraForNewPartner(); // No runtime permission needed before Marshmallow
+        }
+    }
+
+    private void openCameraForNewPartner() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFileForNewPartner();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                Log.e(TAG, "IOException creating image file for new partner", ex);
+                Toast.makeText(getContext(), "Error preparing for camera.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                // Store the path for later use if needed (e.g., for saving directly without Glide processing)
+                // currentPhotoPathForNewPartner is already set in createImageFileForNewPartner
+
+                capturedImageUriForNewPartner = FileProvider.getUriForFile(requireContext(),
+                        requireContext().getPackageName() + ".provider", // Make sure this matches your provider authority
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, capturedImageUriForNewPartner);
+                Log.d(TAG, "Launching camera for new partner. Output URI: " + capturedImageUriForNewPartner);
+                takePictureLauncherForNewPartner.launch(takePictureIntent);
+            }
+        } else {
+            Toast.makeText(getContext(), "No camera app found.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private File createImageFileForNewPartner() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_PARTNER_";
+        File storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES); // App-specific storage
+
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPathForNewPartner = image.getAbsolutePath();
+        Log.d(TAG, "New partner image file created: " + currentPhotoPathForNewPartner);
+        return image;
+    }
+
+    private void checkStoragePermissionAndOpenGalleryForNewPartner() {
+        String permissionToRequest;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // API 33+
+            permissionToRequest = Manifest.permission.READ_MEDIA_IMAGES;
+        } else { // Below API 33
+            permissionToRequest = Manifest.permission.READ_EXTERNAL_STORAGE;
+        }
+
+        if (ContextCompat.checkSelfPermission(requireContext(), permissionToRequest) == PackageManager.PERMISSION_GRANTED) {
+            openGalleryForNewPartner();
+        } else {
+            requestPermissionsLauncherForNewPartner.launch(new String[]{permissionToRequest});
+        }
+    }
+
+    private void openGalleryForNewPartner() {
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickImageLauncherForNewPartner.launch(pickIntent);
+        Log.d(TAG, "Launching gallery for new partner.");
+    }
+
+    private String saveImageFromUriToInternalStorage(Uri sourceUri, String partnerName) {
+        if (sourceUri == null) return null;
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "PARTNER_" + partnerName.replaceAll("\\s+", "_") + "_" + timeStamp + ".jpg";
+        File storageDir = requireContext().getFilesDir(); // Internal storage - private to the app
+
+        File destinationFile = new File(storageDir, imageFileName);
+
+        try (InputStream inputStream = requireContext().getContentResolver().openInputStream(sourceUri);
+             FileOutputStream outputStream = new FileOutputStream(destinationFile)) {
+
+            if (inputStream == null) {
+                Log.e(TAG, "Failed to get InputStream from URI for partner: " + sourceUri);
+                return null;
+            }
+
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = inputStream.read(buf)) > 0) {
+                outputStream.write(buf, 0, len);
+            }
+            Log.d(TAG, "Partner image saved to internal storage: " + destinationFile.getAbsolutePath());
+            return destinationFile.getAbsolutePath();
+        } catch (IOException e) {
+            Log.e(TAG, "Failed to save partner image from URI to internal storage", e);
+            Toast.makeText(getContext(), "Error saving partner image.", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+    }
+    //IMAGE STUFF
+
+    private void fetchExistingPartner() {
+        String partnerIdToVerify = existingMemberIdEditText.getText().toString().trim();
+        if (TextUtils.isEmpty(partnerIdToVerify)) {
+            Toast.makeText(getContext(), "Enter Partner Member ID", Toast.LENGTH_SHORT).show();
+            existingMemberIdEditText.setError("Required");
+            return;
+        }
+        if (partnerIdToVerify.equals(currentMemberIdString)) {
+            Toast.makeText(getContext(), "Partner cannot be the same as the primary member.", Toast.LENGTH_LONG).show();
+            existingMemberIdEditText.setError("Cannot be primary member");
+            return;
+        }
+        existingMemberIdEditText.setError(null); // Clear previous error
+
+        executorService.execute(() -> {
+            Member fetchedPartner = dbHelper.getMemberById(partnerIdToVerify);
+            mainThreadHandler.post(() -> {
+                if (fetchedPartner != null) {
+                    selectedExistingPartner = fetchedPartner;
+                    Toast.makeText(getContext(), "Partner " + fetchedPartner.getFirstName() + " " + fetchedPartner.getLastName() + " found.", Toast.LENGTH_SHORT).show();
+                    populateNewPartnerFieldsWithExisting(fetchedPartner); // Populate the common fields
+                    secondMemberViews.setVisibility(View.VISIBLE);      // Show the fields
+                    setPartnerDetailsEditable(false);                   // Make them non-editable
+                } else {
+                    selectedExistingPartner = null;
+                    existingMemberIdEditText.setError("Not Found");
+                    Toast.makeText(getContext(), "Existing Member ID not found.", Toast.LENGTH_SHORT).show();
+                    secondMemberViews.setVisibility(View.GONE); // Hide if previously shown or for a new attempt
+                    clearNewPartnerInputs(); // Clear if we hide, ensure editable state for next time
+                }
+            });
+        });
+    }
+
+    private void populateNewPartnerFieldsWithExisting(Member partner) {
+        firstNameEditText2.setText(partner.getFirstName());
+        lastNameEditText2.setText(partner.getLastName());
+        ageEditText2.setText(String.valueOf(partner.getAge()));
+        phoneNumberEditText2.setText(partner.getPhoneNumber());
+
+        if (partner.getGender() != null && genderAdapter2 != null) {
+            int genderPosition = genderAdapter2.getPosition(partner.getGender());
+            if (genderPosition >= 0) {
+                genderSpinner2.setSelection(genderPosition);
+            } else {
+                genderSpinner2.setSelection(0); // Default if gender not found in adapter
+                Log.w(TAG, "Gender for existing partner not found in adapter: " + partner.getGender());
+            }
+        } else {
+            genderSpinner2.setSelection(0);
+        }
+
+        selectedImageUriForNewPartner = null; // Existing members don't get a new image selection here
+        if (partner.getImageFilePath() != null && !partner.getImageFilePath().isEmpty()) {
+            Glide.with(this)
+                    .load(new File(partner.getImageFilePath()))
+                    .placeholder(R.drawable.addimage)
+                    .error(R.mipmap.ic_launcher_round)
+                    .into(memberImageView2ndMember);
+        } else {
+            Glide.with(this)
+                    .load(R.drawable.addimage)
+                    .into(memberImageView2ndMember);
+        }
     }
 
     private void saveRenewalTwoInOneExistingPartner(String receiptNumber, String existingPartnerId) {
@@ -990,6 +1008,43 @@ public class RenewMembershipFragment extends Fragment {
             endDateTextView.setHint("Select End Date"); // Reset hint
             selectedEndDate = null;
         }
+    }
+
+    private void setPartnerDetailsEditable(boolean editable) {
+        firstNameEditText2.setEnabled(editable);
+        lastNameEditText2.setEnabled(editable);
+        ageEditText2.setEnabled(editable);
+        phoneNumberEditText2.setEnabled(editable);
+        genderSpinner2.setEnabled(editable);
+        memberImageView2ndMember.setClickable(editable);
+    }
+
+    private void clearNewPartnerInputs()
+    {
+        firstNameEditText2.setText("");
+        lastNameEditText2.setText("");
+        ageEditText2.setText("");
+        phoneNumberEditText2.setText("");
+        genderSpinner2.setSelection(0);
+        Glide.with(this).clear(memberImageView2ndMember); // Clear image
+        selectedImageUriForNewPartner = null; // if you have URI tracking
+        setPartnerDetailsEditable(true); // Make them editable again for a new entry
+    }
+
+    private void clearNewPartnerInputsErrors() {
+        firstNameEditText2.setError(null);
+        lastNameEditText2.setError(null);
+        ageEditText2.setError(null);
+        phoneNumberEditText2.setError(null);
+        if (genderSpinner2.getSelectedView() != null) {
+            ((TextView) genderSpinner2.getSelectedView()).setError(null);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MainActivity.stopFingerprintEnrollment();
     }
 
     @Override

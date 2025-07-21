@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -54,7 +55,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class MemberEditFragment extends Fragment
+public class MemberEditFragment extends Fragment implements FingerprintEnrollmentCallback
 {
     private static final String TAG = "MemberEditFragment";
     private ImageView memberImageView;
@@ -69,7 +70,7 @@ public class MemberEditFragment extends Fragment
     private EditText receiptNumberEditText;
     private MaterialButton buttonConfirmEdit;
     private MaterialButton buttonCancelEdit;
-
+    private MaterialButton buttonRecaptureFingerprint;
     private DatabaseHelper databaseHelper;
     private String currentMemberIdToEdit;
     private int currentPeriodIdToEdit = -1;
@@ -104,6 +105,8 @@ public class MemberEditFragment extends Fragment
 
     private int originalFkMemberTypeIdForPeriod = -1;
     private boolean isInitialMemberTypeSpinnerSetupDone = false;
+
+    private byte[] capturedFingerprintTemplate;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -159,6 +162,36 @@ public class MemberEditFragment extends Fragment
         setClickListeners();
     }
 
+    // --- Implement FingerprintEnrollmentCallback methods ---
+    @Override
+    public void onEnrollmentProgress(int target, int progress, int total, String message) {
+        if (target == 1) { // Ensure it's for the primary member
+            Log.d(TAG, "Enrollment Progress (Member): " + message);
+            // Update UI, e.g., a TextView near the button
+            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onEnrollmentComplete(int target, Bitmap capturedImage, byte[] mergedTemplate) {
+        if (target == 1) { // Ensure it's for the primary member
+            Log.d(TAG, "Enrollment Complete (Member). Template size: " + mergedTemplate.length);
+            capturedFingerprintTemplate = mergedTemplate; // Store the new template
+            Toast.makeText(getContext(), "Fingerprint recaptured successfully!", Toast.LENGTH_LONG).show();
+            // Update UI to show success, e.g., change button text or color
+        }
+    }
+
+    @Override
+    public void onEnrollmentFailed(int target, String errorMessage) {
+        if (target == 1) { // Ensure it's for the primary member
+            Log.e(TAG, "Enrollment Failed (Member): " + errorMessage);
+            capturedFingerprintTemplate = null; // Clear any partial template
+            Toast.makeText(getContext(), "Fingerprint recapture failed: " + errorMessage, Toast.LENGTH_LONG).show();
+            // Update UI to show failure
+        }
+    }
+
     private void initializeViews(View view)
     {
         memberImageView = view.findViewById(R.id.memberImageView);
@@ -171,11 +204,12 @@ public class MemberEditFragment extends Fragment
         ageEditText = view.findViewById(R.id.ageEditText);
         phoneNumberEditText = view.findViewById(R.id.phoneNumberEditText);
         receiptNumberEditText = view.findViewById(R.id.receiptNumberEditText);
-        buttonConfirmEdit = view.findViewById(R.id.buttonConfirmEdit);
+        buttonConfirmEdit = view.findViewById(R.id.buttonClearPage);
         buttonCancelEdit = view.findViewById(R.id.buttonCancelEdit);
         buttonDeleteMember = view.findViewById(R.id.buttonDeleteMember);
         registrationDateTextView = view.findViewById(R.id.registrationDateTextView);
         expirationDateTextView = view.findViewById(R.id.expirationDateTextView);
+        buttonRecaptureFingerprint = view.findViewById(R.id.buttonRecaptureFingerprint);
     }
 
     private void setupSpinners()
@@ -543,6 +577,12 @@ public class MemberEditFragment extends Fragment
         });
 
         buttonDeleteMember.setOnClickListener(v -> confirmDeleteMember());
+
+        buttonRecaptureFingerprint.setOnClickListener(v -> {
+            Log.d(TAG, "Recapture Fingerprint button clicked.");
+            // Start enrollment for the current member (target 1)
+            MainActivity.startFingerprintEnrollment(1, this);
+        });
     }
 
     private void confirmDeleteMember() {
@@ -724,7 +764,7 @@ public class MemberEditFragment extends Fragment
                     // Receipt is unique, proceed with the rest of the update
                     Log.d(TAG, "Receipt number '" + finalNewReceiptNumber + "' is unique. Proceeding to finalize update."); // Updated log
                     updateMemberData(finalFirstName, finalLastName, finalAge, finalPhoneNumber, finalGender,
-                            finalNewReceiptNumber, finalNewSelectedTypeDetails, finalNewlySelectedMemberTypeId);
+                            finalNewReceiptNumber, finalNewSelectedTypeDetails, finalNewlySelectedMemberTypeId, capturedFingerprintTemplate);
                 }
             });
         });
@@ -733,7 +773,7 @@ public class MemberEditFragment extends Fragment
 
     // New method in MemberEditFragment.java to handle the actual updating part
     private void updateMemberData(String firstName, String lastName, int age, String phoneNumber, String gender,
-                                  String newReceiptNumber, MemberType newSelectedTypeDetailsFromParam, int newlySelectedMemberTypeIdFromParam) {
+                                  String newReceiptNumber, MemberType newSelectedTypeDetailsFromParam, int newlySelectedMemberTypeIdFromParam, byte[] newFingerprintTemplate) {
 
         // --- 3. Image Path Handling --- (Your existing code)
         String finalImageFilePath = originalImageFilePath; // Start with existing
@@ -817,6 +857,13 @@ public class MemberEditFragment extends Fragment
         currentMemberDetails.setAge(age);
         currentMemberDetails.setImageFilePath(finalImageFilePath);
 
+        if (newFingerprintTemplate != null) {
+            currentMemberDetails.setFingerprintTemplate(newFingerprintTemplate);
+            Log.d(TAG, "Updating member with new fingerprint template.");
+        } else {
+            Log.d(TAG, "No new fingerprint template to update.");
+        }
+
         currentMembershipPeriodDetails.setFkMemberTypeId(actualNewlySelectedMemberTypeId);
         currentMembershipPeriodDetails.setMemberTypeName(periodMemberTypeName);
         currentMembershipPeriodDetails.setExpirationDate(periodExpirationDateToSave);
@@ -824,18 +871,26 @@ public class MemberEditFragment extends Fragment
 
         // --- 6. Update in Database --- (Your existing code)
         boolean success = false;
-        if (databaseHelper != null) {
+        if (databaseHelper != null)
+        {
             success = databaseHelper.updateMemberAndPeriod(currentMemberDetails, currentMembershipPeriodDetails);
-        } else {
-            // ... (your existing DB null error handling) ...
+        }
+        else
+        {
+            Log.e(TAG, "DatabaseHelper was null when trying to update member and period.");
             return;
         }
-
         // --- 7. User Feedback and Navigation --- (Your existing code)
-        if (success) {
-            // ... (your existing success feedback and navigation) ...
-        } else {
-            // ... (your existing failure feedback) ...
+        if (success)
+        {
+            Toast.makeText(getContext(), "Member and period updated successfully.", Toast.LENGTH_SHORT).show();
+            if (navController != null) {
+                navController.popBackStack();
+            }
+        }
+        else
+        {
+            Toast.makeText(getContext(), "Failed to update member and period.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -1013,6 +1068,13 @@ public class MemberEditFragment extends Fragment
                 Log.e(TAG, "Error closing streams", e);
             }
         }
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        MainActivity.stopFingerprintEnrollment();
     }
 
     @Override

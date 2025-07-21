@@ -117,6 +117,45 @@
             android:layout_alignStart="@id/genderSpinner2ndMember"/>
 
         <TextView
+            android:id="@+id/fingerprintTitle_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/firstNameEditText"
+            android:layout_alignTop="@id/memberPictureTitle_TextView"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_3sdp"
+
+            android:text="@string/Fingerprint"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8ssp"
+            android:textStyle="bold"/>
+
+        <ImageView
+            android:id="@+id/fingerprintImageView1"
+            android:layout_width="@dimen/_88sdp"
+            android:layout_height="@dimen/_88sdp"
+            android:layout_below="@id/fingerprintTitle_TextView"
+            android:layout_alignStart="@id/fingerprintTitle_TextView"
+
+            android:background="@drawable/border_background_grey"
+            android:src="@drawable/addfingerprint"
+            android:scaleType="fitXY"/>
+
+        <TextView
+            android:id="@+id/fingerprintStatusTextView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/StartCapture"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8ssp"
+            android:textStyle="bold"
+
+            android:layout_below="@id/fingerprintImageView1"
+            android:layout_alignStart="@id/fingerprintImageView1"
+            android:layout_alignEnd="@id/fingerprintImageView1"
+            android:gravity="center"/>
+
+        <TextView
             android:id="@+id/invisibleLineStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -223,6 +262,45 @@
                 android:layout_marginTop="@dimen/_6sdp"
                 android:layout_below="@id/genderSpinner2"
                 android:layout_alignStart="@id/genderSpinner2"/>
+
+                <TextView
+                    android:id="@+id/fingerprintTitle_TextView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/firstNameEditText2"
+                    android:layout_alignTop="@id/memberPictureTitle_TextView2"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+
+                    android:text="@string/Fingerprint"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_8ssp"
+                    android:textStyle="bold"/>
+
+                <ImageView
+                    android:id="@+id/fingerprintImageView2"
+                    android:layout_width="@dimen/_88sdp"
+                    android:layout_height="@dimen/_88sdp"
+                    android:layout_below="@id/fingerprintTitle_TextView2"
+                    android:layout_alignStart="@id/fingerprintTitle_TextView2"
+
+                    android:background="@drawable/border_background_grey"
+                    android:src="@drawable/addfingerprint"
+                    android:scaleType="fitXY"/>
+
+                <TextView
+                    android:id="@+id/fingerprintStatusTextView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/StartCapture"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_8ssp"
+                    android:textStyle="bold"
+
+                    android:layout_below="@id/fingerprintImageView2"
+                    android:layout_alignStart="@id/fingerprintImageView2"
+                    android:layout_alignEnd="@id/fingerprintImageView2"
+                    android:gravity="center"/>
 
             </RelativeLayout>
         </LinearLayout>
@@ -333,6 +411,19 @@
                 android:background="@drawable/border_background_grey"
                 app:backgroundTint="@color/grey"
                 android:textColor="@color/black"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonCancel"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/fingerprintImageView1"
+            android:layout_alignTop="@id/buttonAddMember"
+
+            android:text="@string/Cancel"
+            android:textSize="@dimen/_10ssp"
+            android:background="@drawable/border_background_grey"
+            app:backgroundTint="@color/grey"
+            android:textColor="@color/black"/>
 
     </RelativeLayout>
 </ScrollView>
