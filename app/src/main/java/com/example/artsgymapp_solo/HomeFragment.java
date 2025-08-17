@@ -1,13 +1,12 @@
 package com.example.artsgymapp_solo;
 
-import static android.content.ContentValues.TAG;
-
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import android.util.Log;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +24,22 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private DatabaseHelper databaseHelper;
 
+    private static final long MEMBER_INFO_DISPLAY_TIMEOUT_MS = 50 * 1000L;
+    private Handler memberInfoDisplayHandler;
+    private Runnable clearMemberInfoRunnable;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         databaseHelper = new DatabaseHelper(getContext());
+
+        memberInfoDisplayHandler = new Handler(Looper.getMainLooper());
+        clearMemberInfoRunnable = () -> {
+            if(isAdded() && binding != null)
+            {
+                clearDisplayedMemberInfo();
+            }
+        };
     }
 
     @Nullable
@@ -38,63 +49,110 @@ public class HomeFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.buttonClearPage.setOnClickListener(v -> {
-            Log.d(TAG, "Clear button clicked");
-            clearDisplayedMemberInfo();
-            MainActivity mainActivity = (MainActivity) getActivity();
-            if (mainActivity != null)
-            {
-                mainActivity.startIdentification();
-            }
+        binding.getRoot().setOnClickListener(v -> resetMemberInfoDisplayTimer());
+
+        binding.getRoot().setOnTouchListener((v, event) -> {
+            resetMemberInfoDisplayTimer();
+            return false;
         });
 
-        if (getArguments() != null) {
-            String identifiedMemberId = getArguments().getString("identifiedMemberId");
-            if (identifiedMemberId != null && !identifiedMemberId.isEmpty()) {
-                Log.d(TAG, "HomeFragment received identifiedMemberId: " + identifiedMemberId);
+        binding.buttonConfirmEdit.setOnClickListener(v ->
+        {
+            clearDisplayedMemberInfo();
+            stopMemberInfoDisplayTimer();
+        });
+
+        Bundle args = getArguments();
+        if (args != null) {
+            String identifiedMemberId = args.getString("identifiedMemberId");
+            if (identifiedMemberId != null && !identifiedMemberId.isEmpty())
+            {
                 loadAndDisplayMemberInfo(identifiedMemberId);
-                // Clear the argument so it doesn't re-display on subsequent navigations
-                getArguments().remove("identifiedMemberId");
-            } else {
-                // If identifiedMemberId is null or empty, clear the display
-                Log.d(TAG, "HomeFragment received null/empty identifiedMemberId. Clearing display.");
+                resetMemberInfoDisplayTimer();
+            }
+            else
+            {
                 clearDisplayedMemberInfo();
-                MainActivity mainActivity = (MainActivity) getActivity();
-                if (mainActivity != null)
-                {
-                    mainActivity.startIdentification();
-                }
+                stopMemberInfoDisplayTimer();
             }
         } else {
-            // If no arguments are passed, clear the display (e.g., initial load or navigation without ID)
-            Log.d(TAG, "HomeFragment received no arguments. Clearing display.");
             clearDisplayedMemberInfo();
+            stopMemberInfoDisplayTimer();
         }
     }
 
-    private void clearDisplayedMemberInfo() {
-        binding.memberIdTextView.setText("");
-        binding.fullNameTextView.setText("");
-        binding.membershipTypeTextView.setText("");
-        binding.membershipStartedTextView.setText("");
-        binding.expiringTextView.setText("");
-        binding.daysLeftTextView.setText("");
-        binding.ageTextView.setText("");
-        binding.phoneNumberTextView.setText("");
-        binding.memberPictureImageView.setImageResource(0); // Clear image
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (binding != null && binding.memberIdTextView.getText() != null && !binding.memberIdTextView.getText().toString().isEmpty()) {
+            resetMemberInfoDisplayTimer();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        stopMemberInfoDisplayTimer();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        stopMemberInfoDisplayTimer();
+        binding = null;
+    }
+
+    private void resetMemberInfoDisplayTimer() {
+        if (memberInfoDisplayHandler != null && clearMemberInfoRunnable != null) {
+            memberInfoDisplayHandler.removeCallbacks(clearMemberInfoRunnable);
+
+            if (binding != null && binding.memberIdTextView.getText() != null &&
+                    !binding.memberIdTextView.getText().toString().isEmpty()) {
+                memberInfoDisplayHandler.postDelayed(clearMemberInfoRunnable, MEMBER_INFO_DISPLAY_TIMEOUT_MS);
+            }
+        }
+    }
+
+    private void stopMemberInfoDisplayTimer() {
+        if (memberInfoDisplayHandler != null && clearMemberInfoRunnable != null) {
+            memberInfoDisplayHandler.removeCallbacks(clearMemberInfoRunnable);
+        }
+    }
+
+    private void clearDisplayedMemberInfo()
+    {
+        if(!binding.memberIdTextView.getText().toString().isEmpty())
+        {
+            binding.memberIdTextView.setText("");
+            binding.fullNameTextView.setText("");
+            binding.membershipTypeTextView.setText("");
+            binding.membershipStartedTextView.setText("");
+            binding.expiringTextView.setText("");
+            binding.daysLeftTextView.setText("");
+            binding.ageTextView.setText("");
+            binding.memberPictureImageView.setImageResource(0);
+            binding.expiringTextWarning.setVisibility(View.GONE);
+            Toast.makeText(getContext(), "Page Cleared!", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+
+        }
     }
 
     private void loadAndDisplayMemberInfo(String memberId) {
         MemberDisplayInfo memberInfo = databaseHelper.getMemberDisplayInfo(memberId);
+        binding.expiringTextWarning.setVisibility(View.GONE);
 
         if (memberInfo != null) {
-            // The check for active membership is now primarily handled in MainActivity.
-            // HomeFragment just displays what it's given.
-            // However, it's good to re-check here for robustness or if HomeFragment can be navigated to directly.
+            
             if (databaseHelper.isMembershipActive(memberId)) {
                 binding.memberIdTextView.setText(memberInfo.getMemberID());
                 binding.fullNameTextView.setText(memberInfo.getFullName());
@@ -111,13 +169,19 @@ public class HomeFragment extends Fragment {
                     binding.expiringTextView.setText(memberInfo.getExpirationDate().format(formatter));
                     long daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), memberInfo.getExpirationDate());
                     binding.daysLeftTextView.setText(String.valueOf(daysLeft) + " days left");
+
+                    if(daysLeft <= 3)
+                    {
+                        binding.expiringTextWarning.setVisibility(View.VISIBLE);
+                        binding.expiringTextWarning.setText("Membership is Expiring in: " + daysLeft + " days");
+                    }
+
                 } else {
                     binding.expiringTextView.setText("N/A");
                     binding.daysLeftTextView.setText("N/A");
                 }
 
                 binding.ageTextView.setText(String.valueOf(memberInfo.getAge()));
-                binding.phoneNumberTextView.setText(memberInfo.getPhoneNumber());
 
                 if (memberInfo.getImageFilePath() != null && !memberInfo.getImageFilePath().isEmpty()) {
                     File imgFile = new File(memberInfo.getImageFilePath());
@@ -134,14 +198,14 @@ public class HomeFragment extends Fragment {
                     binding.memberPictureImageView.setImageResource(R.mipmap.ic_launcher_round);
                 }
             } else {
-                // Membership inactive, clear display and show message
+                
                 if (getContext() != null) {
                     Toast.makeText(getContext(), "Membership for " + memberInfo.getFullName() + " is inactive.", Toast.LENGTH_LONG).show();
                 }
                 clearDisplayedMemberInfo();
             }
         } else {
-            // Member not found, clear display and show message
+            
             if (getContext() != null) {
                 Toast.makeText(getContext(), "Member not found.", Toast.LENGTH_SHORT).show();
             }

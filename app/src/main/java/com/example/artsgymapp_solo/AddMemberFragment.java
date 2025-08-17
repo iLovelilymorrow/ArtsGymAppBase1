@@ -20,7 +20,6 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -42,6 +41,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import com.bumptech.glide.Glide;
@@ -56,8 +56,6 @@ import java.util.concurrent.Executors;
 
 public class AddMemberFragment extends Fragment implements FingerprintEnrollmentCallback
 {
-    private static final String TAG = "AddMemberFragment";
-
     private int activeImageTarget = 1;
 
     private EditText firstNameEditText;
@@ -91,7 +89,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
     private ActivityResultLauncher<String> pickImageLauncher;
     private ActivityResultLauncher<String[]> requestPermissionsLauncher;
 
-    // To store default spinner backgrounds
+
     private Drawable defaultGenderSpinnerBackground;
     private Drawable defaultMemberTypeSpinnerBackground;
 
@@ -111,22 +109,21 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
 
     private ImageView fingerprintImageView1;
     private ImageView fingerprintImageView2;
-    private TextView fingerprintStatusTextView1; // To show enrollment progress/status
-    private TextView fingerprintStatusTextView2; // For second member
+    private TextView fingerprintStatusTextView1; 
+    private TextView fingerprintStatusTextView2; 
 
-    private byte[] capturedFingerprintTemplate1; // Temporary storage for member 1's template
-    private byte[] capturedFingerprintTemplate2; // Temporary storage for member 2's template
-    private Bitmap capturedFingerprintBitmap1; // Temporary storage for member 1's image
-    private Bitmap capturedFingerprintBitmap2; // Temporary storage for member 2's image
+    private byte[] capturedFingerprintTemplate1; 
+    private byte[] capturedFingerprintTemplate2; 
+    private Bitmap capturedFingerprintBitmap1; 
+    private Bitmap capturedFingerprintBitmap2; 
 
-    private int activeFingerprintTarget = 0; // 1 for member1, 2 for member2
+    private int activeFingerprintTarget = 0; 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         databaseHelper = new DatabaseHelper(getContext());
-
-        // Initialize Permission Launcher
+        
         requestPermissionsLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestMultiplePermissions(),
                 permissions -> {
@@ -142,9 +139,9 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                         readStorageGranted = permissions.getOrDefault(readPermissionNeeded, false);
                     }
 
-                    if (permissions.containsKey(Manifest.permission.CAMERA)) {
+                    if (permissions.containsKey(Manifest.permission.CAMERA)) 
+                    {
                         if (cameraGranted) {
-                            Log.d(TAG, "Camera permission granted. Opening camera.");
                             openCamera();
                         } else {
                             Toast.makeText(getContext(), "Camera permission is required to take photos.", Toast.LENGTH_LONG).show();
@@ -153,7 +150,6 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
 
                     if (permissions.containsKey(readPermissionNeeded)) {
                         if (readStorageGranted) {
-                            Log.d(TAG, "Storage permission granted. Opening gallery.");
                             openGallery();
                         } else {
                             Toast.makeText(getContext(), "Storage permission is required to choose from gallery.", Toast.LENGTH_LONG).show();
@@ -169,37 +165,31 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                             selectedImageUri1 = null;
                             if (capturedImageUri1 != null && memberPreviewImageView != null) {
                                 Glide.with(AddMemberFragment.this).load(capturedImageUri1).into(memberPreviewImageView);
-                                Log.d(TAG, "Image captured for Member 1: " + capturedImageUri1.toString() + (currentPhotoPath1 != null ? " | Path: " + currentPhotoPath1 : ""));
-                            } else {
-                                Log.e(TAG, "capturedImageUri1 or memberPreviewImageView is null after taking picture for Member 1.");
-                            }
+                            } 
                         } else {
                             selectedImageUri2 = null;
                             if (capturedImageUri2 != null && memberPreviewImageView2 != null) {
                                 Glide.with(AddMemberFragment.this).load(capturedImageUri2).into(memberPreviewImageView2);
-                                Log.d(TAG, "Image captured for Member 2: " + capturedImageUri2.toString() + (currentPhotoPath2 != null ? " | Path: " + currentPhotoPath2 : ""));
-                            } else {
-                                Log.e(TAG, "capturedImageUri2 or memberPreviewImageView2 is null after taking picture for Member 2.");
                             }
                         }
                     } else {
-                        Log.d(TAG, "Image capture cancelled/failed. Target: " + activeImageTarget + ", Result code: " + result.getResultCode());
                         if (activeImageTarget == 1) {
                             if (currentPhotoPath1 != null) {
                                 File photoFile = new File(currentPhotoPath1);
-                                if (photoFile.exists() && photoFile.length() == 0) {
-                                    if(photoFile.delete()){ Log.d(TAG, "Empty photo file deleted for Member 1: " + currentPhotoPath1); }
-                                    else { Log.d(TAG, "Failed to delete empty photo file for Member 1: " + currentPhotoPath1); }
+                                if (photoFile.exists() && photoFile.length() == 0) 
+                                {
+                                    photoFile.delete();
                                 }
                             }
                             currentPhotoPath1 = null;
                             capturedImageUri1 = null;
                         } else {
-                            if (currentPhotoPath2 != null) {
+                            if (currentPhotoPath2 != null) 
+                            {
                                 File photoFile = new File(currentPhotoPath2);
-                                if (photoFile.exists() && photoFile.length() == 0) {
-                                    if(photoFile.delete()){ Log.d(TAG, "Empty photo file deleted for Member 2: " + currentPhotoPath2); }
-                                    else { Log.d(TAG, "Failed to delete empty photo file for Member 2: " + currentPhotoPath2); }
+                                if (photoFile.exists() && photoFile.length() == 0) 
+                                {
+                                    photoFile.delete();
                                 }
                             }
                             currentPhotoPath2 = null;
@@ -219,7 +209,6 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                             if (memberPreviewImageView != null) {
                                 Glide.with(AddMemberFragment.this).load(selectedImageUri1).into(memberPreviewImageView);
                             }
-                            Log.d(TAG, "Image selected from gallery for Member 1: " + selectedImageUri1.toString());
                         } else {
                             selectedImageUri2 = uri;
                             capturedImageUri2 = null;
@@ -227,11 +216,8 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                             if (memberPreviewImageView2 != null) {
                                 Glide.with(AddMemberFragment.this).load(selectedImageUri2).into(memberPreviewImageView2);
                             }
-                            Log.d(TAG, "Image selected from gallery for Member 2: " + selectedImageUri2.toString());
                         }
-                    } else {
-                        Log.d(TAG, "No image selected from gallery for target: " + activeImageTarget);
-                    }
+                    } 
                 });
     }
 
@@ -239,36 +225,49 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-
-        // Initialize fingerprint UI elements
+        
         fingerprintImageView1 = view.findViewById(R.id.fingerprintImageView1);
         fingerprintImageView2 = view.findViewById(R.id.fingerprintImageView2);
         fingerprintStatusTextView1 = view.findViewById(R.id.fingerprintStatusTextView1);
         fingerprintStatusTextView2 = view.findViewById(R.id.fingerprintStatusTextView2);
-
-        // Set initial status text
+        
         if (fingerprintStatusTextView1 != null) fingerprintStatusTextView1.setText(R.string.StartCapture);
         if (fingerprintStatusTextView2 != null) fingerprintStatusTextView2.setText(R.string.StartCapture);
-
-        // Set click listeners for fingerprint image views
+        
         fingerprintImageView1.setOnClickListener(v -> {
-            Log.d(TAG, "Fingerprint 1 clicked. Starting enrollment.");
             MainActivity mainActivity = (MainActivity) getActivity();
             if (mainActivity != null) {
-                // Set the active target for this fragment's internal use
                 activeFingerprintTarget = 1;
-                // Call the new enrollment method in MainActivity, passing 'this' as the callback
-                mainActivity.startFingerprintEnrollment(activeFingerprintTarget, this);
+                mainActivity.startFingerprintEnrollment(activeFingerprintTarget, this, null);
+
+                if(capturedFingerprintTemplate1 != null)
+                {
+                    capturedFingerprintTemplate1 = null;
+                    capturedFingerprintBitmap1 = null;
+                    if (fingerprintImageView1 != null) fingerprintImageView1.setImageResource(R.drawable.addfingerprint);
+                }
             }
         });
+
         fingerprintImageView2.setOnClickListener(v -> {
-            Log.d(TAG, "Fingerprint 2 clicked. Starting enrollment.");
-            MainActivity mainActivity = (MainActivity) getActivity();
-            if (mainActivity != null) {
-                // Set the active target for this fragment's internal use
-                activeFingerprintTarget = 2;
-                // Call the new enrollment method in MainActivity, passing 'this' as the callback
-                mainActivity.startFingerprintEnrollment(activeFingerprintTarget, this);
+            if(capturedFingerprintTemplate1 != null)
+            {
+                MainActivity mainActivity = (MainActivity) getActivity();
+                if (mainActivity != null) {
+                    activeFingerprintTarget = 2;
+                    mainActivity.startFingerprintEnrollment(activeFingerprintTarget, this, capturedFingerprintTemplate1);
+
+                    if(capturedFingerprintTemplate2 != null)
+                    {
+                        capturedFingerprintTemplate2 = null;
+                        capturedFingerprintBitmap2 = null;
+                        if (fingerprintImageView2 != null) fingerprintImageView2.setImageResource(R.drawable.addfingerprint);
+                    }
+                }
+            }
+            else
+            {
+                Toast.makeText(getContext(), "Please capture fingerprint for Member 1 first.", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -314,20 +313,18 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         setupDatePickers();
 
         memberPreviewImageView.setOnClickListener(v -> {
-            Log.d(TAG, "Add image container clicked");
             this.activeImageTarget = 1;
             showImagePickDialog();
         });
 
         memberPreviewImageView2.setOnClickListener(v -> {
-            Log.d(TAG, "Add image container clicked");
             this.activeImageTarget = 2;
             showImagePickDialog();
         });
 
         if (buttonAddMember != null) {
-            buttonAddMember.setOnClickListener(v -> {
-                Log.d(TAG, "Add member button clicked");
+            buttonAddMember.setOnClickListener(v ->
+            {
                 attemptSaveMember();
             });
         }
@@ -343,7 +340,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
 
     @Override
     public void onEnrollmentProgress(int targetMember, int currentScan, int totalScans, String message) {
-        Log.d(TAG, "Enrollment progress for Member " + targetMember + ": " + message);
+        
         if (targetMember == 1) {
             if (fingerprintStatusTextView1 != null) fingerprintStatusTextView1.setText(message);
         } else if (targetMember == 2) {
@@ -352,64 +349,63 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
     }
     @Override
     public void onEnrollmentComplete(int targetMember, Bitmap finalImage, byte[] finalTemplate) {
-        Log.d(TAG, "Enrollment complete for Member " + targetMember + ". Template size: " + (finalTemplate != null ? finalTemplate.length : 0));
+        
         if (targetMember == 1) {
             capturedFingerprintTemplate1 = finalTemplate;
-            capturedFingerprintBitmap1 = finalImage; // Store the final image
+            capturedFingerprintBitmap1 = finalImage; 
             if (fingerprintImageView1 != null) fingerprintImageView1.setImageBitmap(finalImage);
             if (fingerprintStatusTextView1 != null) fingerprintStatusTextView1.setText(R.string.FingerprintCaptured);
             Toast.makeText(getContext(), "Fingerprint enrolled for Member 1!", Toast.LENGTH_SHORT).show();
         } else if (targetMember == 2) {
             capturedFingerprintTemplate2 = finalTemplate;
-            capturedFingerprintBitmap2 = finalImage; // Store the final image
+            capturedFingerprintBitmap2 = finalImage; 
             if (fingerprintImageView2 != null) fingerprintImageView2.setImageBitmap(finalImage);
             if (fingerprintStatusTextView2 != null) fingerprintStatusTextView2.setText(R.string.FingerprintCaptured);
             Toast.makeText(getContext(), "Fingerprint enrolled for Member 2!", Toast.LENGTH_SHORT).show();
         }
-        activeFingerprintTarget = 0; // Reset after completion
+        activeFingerprintTarget = 0; 
     }
 
     @Override
     public void onEnrollmentFailed(int targetMember, String errorMessage) {
-        Log.e(TAG, "Enrollment failed for Member " + targetMember + ": " + errorMessage);
+        
         if (targetMember == 1) {
-            capturedFingerprintTemplate1 = null; // Clear template on failure
-            capturedFingerprintBitmap1 = null; // Clear bitmap on failure
-            if (fingerprintImageView1 != null) fingerprintImageView1.setImageResource(R.drawable.addfingerprint); // Revert to default
+            capturedFingerprintTemplate1 = null; 
+            capturedFingerprintBitmap1 = null; 
+            if (fingerprintImageView1 != null) fingerprintImageView1.setImageResource(R.drawable.addfingerprint); 
             if (fingerprintStatusTextView1 != null) fingerprintStatusTextView1.setText("Enrollment Failed: " + errorMessage);
         } else if (targetMember == 2) {
-            capturedFingerprintTemplate2 = null; // Clear template on failure
-            capturedFingerprintBitmap2 = null; // Clear bitmap on failure
-            if (fingerprintImageView2 != null) fingerprintImageView2.setImageResource(R.drawable.addfingerprint); // Revert to default
+            capturedFingerprintTemplate2 = null; 
+            capturedFingerprintBitmap2 = null; 
+            if (fingerprintImageView2 != null) fingerprintImageView2.setImageResource(R.drawable.addfingerprint); 
             if (fingerprintStatusTextView2 != null) fingerprintStatusTextView2.setText("Enrollment Failed: " + errorMessage);
         }
         Toast.makeText(getContext(), "Fingerprint enrollment failed for Member " + targetMember + ": " + errorMessage, Toast.LENGTH_LONG).show();
-        activeFingerprintTarget = 0; // Reset after failure
+        activeFingerprintTarget = 0; 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        // Ensure the UI reflects the current state of captured fingerprints
-        // For Member 1
+        
+        
         if (capturedFingerprintTemplate1 == null) {
-            // No template captured yet, show default "add fingerprint" state
+            
             if (fingerprintImageView1 != null) fingerprintImageView1.setImageResource(R.drawable.addfingerprint);
             if (fingerprintStatusTextView1 != null) fingerprintStatusTextView1.setText(R.string.StartCapture);
         } else {
-            // Template exists, try to show the actual captured bitmap
+            
             if (fingerprintImageView1 != null && capturedFingerprintBitmap1 != null) {
                 fingerprintImageView1.setImageBitmap(capturedFingerprintBitmap1);
             }
             if (fingerprintStatusTextView1 != null) fingerprintStatusTextView1.setText(R.string.FingerprintCaptured);
         }
-        // For Member 2
+        
         if (capturedFingerprintTemplate2 == null) {
-            // No template captured yet, show default "add fingerprint" state
+            
             if (fingerprintImageView2 != null) fingerprintImageView2.setImageResource(R.drawable.addfingerprint);
             if (fingerprintStatusTextView2 != null) fingerprintStatusTextView2.setText(R.string.StartCapture);
         } else {
-            // Template exists, try to show the actual captured bitmap
             if (fingerprintImageView2 != null && capturedFingerprintBitmap2 != null) {
                 fingerprintImageView2.setImageBitmap(capturedFingerprintBitmap2);
             }
@@ -420,21 +416,22 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Clear temporary fingerprint data when view is destroyed
+        
         capturedFingerprintTemplate1 = null;
         capturedFingerprintTemplate2 = null;
         capturedFingerprintBitmap1 = null;
         capturedFingerprintBitmap2 = null;
-        activeFingerprintTarget = 0; // Reset active target
+        activeFingerprintTarget = 0;
+
+        MainActivity.stopFingerprintEnrollment();
+
         if (executorService != null && !executorService.isShutdown()) {
             executorService.shutdown();
         }
-        Log.d(TAG, "AddMemberFragment onDestroyView: Fingerprint data cleared.");
+        
     }
 
     private void attemptSaveMember() {
-        Log.d(TAG, "Attempting to save member...");
-
         if (firstNameEditText != null) firstNameEditText.setError(null);
         if (lastNameEditText != null) lastNameEditText.setError(null);
         if (ageEditText != null) ageEditText.setError(null);
@@ -446,7 +443,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         if (TextUtils.isEmpty(firstName1)) {
             firstNameEditText.setError("First name is required");
             firstNameEditText.requestFocus();
-            Log.w(TAG, "Validation failed (M1): First name empty.");
+            
             return;
         }
 
@@ -454,7 +451,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         if (TextUtils.isEmpty(lastName1)) {
             lastNameEditText.setError("Last name is required");
             lastNameEditText.requestFocus();
-            Log.w(TAG, "Validation failed (M1): Last name empty.");
+            
             return;
         }
 
@@ -463,7 +460,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         if (TextUtils.isEmpty(ageStr1)) {
             ageEditText.setError("Age is required");
             ageEditText.requestFocus();
-            Log.w(TAG, "Validation failed (M1): Age empty.");
+            
             return;
         } else {
             try {
@@ -471,13 +468,13 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                 if (age1 <= 0 || age1 > 120) {
                     ageEditText.setError("Enter a valid age (1-120)");
                     ageEditText.requestFocus();
-                    Log.w(TAG, "Validation failed (M1): Age out of range.");
+                    
                     return;
                 }
             } catch (NumberFormatException e) {
                 ageEditText.setError("Enter a valid age (number)");
                 ageEditText.requestFocus();
-                Log.w(TAG, "Validation failed (M1): Age not a number.");
+                
                 return;
             }
         }
@@ -488,7 +485,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         if (TextUtils.isEmpty(receiptNumberStr)) {
             receiptNumberEditText.setError("Receipt number is required");
             receiptNumberEditText.requestFocus();
-            Log.w(TAG, "Validation failed: Receipt number empty.");
+            
             return;
         }
 
@@ -496,7 +493,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         if (genderSpinner.getSelectedItemPosition() == 0) {
             Toast.makeText(getContext(), "Please select a gender.", Toast.LENGTH_SHORT).show();
             genderSpinner.setBackgroundResource(R.drawable.spinner_error_background);
-            Log.w(TAG, "Validation failed (M1): Gender not selected.");
+            
             return;
         } else {
             gender1 = genderSpinner.getSelectedItem().toString();
@@ -507,7 +504,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         if (memberTypeSpinner.getSelectedItemPosition() == 0) {
             Toast.makeText(getContext(), "Please select a membership type.", Toast.LENGTH_SHORT).show();
             memberTypeSpinner.setBackgroundResource(R.drawable.spinner_error_background);
-            Log.w(TAG, "Validation failed: Membership type not selected.");
+            
             return;
         } else {
             int actualListPosition = memberTypeSpinner.getSelectedItemPosition() - 1;
@@ -517,24 +514,31 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
             } else {
                 Toast.makeText(getContext(), "Invalid membership type selected.", Toast.LENGTH_SHORT).show();
                 memberTypeSpinner.setBackgroundResource(R.drawable.spinner_error_background);
-                Log.w(TAG, "Validation failed: Invalid membership type index.");
+                
                 return;
             }
         }
 
         if (selectedRegistrationDate == null) {
             Toast.makeText(getContext(), "Please select or confirm a registration date.", Toast.LENGTH_LONG).show();
-            Log.w(TAG, "Validation failed: Registration date is null.");
+            
             return;
         }
         if (selectedExpirationDate == null) {
             Toast.makeText(getContext(), "Please select or confirm an expiration date.", Toast.LENGTH_LONG).show();
-            Log.w(TAG, "Validation failed: Expiration date is null.");
+            
             return;
         }
         if (selectedExpirationDate.isBefore(selectedRegistrationDate)) {
             Toast.makeText(getContext(), "Expiration date cannot be before the registration date.", Toast.LENGTH_LONG).show();
-            Log.w(TAG, "Validation failed: Expiration date before registration date.");
+            
+            return;
+        }
+
+        if (selectedExpirationDate.isBefore(selectedRegistrationDate) || selectedExpirationDate.isEqual(selectedRegistrationDate)) {
+            Toast.makeText(getContext(), "End date must be after the start date.", Toast.LENGTH_SHORT).show();
+            expirationDateTextView.setError("Invalid dates");
+            startDateTextView.setError("Invalid dates");
             return;
         }
 
@@ -548,21 +552,21 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                 imagePathToSave1 = saveImageFromUriToInternalStorage(selectedImageUri1, imageFileName1);
                 if (imagePathToSave1 == null) {
                     Toast.makeText(getContext(), "Failed to save image for Member 1.", Toast.LENGTH_LONG).show();
-                    Log.e(TAG, "Image processing failed for Member 1 (Gallery).");
+                    
                     return;
                 }
             } else {
-                Log.e(TAG, "Context is null, cannot save gallery image for Member 1.");
+                
                 Toast.makeText(getActivity(), "Error saving image for Member 1.", Toast.LENGTH_LONG).show();
                 return;
             }
         }
 
-        // --- Fingerprint Validation for Member 1 ---
+        
         if (capturedFingerprintTemplate1 == null) {
             Toast.makeText(getContext(), "Fingerprint scan is required for Member 1.", Toast.LENGTH_LONG).show();
             if (fingerprintStatusTextView1 != null) fingerprintStatusTextView1.setText("Fingerprint required!");
-            Log.w(TAG, "Validation failed (M1): Fingerprint not captured.");
+            
             return;
         }
 
@@ -576,7 +580,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         String imagePathToSave2 = null;
 
         if (isTwoInOneMembership) {
-            Log.d(TAG, "2-in-1 membership: Validating Member 2 details...");
+            
 
             if (firstNameEditText2 != null) firstNameEditText2.setError(null);
             if (lastNameEditText2 != null) lastNameEditText2.setError(null);
@@ -587,7 +591,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
             if (TextUtils.isEmpty(firstName2)) {
                 firstNameEditText2.setError("First name is required");
                 firstNameEditText2.requestFocus();
-                Log.w(TAG, "Validation failed (M2): First name empty.");
+                
                 return;
             }
 
@@ -595,7 +599,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
             if (TextUtils.isEmpty(lastName2)) {
                 lastNameEditText2.setError("Last name is required");
                 lastNameEditText2.requestFocus();
-                Log.w(TAG, "Validation failed (M2): Last name empty.");
+                
                 return;
             }
 
@@ -603,7 +607,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
             if (TextUtils.isEmpty(ageStr2)) {
                 ageEditText2.setError("Age is required");
                 ageEditText2.requestFocus();
-                Log.w(TAG, "Validation failed (M2): Age empty.");
+                
                 return;
             } else {
                 try {
@@ -611,13 +615,12 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                     if (age2 <= 0 || age2 > 120) {
                         ageEditText2.setError("Enter a valid age (1-120)");
                         ageEditText2.requestFocus();
-                        Log.w(TAG, "Validation failed (M2): Age out of range.");
+                        
                         return;
                     }
                 } catch (NumberFormatException e) {
                     ageEditText2.setError("Enter a valid age (number)");
                     ageEditText2.requestFocus();
-                    Log.w(TAG, "Validation failed (M2): Age not a number.");
                     return;
                 }
             }
@@ -625,7 +628,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
             if (genderSpinner2.getSelectedItemPosition() == 0) {
                 Toast.makeText(getContext(), "Please select a gender.", Toast.LENGTH_SHORT).show();
                 genderSpinner2.setBackgroundResource(R.drawable.spinner_error_background);
-                Log.w(TAG, "Validation failed (M2): Gender not selected.");
+                
                 return;
             } else {
                 gender2 = genderSpinner2.getSelectedItem().toString();
@@ -642,27 +645,22 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                     imagePathToSave2 = saveImageFromUriToInternalStorage(selectedImageUri2, imageFileName2);
                     if (imagePathToSave2 == null) {
                         Toast.makeText(getContext(), "Failed to save image for Member 2.", Toast.LENGTH_LONG).show();
-                        Log.e(TAG, "Image processing failed for Member 2 (Gallery).");
                         return;
                     }
                 } else {
-                    Log.e(TAG, "Context is null, cannot save gallery image for Member 2.");
                     Toast.makeText(getActivity(), "Error saving image for Member 2.", Toast.LENGTH_LONG).show();
                     return;
                 }
             }
 
-            // --- Fingerprint Validation for Member 2 ---
+            
             if (capturedFingerprintTemplate2 == null) {
                 Toast.makeText(getContext(), "Fingerprint scan is required for Member 2.", Toast.LENGTH_LONG).show();
                 if (fingerprintStatusTextView2 != null) fingerprintStatusTextView2.setText("Fingerprint required!");
-                Log.w(TAG, "Validation failed (M2): Fingerprint not captured.");
                 return;
             }
-            Log.d(TAG, "Member 2 preliminary validation and image processing passed (if applicable).");
+            
         }
-
-        Log.d(TAG, "All form validations passed. Proceeding to receipt check and save.");
 
         final String finalFirstName1 = firstName1;
         final String finalLastName1 = lastName1;
@@ -670,7 +668,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         final String finalGender1 = gender1;
         final int finalAge1 = age1;
         final String finalImagePath1 = imagePathToSave1;
-        final byte[] finalFingerprintTemplate1 = capturedFingerprintTemplate1; // Use the captured template
+        final byte[] finalFingerprintTemplate1 = capturedFingerprintTemplate1; 
 
         final int finalSelectedMemberTypeId = selectedMemberTypeIdFromSpinner;
         final LocalDate finalRegDate = selectedRegistrationDate;
@@ -684,7 +682,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         final String finalGender2 = gender2;
         final int finalAge2 = age2;
         final String finalImagePath2 = imagePathToSave2;
-        final byte[] finalFingerprintTemplate2 = capturedFingerprintTemplate2; // Use the captured template
+        final byte[] finalFingerprintTemplate2 = capturedFingerprintTemplate2; 
 
         executorService.execute(() -> {
             boolean localProceedWithSave = true;
@@ -706,16 +704,16 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                     receiptNumberEditText.setError(finalReceiptErrMessageForPost);
                     receiptNumberEditText.requestFocus();
                     Toast.makeText(getContext(), finalReceiptErrMessageForPost, Toast.LENGTH_SHORT).show();
-                    Log.w(TAG, "Validation failed: Receipt number '" + finalReceiptNumber + "' error: " + finalReceiptErrMessageForPost);
+                    
                 } else {
-                    Log.d(TAG, "Receipt number validation passed (or bypassed for 2-in-1). Proceeding to call saveMemberData.");
+                    
 
                     saveMemberData(
                             finalFirstName1, finalLastName1, finalPhoneNumber1, finalGender1, finalAge1, finalImagePath1,
                             finalSelectedMemberTypeId, finalRegDate, finalExpDate, finalReceiptNumber,
                             finalIsTwoInOneMembership,
                             finalFirstName2, finalLastName2, finalPhoneNumber2, finalGender2, finalAge2, finalImagePath2,
-                            finalFingerprintTemplate1, finalFingerprintTemplate2 // Pass the captured templates
+                            finalFingerprintTemplate1, finalFingerprintTemplate2 
                     );
                 }
             });
@@ -740,35 +738,35 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
 
             String member1GeneratedId = databaseHelper.generateNewMemberId(db);
             if (member1GeneratedId == null) {
-                Log.e(TAG, "Failed to generate ID for Member 1. Aborting transaction.");
+                
             } else {
-                Log.d(TAG, "Attempting to save Member 1 (ID: " + member1GeneratedId + ") within transaction.");
+                
                 member1DbId = databaseHelper.addMemberInExternalTransaction(db, member1GeneratedId,
                         firstName1, lastName1, phoneNumber1, gender1, age1, imagePathToSave1,
-                        fingerprintTemplate1, // Pass template 1
+                        fingerprintTemplate1, 
                         selectedMemberTypeId, registrationDate, expirationDate, receiptNumber);
 
                 if (member1DbId != null) {
-                    Log.d(TAG, "Member 1 processed successfully within transaction. DB ID: " + member1DbId);
+                    
 
                     if (isTwoInOneMembership) {
                         String member2GeneratedId = databaseHelper.generateNewMemberId(db);
                         if (member2GeneratedId == null) {
-                            Log.e(TAG, "Failed to generate ID for Member 2. Aborting transaction.");
+                            
                         } else {
-                            Log.d(TAG, "Attempting to save Member 2 (ID: " + member2GeneratedId + ") for 2-in-1 within transaction.");
+                            
                             member2DbId = databaseHelper.addMemberInExternalTransaction(db, member2GeneratedId,
                                     firstName2, lastName2, phoneNumber2, gender2, age2, imagePathToSave2,
-                                    fingerprintTemplate2, // Pass template 2
+                                    fingerprintTemplate2, 
                                     selectedMemberTypeId, registrationDate, expirationDate, receiptNumber);
 
                             if (member2DbId != null) {
-                                Log.d(TAG, "Member 2 processed successfully within transaction. DB ID: " + member2DbId);
+                                
 
                                 db.setTransactionSuccessful();
                                 overallSuccess = true;
                             } else {
-                                Log.e(TAG, "Failed to process Member 2. Transaction will be rolled back.");
+                                
                             }
                         }
                     } else {
@@ -776,13 +774,14 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                         overallSuccess = true;
                     }
                 } else {
-                    Log.e(TAG, "Failed to process Member 1. Transaction will be rolled back.");
+                    
                 }
             }
-        } catch (Exception e) {
-            Log.e(TAG, "Exception during saveMemberData transaction: " + e.getMessage(), e);
+        } catch (Exception e)
+        {
             overallSuccess = false;
-        } finally {
+        }
+        finally {
             if (db != null && db.inTransaction()) {
                 db.endTransaction();
             }
@@ -791,33 +790,31 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         if (overallSuccess) {
             if (isTwoInOneMembership) {
                 showToast("Both members added successfully!");
-                Log.i(TAG, "Both members added. Member 1 ID: " + member1DbId + ", Member 2 ID: " + member2DbId);
+                
             } else {
                 showToast("Member added successfully!");
-                Log.i(TAG, "Single member added successfully. Member ID: " + member1DbId);
             }
             clearForm();
             MainActivity mainActivity = (MainActivity) getActivity();
             if (mainActivity != null)
             {
-                mainActivity.startIdentification();
                 mainActivity.loadAllTemplatesIntoZKFingerService();
             }
         } else {
             if (isTwoInOneMembership) {
                 showToast("Failed to add one or both members. Please check details and try again.");
-                Log.e(TAG, "Failed to add 2-in-1 members. M1 attempt: " + firstName1 + (member1DbId == null ? " (failed pre-insert or ID gen)" : "") +
-                        ", M2 attempt: " + firstName2 + (member2DbId == null && member1DbId != null ? " (failed pre-insert or ID gen)" : ""));
             } else {
                 showToast("Failed to add member. Please try again.");
-                Log.e(TAG, "Failed to add single member: " + firstName1 + (member1DbId == null ? " (failed pre-insert or ID gen)" : ""));
             }
         }
     }
 
     private void setupDatePickers() {
         if (startDateTextView != null) {
-            startDateTextView.setOnClickListener(v -> {
+            startDateTextView.setOnClickListener(v ->
+            {
+                startDateTextView.setError(null);
+                expirationDateTextView.setError(null);
                 final java.util.Calendar c = java.util.Calendar.getInstance();
                 int year, month, day;
 
@@ -836,15 +833,33 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                         (view, yearSelected, monthOfYear, dayOfMonth) -> {
                             selectedRegistrationDate = LocalDate.of(yearSelected, monthOfYear + 1, dayOfMonth);
                             startDateTextView.setText(selectedRegistrationDate.format(uiDateFormatter));
-                            Log.d(TAG, "Registration Date selected: " + selectedRegistrationDate);
+
                             autoCalculateAndSetDefaultExpirationDate();
                         }, year, month, day);
+
+                java.util.Calendar today = java.util.Calendar.getInstance();
+
+                Calendar minDateCalendar = getCalendar(today);
+                datePickerDialog.getDatePicker().setMinDate(minDateCalendar.getTimeInMillis());
+
+                java.util.Calendar maxDateCalendar = java.util.Calendar.getInstance();
+                maxDateCalendar.setTime(today.getTime());
+                maxDateCalendar.set(java.util.Calendar.DAY_OF_MONTH, maxDateCalendar.getActualMaximum(java.util.Calendar.DAY_OF_MONTH));
+                maxDateCalendar.set(java.util.Calendar.HOUR_OF_DAY, 23);
+                maxDateCalendar.set(java.util.Calendar.MINUTE, 59);
+                maxDateCalendar.set(java.util.Calendar.SECOND, 59);
+                maxDateCalendar.set(java.util.Calendar.MILLISECOND, 999);
+                datePickerDialog.getDatePicker().setMaxDate(maxDateCalendar.getTimeInMillis());
+
                 datePickerDialog.show();
             });
         }
 
         if (expirationDateTextView != null) {
-            expirationDateTextView.setOnClickListener(v -> {
+            expirationDateTextView.setOnClickListener(v ->
+            {
+                startDateTextView.setError(null);
+                expirationDateTextView.setError(null);
                 final java.util.Calendar c = java.util.Calendar.getInstance();
                 int year, month, day;
 
@@ -868,16 +883,46 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                         (view, yearSelected, monthOfYear, dayOfMonth) -> {
                             selectedExpirationDate = LocalDate.of(yearSelected, monthOfYear + 1, dayOfMonth);
                             expirationDateTextView.setText(selectedExpirationDate.format(uiDateFormatter));
-                            Log.d(TAG, "Expiration Date MANUALLY selected: " + selectedExpirationDate);
+
                         }, year, month, day);
 
                 if (selectedRegistrationDate != null) {
-                    c.set(selectedRegistrationDate.getYear(), selectedRegistrationDate.getMonthValue() - 1, selectedRegistrationDate.getDayOfMonth());
-                    datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+                    java.util.Calendar expMinCal = java.util.Calendar.getInstance();
+                    expMinCal.set(selectedRegistrationDate.getYear(),
+                            selectedRegistrationDate.getMonthValue() - 1,
+                            selectedRegistrationDate.getDayOfMonth());
+
+                    datePickerDialog.getDatePicker().setMinDate(expMinCal.getTimeInMillis());
+                } else
+                {
+                    java.util.Calendar earliestAllowedStartDate = java.util.Calendar.getInstance();
+                    earliestAllowedStartDate.add(java.util.Calendar.MONTH, -1);
+                    earliestAllowedStartDate.set(java.util.Calendar.DAY_OF_MONTH, earliestAllowedStartDate.getActualMaximum(java.util.Calendar.DAY_OF_MONTH));
+                    earliestAllowedStartDate.add(java.util.Calendar.DAY_OF_MONTH, -4);
+                    earliestAllowedStartDate.set(java.util.Calendar.HOUR_OF_DAY, 0);
+                    earliestAllowedStartDate.set(java.util.Calendar.MINUTE, 0);
+                    earliestAllowedStartDate.set(java.util.Calendar.SECOND, 0);
+                    earliestAllowedStartDate.set(java.util.Calendar.MILLISECOND, 0);
+                    datePickerDialog.getDatePicker().setMinDate(earliestAllowedStartDate.getTimeInMillis());
                 }
+
                 datePickerDialog.show();
             });
         }
+    }
+
+    @NonNull
+    private static Calendar getCalendar(Calendar today) {
+        Calendar minDateCalendar = Calendar.getInstance();
+        minDateCalendar.setTime(today.getTime());
+        minDateCalendar.add(Calendar.MONTH, -1);
+        minDateCalendar.set(Calendar.DAY_OF_MONTH, minDateCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        minDateCalendar.add(Calendar.DAY_OF_MONTH, -4);
+        minDateCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        minDateCalendar.set(Calendar.MINUTE, 0);
+        minDateCalendar.set(Calendar.SECOND, 0);
+        minDateCalendar.set(Calendar.MILLISECOND, 0);
+        return minDateCalendar;
     }
 
     private void autoCalculateAndSetDefaultExpirationDate() {
@@ -911,11 +956,10 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         if (calculatedExpDate != null) {
             selectedExpirationDate = calculatedExpDate;
             expirationDateTextView.setText(selectedExpirationDate.format(uiDateFormatter));
-            Log.d(TAG, "Default Expiration Date auto-calculated: " + selectedExpirationDate);
+            
         } else {
             expirationDateTextView.setText("Select End Date");
             selectedExpirationDate = null;
-            Log.d(TAG, "Could not auto-calculate default expiration date.");
         }
     }
 
@@ -935,8 +979,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         displayMemberTypes.add(new MemberType(0, "Select Membership Type*", 0, false));
         displayMemberTypes.addAll(memberTypeList);
 
-        ArrayAdapter<MemberType> memberTypeAdapter = new ArrayAdapter<>(requireContext(),
-                android.R.layout.simple_spinner_item, displayMemberTypes);
+        ArrayAdapter<MemberType> memberTypeAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, displayMemberTypes);
         memberTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         memberTypeSpinner.setAdapter(memberTypeAdapter);
     }
@@ -966,7 +1009,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                         selectedRegistrationDate = LocalDate.now();
                         if (startDateTextView != null) {
                             startDateTextView.setText(selectedRegistrationDate.format(uiDateFormatter));
-                            Log.d(TAG, "Member Type selected. Start date auto-set to: " + selectedRegistrationDate);
+                            
                         }
                         autoCalculateAndSetDefaultExpirationDate();
 
@@ -978,10 +1021,10 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                         if (selectedType != null && secondMemberContainer != null) {
                             if (selectedType.isTwoInOne()) {
                                 secondMemberContainer.setVisibility(View.VISIBLE);
-                                Log.d(TAG, "2-in-1 Membership selected. Showing second member fields.");
+                                
                             } else {
                                 secondMemberContainer.setVisibility(View.GONE);
-                                Log.d(TAG, "Standard Membership selected. Hiding second member fields.");
+                                
                             }
                         }
                     } else {
@@ -989,7 +1032,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                         if (secondMemberContainer != null) {
                             secondMemberContainer.setVisibility(View.GONE);
                         }
-                        Log.d(TAG, "Member Type prompt selected. Dates cleared, second member fields hidden.");
+                        
                     }
                 }
 
@@ -1037,10 +1080,9 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         }
 
         if (allPermissionsGranted) {
-            Log.d(TAG, "Camera permission already granted. Opening camera.");
+            
             openCamera();
         } else {
-            Log.d(TAG, "Requesting camera permissions.");
             requestPermissionsLauncher.launch(permissionsToRequest);
         }
     }
@@ -1052,7 +1094,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                Log.e(TAG, "IOException creating image file for camera", ex);
+                
                 Toast.makeText(getContext(), "Could not create image file.", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -1060,7 +1102,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
             if (photoFile != null) {
                 Uri photoURI;
                 if (getContext() == null) {
-                    Log.e(TAG, "Context is null in openCamera before FileProvider.getUriForFile");
+                    
                     return;
                 }
 
@@ -1069,23 +1111,22 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                 if (activeImageTarget == 1) {
                     capturedImageUri1 = FileProvider.getUriForFile(requireContext(), authority, photoFile);
                     photoURI = capturedImageUri1;
-                    Log.d(TAG, "Launching camera for Member 1. Output URI: " + (photoURI != null ? photoURI.toString() : "null"));
+                    
                 } else {
                     capturedImageUri2 = FileProvider.getUriForFile(requireContext(), authority, photoFile);
                     photoURI = capturedImageUri2;
-                    Log.d(TAG, "Launching camera for Member 2. Output URI: " + (photoURI != null ? photoURI.toString() : "null"));
+                    
                 }
 
                 if (photoURI != null) {
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                     takePictureLauncher.launch(takePictureIntent);
                 } else {
-                    Log.e(TAG, "photoURI is null after FileProvider.getUriForFile for activeTarget: " + activeImageTarget);
+                    
                     Toast.makeText(getContext(), "Failed to prepare image for camera.", Toast.LENGTH_SHORT).show();
                 }
             }
         } else {
-            Log.e(TAG, "No camera app available to handle intent.");
             Toast.makeText(getContext(), "No camera app found.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -1098,7 +1139,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
 
         if (storageDir != null && !storageDir.exists()) {
             if (!storageDir.mkdirs()) {
-                Log.e(TAG, "Failed to create directory for images: " + storageDir.getAbsolutePath());
+                
                 throw new IOException("Failed to create directory: " + storageDir.getAbsolutePath());
             }
         }
@@ -1111,10 +1152,10 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
 
         if (activeImageTarget == 1) {
             currentPhotoPath1 = image.getAbsolutePath();
-            Log.d(TAG, "Image file created for Member 1: " + currentPhotoPath1);
+            
         } else {
             currentPhotoPath2 = image.getAbsolutePath();
-            Log.d(TAG, "Image file created for Member 2: " + currentPhotoPath2);
+            
         }
         return image;
     }
@@ -1128,16 +1169,15 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         }
 
         if (ContextCompat.checkSelfPermission(requireContext(), permissionNeeded) == PackageManager.PERMISSION_GRANTED) {
-            Log.d(TAG, "Storage permission already granted. Opening gallery.");
+            
             openGallery();
         } else {
-            Log.d(TAG, "Requesting storage permission: " + permissionNeeded);
+            
             requestPermissionsLauncher.launch(new String[]{permissionNeeded});
         }
     }
 
     private void openGallery() {
-        Log.d(TAG, "Launching gallery.");
         pickImageLauncher.launch("image/*");
     }
 
@@ -1182,7 +1222,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         selectedRegistrationDate = null;
         selectedExpirationDate = null;
 
-        // Clear fingerprint UI and temporary data
+        
         if (fingerprintImageView1 != null) fingerprintImageView1.setImageResource(R.drawable.addfingerprint);
         if (fingerprintStatusTextView1 != null) fingerprintStatusTextView1.setText(R.string.StartCapture);
         capturedFingerprintTemplate1 = null;
@@ -1201,21 +1241,19 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         capturedImageUri2 = null;
         selectedImageUri2 = null;
 
-        activeFingerprintTarget = 0; // Reset active target
-
-        Log.d(TAG, "Form cleared including dates, receipt, and image state.");
+        activeFingerprintTarget = 0;
     }
 
     private String saveImageFromUriToInternalStorage(Uri contentUri, String fileName) {
         if (getContext() == null || contentUri == null) {
-            Log.e(TAG, "Context or Content URI is null in saveImageFromUriToInternalStorage.");
+            
             return null;
         }
 
         File internalStorageDir = new File(getContext().getFilesDir(), "MemberImages");
         if (!internalStorageDir.exists()) {
             if (!internalStorageDir.mkdirs()) {
-                Log.e(TAG, "Failed to create internal directory for member images: " + internalStorageDir.getAbsolutePath());
+                
                 return null;
             }
         }
@@ -1226,7 +1264,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
              java.io.OutputStream outputStream = new java.io.FileOutputStream(destinationFile)) {
 
             if (inputStream == null) {
-                Log.e(TAG, "InputStream is null for URI: " + contentUri.toString());
+                
                 return null;
             }
 
@@ -1235,15 +1273,21 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
             while ((len = inputStream.read(buf)) > 0) {
                 outputStream.write(buf, 0, len);
             }
-            Log.d(TAG, "Image saved to internal storage: " + destinationFile.getAbsolutePath());
+            
             return destinationFile.getAbsolutePath();
 
-        } catch (java.io.FileNotFoundException e) {
-            Log.e(TAG, "File not found for URI: " + contentUri.toString(), e);
-        } catch (IOException e) {
-            Log.e(TAG, "IOException while saving image from URI: " + contentUri.toString(), e);
-        } catch (SecurityException e) {
-            Log.e(TAG, "SecurityException while accessing URI: " + contentUri.toString(), e);
+        }
+        catch(java.io.FileNotFoundException e)
+        {
+            Toast.makeText(getContext(), "Error: Source image file not found.", Toast.LENGTH_LONG).show();
+        }
+        catch(IOException e)
+        {
+            Toast.makeText(getContext(), "Error saving image: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+        catch (SecurityException e)
+        {
+            Toast.makeText(getContext(), "Security error: Cannot access image file.", Toast.LENGTH_LONG).show();
         }
         return null;
     }

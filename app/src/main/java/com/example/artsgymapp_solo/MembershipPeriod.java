@@ -3,17 +3,17 @@ package com.example.artsgymapp_solo;
 import java.time.LocalDate;
 
 public class MembershipPeriod {
-    private int periodId; // Corresponds to COLUMN_PERIOD_ID
-    private String fkMemberId; // Corresponds to COLUMN_FK_MEMBER_ID_PERIOD
-    private int fkMemberTypeId; // Corresponds to COLUMN_FK_MEMBER_TYPE_ID_PERIOD
-    private String memberTypeName; // For convenience, if you join and fetch it
-    private LocalDate registrationDate; // Corresponds to COLUMN_PERIOD_REGISTRATION_DATE
-    private LocalDate expirationDate; // Corresponds to COLUMN_PERIOD_EXPIRATION_DATE
-    private String receiptNumber; // Corresponds to COLUMN_PERIOD_RECEIPT_NUMBER
+    private int periodId; 
+    private String fkMemberId; 
+    private int fkMemberTypeId; 
+    private String memberTypeName; 
+    private LocalDate registrationDate; 
+    private LocalDate expirationDate; 
+    private String receiptNumber; 
 
-    // Constructors
+    
     public MembershipPeriod() {
-        // Default constructor
+        
     }
 
     public int getPeriodId() {
@@ -22,10 +22,6 @@ public class MembershipPeriod {
 
     public void setPeriodId(int periodId) {
         this.periodId = periodId;
-    }
-
-    public String getFkMemberId() {
-        return fkMemberId;
     }
 
     public void setFkMemberId(String fkMemberId) {
@@ -38,10 +34,6 @@ public class MembershipPeriod {
 
     public void setFkMemberTypeId(int fkMemberTypeId) {
         this.fkMemberTypeId = fkMemberTypeId;
-    }
-
-    public String getMemberTypeName() {
-        return memberTypeName;
     }
 
     public void setMemberTypeName(String memberTypeName) {

@@ -10,7 +10,6 @@ public class Member {
     private String imageFilePath;
     private byte[] fingerprintTemplate;
 
-    // Constructors
     public Member()
     {
 
@@ -27,14 +26,8 @@ public class Member {
         this.imageFilePath = imageFilePath;
     }
 
-    // Getters and Setters for the remaining fields
-
     public String getMemberID() {
         return memberID;
-    }
-
-    public void setMemberID(String memberID) {
-        this.memberID = memberID;
     }
 
     public String getFirstName() {

@@ -29,7 +29,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
         this.listener = listener;
     }
 
-    // MODIFIED: Constructor accepts List<MemberDisplayInfo>
+    
     public MemberAdapter(List<MemberDisplayInfo> memberDisplayInfoList, Context context) {
         this.memberDisplayInfoList = memberDisplayInfoList;
         this.context = context;
@@ -39,26 +39,26 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
     @Override
     public MemberViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_member, parent, false); // Your item_member.xml
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_member, parent, false); 
         return new MemberViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MemberViewHolder holder, int position) {
-        // MODIFIED: Get current item as MemberDisplayInfo
+        
         MemberDisplayInfo currentMemberInfo = memberDisplayInfoList.get(position);
 
         String firstName = currentMemberInfo.getFirstName() != null ? currentMemberInfo.getFirstName() : "";
         String lastName = currentMemberInfo.getLastName() != null ? currentMemberInfo.getLastName() : "";
         String formattedFullName = String.format("%s %s", firstName, lastName).trim();
 
-        if (formattedFullName.isEmpty() || formattedFullName.equals("Member Name:")) { // Adjusted check
+        if (formattedFullName.isEmpty() || formattedFullName.equals("Member Name:")) { 
             holder.memberNameTextView.setText(this.context.getString(R.string.memberList_NameEmpty));
         } else {
             holder.memberNameTextView.setText(formattedFullName);
         }
 
-        // MODIFIED: All getters are from MemberDisplayInfo
+        
         String memberTypeName = currentMemberInfo.getMemberTypeName();
         holder.memberTypeTextView.setText(String.format("Membership Type: %s", memberTypeName != null ? memberTypeName : "N/A"));
 
@@ -70,13 +70,13 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
         String memberPhoneNumber = currentMemberInfo.getPhoneNumber();
         holder.memberPhoneNumberTextView.setText(String.format("Phone Number: %s", !memberPhoneNumber.equals("") ? memberPhoneNumber : "N/A"));
 
-        String memberId = currentMemberInfo.getMemberID(); // This is the core member ID
+        String memberId = currentMemberInfo.getMemberID(); 
         holder.memberIdTextView.setText(String.format("Member ID: %s", memberId != null ? memberId : "N/A"));
 
         String receiptNumber = currentMemberInfo.getReceiptNumber();
         holder.receiptNumberTextView.setText(String.format("Receipt No.: %s", receiptNumber != null ? receiptNumber : "N/A"));
 
-        // Display Registration (Start) and Expiration (End) Dates from MemberDisplayInfo
+        
         if (currentMemberInfo.getRegistrationDate() != null) {
             holder.startDateTextView.setText(String.format("Start Date: %s", currentMemberInfo.getRegistrationDate().format(dateFormatter)));
         } else {
@@ -89,7 +89,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
             holder.endDateTextView.setText("End Date: N/A");
         }
 
-        // Display Image File Path from MemberDisplayInfo
+        
         if (currentMemberInfo.getImageFilePath() != null && !currentMemberInfo.getImageFilePath().isEmpty()) {
             File imgFile = new File(currentMemberInfo.getImageFilePath());
             if (imgFile.exists()) {
@@ -99,27 +99,27 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
                         .error(R.mipmap.ic_launcher_round)
                         .into(holder.memberImageView);
             } else {
-                holder.memberImageView.setImageResource(R.mipmap.ic_launcher_round); // Fallback if file not found
+                holder.memberImageView.setImageResource(R.mipmap.ic_launcher_round); 
             }
         } else {
-            holder.memberImageView.setImageResource(R.mipmap.ic_launcher_round); // Default placeholder
+            holder.memberImageView.setImageResource(R.mipmap.ic_launcher_round); 
         }
     }
 
     @Override
     public int getItemCount() {
-        // MODIFIED: Use memberDisplayInfoList
+        
         return memberDisplayInfoList == null ? 0 : memberDisplayInfoList.size();
     }
 
-    // MODIFIED: Method to update the list of MemberDisplayInfo
-    // Renamed for clarity, but you can keep setMembers if you prefer and just change the param type
+    
+    
     public void setMemberDisplayInfoList(List<MemberDisplayInfo> newMemberDisplayInfoList) {
         this.memberDisplayInfoList = newMemberDisplayInfoList;
-        notifyDataSetChanged(); // Consider DiffUtil for better performance on large lists
+        notifyDataSetChanged(); 
     }
 
-    // ViewHolder class
+    
     class MemberViewHolder extends RecyclerView.ViewHolder
     {
         ImageView memberImageView;
@@ -150,9 +150,9 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = getAdapterPosition(); // Use getBindingAdapterPosition()
+                    int position = getAdapterPosition(); 
                     if (listener != null && position != RecyclerView.NO_POSITION) {
-                        // MODIFIED: Pass MemberDisplayInfo from the list
+                        
                         listener.onItemClick(memberDisplayInfoList.get(position));
                     }
                 }

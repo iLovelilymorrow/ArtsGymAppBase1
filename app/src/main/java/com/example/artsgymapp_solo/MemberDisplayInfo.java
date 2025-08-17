@@ -1,9 +1,10 @@
-package com.example.artsgymapp_solo; // Your package
+package com.example.artsgymapp_solo;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class MemberDisplayInfo {
-    // From Member
+
     private String memberID;
     private String firstName;
     private String lastName;
@@ -12,14 +13,19 @@ public class MemberDisplayInfo {
     private int age;
     private String imageFilePath;
 
-    // From latest MembershipPeriod
-    private int periodId; // pk of the period
+    private int periodId;
     private int fkMemberTypeId;
     private String memberTypeName;
     private LocalDate registrationDate;
     private LocalDate expirationDate;
     private String receiptNumber;
-    private boolean isActive; // Calculated or from latest period
+    private boolean isActive;
+
+    public enum MembershipStatus {
+        ACTIVE,         // For active members not yet expiring soon
+        EXPIRING_SOON,  // For members whose expiration is within a defined window
+        EXPIRED         // For members whose membership has passed its expiration date
+    }
 
     public MemberDisplayInfo(String memberID, String firstName, String lastName, String phoneNumber,
                              String gender, int age, String imageFilePath,
@@ -42,49 +48,53 @@ public class MemberDisplayInfo {
         this.isActive = isActive;
     }
 
-    // --- Getters for all fields ---
+    // --- Getters ---
     public String getMemberID() { return memberID; }
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
-
-    public String getImageFilePath() {
-        return imageFilePath;
-    }
-
-    public void setImageFilePath(String imageFilePath) {
-        this.imageFilePath = imageFilePath;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
+    public String getFullName() { return firstName + " " + lastName; }
+    public String getImageFilePath() { return imageFilePath; }
+    public int getAge() { return age; }
+    public String getGender() { return gender; }
+    public String getPhoneNumber() { return phoneNumber; }
     public int getPeriodId() { return periodId; }
-    public int getFkMemberTypeId() { return fkMemberTypeId; }
     public String getMemberTypeName() { return memberTypeName; }
     public LocalDate getRegistrationDate() { return registrationDate; }
     public LocalDate getExpirationDate() { return expirationDate; }
     public String getReceiptNumber() { return receiptNumber; }
     public boolean isActive() { return isActive; }
-    public String getFullName() { return firstName + " " + lastName; }
+
+    // --- Setters ---
+    public void setAge(int age) { this.age = age; }
+    public void setGender(String gender) { this.gender = gender; }
+
+    // --- Method to determine current membership status ---
+    public MembershipStatus getCurrentMembershipStatus() {
+        LocalDate today = LocalDate.now();
+
+        // Optional: Incorporate this.isActive if it provides overriding logic
+        // if (!this.isActive) {
+        //     return MembershipStatus.EXPIRED; // Or a specific INACTIVE status
+        // }
+
+        // 1. Handle cases with no expiration date
+        if (getExpirationDate() == null) {
+            // If it never expires, it's considered 'ACTIVE'.
+            return MembershipStatus.ACTIVE;
+        }
+
+        // 2. Check if expired
+        if (getExpirationDate().isBefore(today)) {
+            return MembershipStatus.EXPIRED;
+        }
+
+        // 3. Check if expiring soon
+        long daysUntilExpiration = ChronoUnit.DAYS.between(today, getExpirationDate());
+        if (daysUntilExpiration <= 5) { // Expires within the next 5 days (inclusive of today)
+            return MembershipStatus.EXPIRING_SOON;
+        }
+
+        // 4. If none of the above, it's considered Active
+        return MembershipStatus.ACTIVE;
+    }
 }

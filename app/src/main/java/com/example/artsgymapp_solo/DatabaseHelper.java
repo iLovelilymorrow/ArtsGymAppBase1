@@ -1,7 +1,5 @@
 package com.example.artsgymapp_solo;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,16 +9,20 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
-
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.time.temporal.TemporalAdjusters;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+
+    private static final String TAG = "DatabaseHelper";
+
     public static final String DATABASE_NAME = "ArtsGymDB";
     private static final int DATABASE_VERSION = 1;
 
@@ -33,28 +35,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_AGE = "Age";
     private static final String COLUMN_IMAGE_FILE_PATH = "ImageFilePath";
     public static final String COLUMN_FINGERPRINT_TEMPLATE = "FingerprintTemplate";
-
-
-    // --- MemberTypes Table ---
+    
     private static final String TABLE_MEMBER_TYPES = "MemberTypes";
-    private static final String COLUMN_MT_ID = "MemberTypeID"; // INTEGER PRIMARY KEY AUTOINCREMENT
-    private static final String COLUMN_MT_NAME = "MemberTypeName"; // TEXT UNIQUE NOT NULL
-    private static final String COLUMN_MT_DURATION_DAYS = "DurationDays"; // INTEGER NOT NULL
+    private static final String COLUMN_MT_ID = "MemberTypeID"; 
+    private static final String COLUMN_MT_NAME = "MemberTypeName"; 
+    private static final String COLUMN_MT_DURATION_DAYS = "DurationDays"; 
     private static final String COLUMN_MT_IS_TWO_IN_ONE = "isTwoInOne";
-
-
-    // --- MembershipPeriods Table ---
+    
     private static final String TABLE_MEMBERSHIP_PERIODS = "MembershipPeriods";
-    private static final String COLUMN_PERIOD_ID = "PeriodID"; // INTEGER PRIMARY KEY AUTOINCREMENT
-    private static final String COLUMN_FK_MEMBER_ID_PERIOD = "FK_MemberID"; // TEXT (Matches MemberID type)
-    private static final String COLUMN_FK_MEMBER_TYPE_ID_PERIOD = "FK_MemberTypeID"; // INTEGER
-    private static final String COLUMN_PERIOD_REGISTRATION_DATE = "RegistrationDate"; // TEXT
-    private static final String COLUMN_PERIOD_EXPIRATION_DATE = "ExpirationDate"; // TEXT
-    private static final String COLUMN_PERIOD_RECEIPT_NUMBER = "ReceiptNumber"; // TEXT
+    private static final String COLUMN_PERIOD_ID = "PeriodID"; 
+    private static final String COLUMN_FK_MEMBER_ID_PERIOD = "FK_MemberID"; 
+    private static final String COLUMN_FK_MEMBER_TYPE_ID_PERIOD = "FK_MemberTypeID"; 
+    private static final String COLUMN_PERIOD_REGISTRATION_DATE = "RegistrationDate"; 
+    private static final String COLUMN_PERIOD_EXPIRATION_DATE = "ExpirationDate"; 
+    private static final String COLUMN_PERIOD_RECEIPT_NUMBER = "ReceiptNumber"; 
 
     private static final DateTimeFormatter SQLITE_DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
-
-    private static final String TAG_DB = "DatabaseHelper"; // For logging within DB Helper
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -82,7 +78,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_GENDER + " TEXT," +
                 COLUMN_AGE + " INTEGER," +
                 COLUMN_IMAGE_FILE_PATH + " TEXT," +
-                COLUMN_FINGERPRINT_TEMPLATE + " BLOB" + // Ensure this is BLOB
+                COLUMN_FINGERPRINT_TEMPLATE + " BLOB" + 
                 ")";
         sqLiteDatabase.execSQL(createMembersTable);
 
@@ -109,7 +105,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int previousVersion, int newVersion) {
-        // This is a simplified onUpgrade. For production, you'd handle schema migrations carefully.
+        
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_MEMBERSHIP_PERIODS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_MEMBERS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_MEMBER_TYPES);
@@ -124,17 +120,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_MT_IS_TWO_IN_ONE, isTwoInOne ? 1 : 0);
 
         long result = db.insert(TABLE_MEMBER_TYPES, null, values);
-        // db.close(); // Managed by SQLiteOpenHelper
+        
         return result != -1;
     }
 
     public List<MemberType> getAllMemberTypes() {
         List<MemberType> memberTypes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = null;
-        try {
-            cursor = db.query(TABLE_MEMBER_TYPES, new String[]{COLUMN_MT_ID, COLUMN_MT_NAME, COLUMN_MT_DURATION_DAYS, COLUMN_MT_IS_TWO_IN_ONE},
-                    null, null, null, null, COLUMN_MT_NAME + " ASC");
+        try (Cursor cursor = db.query(TABLE_MEMBER_TYPES, new String[]{COLUMN_MT_ID, COLUMN_MT_NAME, COLUMN_MT_DURATION_DAYS, COLUMN_MT_IS_TWO_IN_ONE},
+                null, null, null, null, COLUMN_MT_NAME + " ASC")) {
 
             if (cursor != null && cursor.moveToFirst()) {
                 do {
@@ -145,12 +139,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     memberTypes.add(new MemberType(id, name, durationDays, isTwoInOne));
                 } while (cursor.moveToNext());
             }
-        } catch (Exception e) {
-            Log.e(TAG, "Error while trying to get member types from database", e);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
+        } catch (Exception ignored) {
+
         }
         return memberTypes;
     }
@@ -158,7 +148,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String insertMemberCore(SQLiteDatabase db, String memberIdToUse,
                                     String firstName, String lastName, String phoneNumber,
                                     String gender, int age, String imageFilePath,
-                                    @Nullable byte[] fingerprintTemplate, // Now nullable
+                                    @Nullable byte[] fingerprintTemplate, 
                                     int memberTypeId, LocalDate registrationDate,
                                     LocalDate expirationDate, String receiptNumber) {
         try {
@@ -176,7 +166,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 memberValues.putNull(COLUMN_IMAGE_FILE_PATH);
             }
 
-            // --- Fingerprint Template Insertion ---
+            
             if (fingerprintTemplate != null) {
                 memberValues.put(COLUMN_FINGERPRINT_TEMPLATE, fingerprintTemplate);
             } else {
@@ -190,18 +180,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         registrationDate, expirationDate, receiptNumber);
 
                 if (periodResult) {
-                    Log.d(TAG_DB, "Core insert successful for Member ID: " + memberIdToUse);
+                    
                     return memberIdToUse;
                 } else {
-                    Log.e(TAG_DB, "Core insert: Failed to add initial membership period for Member ID: " + memberIdToUse);
+                    
                     return null;
                 }
             } else {
-                Log.e(TAG_DB, "Core insert: Failed to add member to Members table for Member ID: " + memberIdToUse);
+                
                 return null;
             }
         } catch (SQLException e) {
-            Log.e(TAG_DB, "Core insert: SQLException during member insertion for " + memberIdToUse, e);
+            
             return null;
         }
     }
@@ -209,11 +199,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public String addMemberInExternalTransaction(SQLiteDatabase db, String memberIdToUse,
                                                  String firstName, String lastName, String phoneNumber,
                                                  String gender, int age, String imageFilePath,
-                                                 @Nullable byte[] fingerprintTemplate, // Now nullable
+                                                 @Nullable byte[] fingerprintTemplate, 
                                                  int memberTypeId, LocalDate registrationDate,
                                                  LocalDate expirationDate, String receiptNumber) {
         if (db == null || !db.isOpen() || !db.inTransaction()) {
-            Log.e(TAG_DB, "addMemberInExternalTransaction called with invalid DB state or not in transaction.");
+            
             return null;
         }
         return insertMemberCore(db, memberIdToUse, firstName, lastName, phoneNumber, gender, age, imageFilePath,
@@ -231,14 +221,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (registrationDate != null) {
             periodValues.put(COLUMN_PERIOD_REGISTRATION_DATE, registrationDate.format(SQLITE_DATE_FORMATTER));
         } else {
-            Log.w(TAG, "Registration date is null for new period for member: " + memberId);
+            
             periodValues.putNull(COLUMN_PERIOD_REGISTRATION_DATE);
         }
 
         if (expirationDate != null) {
             periodValues.put(COLUMN_PERIOD_EXPIRATION_DATE, expirationDate.format(SQLITE_DATE_FORMATTER));
         } else {
-            Log.w(TAG, "Expiration date is null for new period for member: " + memberId);
+            
             periodValues.putNull(COLUMN_PERIOD_EXPIRATION_DATE);
         }
 
@@ -251,8 +241,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         try {
             long result = db.insertOrThrow(TABLE_MEMBERSHIP_PERIODS, null, periodValues);
             return result != -1;
-        } catch (SQLException e) {
-            Log.e(TAG, "Error inserting initial membership period for member: " + memberId, e);
+        } catch (SQLException e)
+        {
             return false;
         }
     }
@@ -272,7 +262,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         try {
             newPartnerId = generateNewMemberId(db);
             if (newPartnerId == null) {
-                Log.e(TAG_DB, "Failed to generate ID for new partner in 2-in-1 renewal.");
+                
                 return false;
             }
 
@@ -298,10 +288,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             long partnerInsertResult = db.insertOrThrow(TABLE_MEMBERS, null, partnerValues);
             if (partnerInsertResult == -1) {
-                Log.e(TAG_DB, "Failed to insert new partner in 2-in-1 renewal. Partner ID attempted: " + newPartnerId);
+                
                 return false;
             }
-            Log.d(TAG_DB, "Successfully inserted new partner: " + newPartnerId);
+            
 
             boolean primaryPeriodAdded = addInitialMembershipPeriodInternal(db, primaryMemberId, memberTypeId,
                     registrationDate, expirationDate, receiptNumber);
@@ -315,13 +305,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (primaryPeriodAdded && partnerPeriodAdded) {
                 db.setTransactionSuccessful();
                 success = true;
-                Log.d(TAG_DB, "2-in-1 (New Partner) renewal successful for Primary: " + primaryMemberId + ", New Partner: " + newPartnerId);
-            } else {
-                Log.e(TAG_DB, "2-in-1 (New Partner) renewal failed. Primary Period Added: " + primaryPeriodAdded + ", Partner Period Added: " + partnerPeriodAdded);
+                
             }
-
         } catch (SQLException e) {
-            Log.e(TAG_DB, "SQLException during 2-in-1 (New Partner) renewal.", e);
             success = false;
         } finally {
             db.endTransaction();
@@ -355,17 +341,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             int periodRowsAffected = db.update(TABLE_MEMBERSHIP_PERIODS, periodValues,
                     COLUMN_PERIOD_ID + " = ?", new String[]{String.valueOf(period.getPeriodId())});
 
-            if (memberRowsAffected > 0 && periodRowsAffected > 0) {
+            if (memberRowsAffected > 0 && periodRowsAffected > 0) {//awdawd
+
                 db.setTransactionSuccessful();
                 success = true;
-                Log.d(TAG, "Successfully updated member and period. Member ID: " + member.getMemberID() + ", Period ID: " + period.getPeriodId());
-            } else {
-                if (memberRowsAffected <= 0) Log.w(TAG, "Failed to update member or member not found. ID: " + member.getMemberID());
-                if (periodRowsAffected <= 0) Log.w(TAG, "Failed to update period or period not found. ID: " + period.getPeriodId());
             }
-        } catch (Exception e) {
-            Log.e(TAG, "Error updating member and period in transaction", e);
-        } finally {
+        }
+        catch (Exception e)
+        {
+            success = false;
+        }
+        finally {
             db.endTransaction();
         }
         return success;
@@ -381,7 +367,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         periodValues.put(COLUMN_FK_MEMBER_TYPE_ID_PERIOD, memberTypeId);
 
         if (registrationDate == null || expirationDate == null) {
-            Log.e(TAG, "Registration or Expiration date cannot be null when adding a new period.");
+            
             return false;
         }
         periodValues.put(COLUMN_PERIOD_REGISTRATION_DATE, registrationDate.format(SQLITE_DATE_FORMATTER));
@@ -396,11 +382,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = -1;
         try {
             result = db.insertOrThrow(TABLE_MEMBERSHIP_PERIODS, null, periodValues);
-            if (result != -1) {
-                Log.d(TAG, "Successfully added new membership period for member: " + memberId);
-            }
-        } catch (SQLException e) {
-            Log.e(TAG, "Error adding new membership period for member: " + memberId, e);
+        } catch (SQLException ignored) {
+            
         }
         return result != -1;
     }
@@ -425,13 +408,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (primaryPeriodAdded && partnerPeriodAdded) {
                 db.setTransactionSuccessful();
                 success = true;
-                Log.d(TAG_DB, "2-in-1 (Existing Partner) renewal successful for Primary: " + primaryMemberId + ", Existing Partner: " + existingPartnerId);
-            } else {
-                Log.e(TAG_DB, "2-in-1 (Existing Partner) renewal failed. Primary Period Added: " + primaryPeriodAdded + ", Partner Period Added: " + partnerPeriodAdded);
+                
             }
-
         } catch (SQLException e) {
-            Log.e(TAG_DB, "SQLException during 2-in-1 (Existing Partner) renewal.", e);
             success = false;
         } finally {
             db.endTransaction();
@@ -453,34 +432,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "M." + COLUMN_GENDER + ", " +
                 "M." + COLUMN_AGE + ", " +
                 "M." + COLUMN_IMAGE_FILE_PATH + ", " +
-                "MP_Active." + COLUMN_PERIOD_ID + " AS ActivePeriodID, " +
-                "MP_Active." + COLUMN_PERIOD_REGISTRATION_DATE + " AS ActiveRegDate, " +
-                "MP_Active." + COLUMN_PERIOD_EXPIRATION_DATE + " AS ActiveExpDate, " +
-                "MP_Active." + COLUMN_PERIOD_RECEIPT_NUMBER + " AS ActiveReceipt, " +
-                "MP_Active." + COLUMN_FK_MEMBER_TYPE_ID_PERIOD + " AS ActiveFkMemberTypeID, " +
+                "LatestActiveMP." + COLUMN_PERIOD_ID + " AS ActivePeriodID, " +
+                "LatestActiveMP." + COLUMN_PERIOD_REGISTRATION_DATE + " AS ActiveRegDate, " +
+                "LatestActiveMP." + COLUMN_PERIOD_EXPIRATION_DATE + " AS ActiveExpDate, " +
+                "LatestActiveMP." + COLUMN_PERIOD_RECEIPT_NUMBER + " AS ActiveReceipt, " +
+                "LatestActiveMP." + COLUMN_FK_MEMBER_TYPE_ID_PERIOD + " AS ActiveFkMemberTypeID, " +
                 "MT_Active." + COLUMN_MT_NAME + " AS ActiveMemberTypeName " +
                 "FROM " + TABLE_MEMBERS + " M " +
-                "INNER JOIN " + TABLE_MEMBERSHIP_PERIODS + " MP_Active ON M." + COLUMN_MEMBER_ID + " = MP_Active." + COLUMN_FK_MEMBER_ID_PERIOD + " " +
-                "AND DATE(MP_Active." + COLUMN_PERIOD_EXPIRATION_DATE + ") >= DATE('" + todayDateStr + "') " +
                 "INNER JOIN (" +
-                "    SELECT " + COLUMN_FK_MEMBER_ID_PERIOD + ", MAX(" + COLUMN_PERIOD_EXPIRATION_DATE + ") AS MaxExpDate" +
+                "    SELECT " + COLUMN_FK_MEMBER_ID_PERIOD + ", MAX(" + COLUMN_PERIOD_ID + ") AS MaxPeriodID " +
                 "    FROM " + TABLE_MEMBERSHIP_PERIODS +
                 "    WHERE DATE(" + COLUMN_PERIOD_EXPIRATION_DATE + ") >= DATE('" + todayDateStr + "')" +
                 "    GROUP BY " + COLUMN_FK_MEMBER_ID_PERIOD +
-                ") AS MaxActivePeriods ON MP_Active." + COLUMN_FK_MEMBER_ID_PERIOD + " = MaxActivePeriods." + COLUMN_FK_MEMBER_ID_PERIOD +
-                "    AND MP_Active." + COLUMN_PERIOD_EXPIRATION_DATE + " = MaxActivePeriods.MaxExpDate " +
-                "INNER JOIN (" +
-                "    SELECT " + COLUMN_FK_MEMBER_ID_PERIOD + ", " + COLUMN_PERIOD_EXPIRATION_DATE + ", MAX(" + COLUMN_PERIOD_ID + ") AS MaxPeriodIDForMaxDate" +
-                "    FROM " + TABLE_MEMBERSHIP_PERIODS +
-                "    WHERE DATE(" + COLUMN_PERIOD_EXPIRATION_DATE + ") >= DATE('" + todayDateStr + "')" +
-                "    GROUP BY " + COLUMN_FK_MEMBER_ID_PERIOD + ", " + COLUMN_PERIOD_EXPIRATION_DATE +
-                ") AS ActiveTieBreaker ON MP_Active." + COLUMN_FK_MEMBER_ID_PERIOD + " = ActiveTieBreaker." + COLUMN_FK_MEMBER_ID_PERIOD +
-                "    AND MP_Active." + COLUMN_PERIOD_EXPIRATION_DATE + " = ActiveTieBreaker." + COLUMN_PERIOD_EXPIRATION_DATE +
-                "    AND MP_Active." + COLUMN_PERIOD_ID + " = ActiveTieBreaker.MaxPeriodIDForMaxDate " +
-                "LEFT JOIN " + TABLE_MEMBER_TYPES + " MT_Active ON MP_Active." + COLUMN_FK_MEMBER_TYPE_ID_PERIOD + " = MT_Active." + COLUMN_MT_ID + " " +
+                ") AS LatestActivePeriodIDs ON M." + COLUMN_MEMBER_ID + " = LatestActivePeriodIDs." + COLUMN_FK_MEMBER_ID_PERIOD + " " +
+                "INNER JOIN " + TABLE_MEMBERSHIP_PERIODS + " LatestActiveMP ON " +
+                "    LatestActivePeriodIDs." + COLUMN_FK_MEMBER_ID_PERIOD + " = LatestActiveMP." + COLUMN_FK_MEMBER_ID_PERIOD + " " +
+                "    AND LatestActivePeriodIDs.MaxPeriodID = LatestActiveMP." + COLUMN_PERIOD_ID + " " +
+                "LEFT JOIN " + TABLE_MEMBER_TYPES + " MT_Active ON LatestActiveMP." + COLUMN_FK_MEMBER_TYPE_ID_PERIOD + " = MT_Active." + COLUMN_MT_ID + " " +
                 "ORDER BY M." + COLUMN_MEMBER_ID + " DESC";
-
-        Log.d(TAG, "getActiveMembersForDisplay Query: " + query);
 
         try {
             cursor = db.rawQuery(query, null);
@@ -505,15 +474,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         LocalDate registrationDate = null;
                         if (regDateStr != null) try {
                             registrationDate = LocalDate.parse(regDateStr, SQLITE_DATE_FORMATTER);
-                        } catch (Exception e) {
-                            Log.e(TAG, "Parse regDate error", e);
+                        } catch (Exception ignored) {
+
                         }
 
                         LocalDate expirationDate = null;
                         if (expDateStr != null) try {
                             expirationDate = LocalDate.parse(expDateStr, SQLITE_DATE_FORMATTER);
-                        } catch (Exception e) {
-                            Log.e(TAG, "Parse expDate error", e);
+                        } catch (Exception ignored) {
                         }
 
                         boolean isActive = (expirationDate != null && !expirationDate.isBefore(LocalDate.now()));
@@ -530,22 +498,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         );
                         memberDisplayInfoList.add(displayInfo);
                     } while (cursor.moveToNext());
-                } else {
-                    Log.d(TAG, "No *active* members found for display.");
                 }
-            } else {
-                Log.e(TAG, "Cursor is null after querying for active members display.");
             }
-        } catch (Exception e) {
-            Log.e(TAG, "Error in getActiveMembersForDisplay: " + e.getMessage(), e);
+        } catch (Exception ignored) {
         } finally {
             if (cursor != null) {
                 cursor.close();
             }
         }
-        Log.d(TAG, "Returning " + memberDisplayInfoList.size() + " active member display infos.");
         return memberDisplayInfoList;
     }
+
 
     public String generateNewMemberId(SQLiteDatabase dbInstance) {
         SQLiteDatabase dbToUse = dbInstance != null && dbInstance.isOpen() ? dbInstance : this.getReadableDatabase();
@@ -558,7 +521,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor idCursor = null;
         try {
             if (dbToUse == null || !dbToUse.isOpen()) {
-                Log.e(TAG_DB, "Database not available for generating new member ID.");
+                
                 return null;
             }
             idCursor = dbToUse.rawQuery("SELECT MAX(CAST(" + COLUMN_MEMBER_ID + " AS INTEGER)) FROM " + TABLE_MEMBERS, null);
@@ -570,7 +533,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 }
             }
         } catch (Exception e) {
-            Log.e(TAG_DB, "Error generating new member ID", e);
+            
             return null;
         } finally {
             if (idCursor != null) {
@@ -607,8 +570,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     member.setFingerprintTemplate(null);
                 }
             }
-        } catch (Exception e) {
-            Log.e(TAG, "Error while trying to get member by ID: " + memberIdString, e);
+        } catch (Exception ignored) {
+            
         } finally {
             if (cursor != null) {
                 cursor.close();
@@ -622,29 +585,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String imagePathToDelete = null;
         boolean success = false;
 
-        Cursor cursor = null;
-        try {
-            cursor = db.query(
-                    TABLE_MEMBERS,
-                    new String[]{COLUMN_IMAGE_FILE_PATH},
-                    COLUMN_MEMBER_ID + " = ?",
-                    new String[]{memberId},
-                    null, null, null
-            );
+        try (Cursor cursor = db.query(
+                TABLE_MEMBERS,
+                new String[]{COLUMN_IMAGE_FILE_PATH},
+                COLUMN_MEMBER_ID + " = ?",
+                new String[]{memberId},
+                null, null, null
+        )) {
             if (cursor != null && cursor.moveToFirst()) {
                 int imagePathColumnIndex = cursor.getColumnIndex(COLUMN_IMAGE_FILE_PATH);
                 if (imagePathColumnIndex != -1) {
                     imagePathToDelete = cursor.getString(imagePathColumnIndex);
-                } else {
-                    Log.w(TAG, "Image file path column not found for member: " + memberId);
                 }
             }
-        } catch (Exception e) {
-            Log.e(TAG, "Error querying for image path before deleting member: " + memberId, e);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
+        } catch (Exception ignored) {
+
         }
 
         db.beginTransaction();
@@ -654,7 +609,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_FK_MEMBER_ID_PERIOD + " = ?",
                     new String[]{memberId}
             );
-            Log.d(TAG, "Deleted " + periodsDeleted + " periods for member ID: " + memberId);
+            
 
             int memberRowsDeleted = db.delete(
                     TABLE_MEMBERS,
@@ -665,13 +620,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (memberRowsDeleted > 0) {
                 db.setTransactionSuccessful();
                 success = true;
-                Log.d(TAG, "Successfully deleted member with ID: " + memberId + " and their periods.");
-            } else {
-                Log.w(TAG, "Member with ID: " + memberId + " not found or not deleted.");
+                
             }
 
         } catch (Exception e) {
-            Log.e(TAG, "Error deleting member with ID: " + memberId + " or their periods.", e);
+            
             success = false;
         } finally {
             db.endTransaction();
@@ -681,14 +634,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             try {
                 File imageFile = new File(imagePathToDelete);
                 if (imageFile.exists()) {
-                    if (imageFile.delete()) {
-                        Log.d(TAG, "Successfully deleted image file: " + imagePathToDelete);
-                    } else {
-                        Log.w(TAG, "Failed to delete image file: " + imagePathToDelete);
-                    }
+                    imageFile.delete();
                 }
-            } catch (Exception e) {
-                Log.e(TAG, "Error trying to delete image file: " + imagePathToDelete, e);
+            } catch (Exception ignored) {
+                
             }
         }
         return success;
@@ -697,10 +646,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public MembershipPeriod getMembershipPeriodById(int periodId) {
         SQLiteDatabase db = this.getReadableDatabase();
         MembershipPeriod period = null;
-        Cursor cursor = null;
-        try {
-            cursor = db.query(TABLE_MEMBERSHIP_PERIODS, null, COLUMN_PERIOD_ID + "=?",
-                    new String[]{String.valueOf(periodId)}, null, null, null);
+        try (Cursor cursor = db.query(TABLE_MEMBERSHIP_PERIODS, null, COLUMN_PERIOD_ID + "=?",
+                new String[]{String.valueOf(periodId)}, null, null, null)) {
 
             if (cursor != null && cursor.moveToFirst()) {
                 period = new MembershipPeriod();
@@ -716,12 +663,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 period.setReceiptNumber(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PERIOD_RECEIPT_NUMBER)));
             }
-        } catch (Exception e) {
-            Log.e("DatabaseHelper", "Error getting membership period by ID: " + periodId, e);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
+        } catch (Exception ignored) {
+
         }
         return period;
     }
@@ -729,31 +672,247 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<String> getMemberIdsByReceiptNumber(String receiptNumber) {
         List<String> memberIds = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = null;
+
 
         String query = "SELECT DISTINCT " + COLUMN_FK_MEMBER_ID_PERIOD +
                 " FROM " + TABLE_MEMBERSHIP_PERIODS +
                 " WHERE " + COLUMN_PERIOD_RECEIPT_NUMBER + " LIKE ?";
-
-        Log.d(TAG, "getMemberIdsByReceiptNumber query for: " + receiptNumber);
-
-        try {
-            cursor = db.rawQuery(query, new String[]{"%" + receiptNumber + "%"});
+        try (Cursor cursor = db.rawQuery(query, new String[]{"%" + receiptNumber + "%"})) {
 
             if (cursor != null && cursor.moveToFirst()) {
                 do {
                     memberIds.add(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FK_MEMBER_ID_PERIOD)));
                 } while (cursor.moveToNext());
             }
-        } catch (Exception e) {
-            Log.e(TAG, "Error fetching member IDs by receipt number: " + receiptNumber, e);
+        } catch (Exception ignored) {
+
+        }
+        
+        return memberIds;
+    }
+
+    public List<MemberDisplayInfo> getMembershipsStartedInLastThreeMonthsForDisplay(int registrationMonthFilter) {
+        List<MemberDisplayInfo> membersList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        LocalDate today = LocalDate.now();
+        LocalDate firstDayOfLookbackWindow = today.minusMonths(2).withDayOfMonth(1);
+        String startDateToKeepStr = firstDayOfLookbackWindow.format(SQLITE_DATE_FORMATTER);
+
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("SELECT ")
+                .append("M.").append(COLUMN_MEMBER_ID).append(", ")
+                .append("M.").append(COLUMN_FIRSTNAME).append(", ")
+                .append("M.").append(COLUMN_LASTNAME).append(", ")
+                .append("M.").append(COLUMN_PHONE_NUMBER).append(", ")
+                .append("M.").append(COLUMN_GENDER).append(", ")
+                .append("M.").append(COLUMN_AGE).append(", ")
+                .append("M.").append(COLUMN_IMAGE_FILE_PATH).append(", ")
+                .append("MP.").append(COLUMN_PERIOD_ID).append(" AS PeriodID, ")
+                .append("MP.").append(COLUMN_PERIOD_REGISTRATION_DATE).append(" AS RegDate, ")
+                .append("MP.").append(COLUMN_PERIOD_EXPIRATION_DATE).append(" AS ExpDate, ")
+                .append("MP.").append(COLUMN_PERIOD_RECEIPT_NUMBER).append(" AS Receipt, ")
+                .append("MP.").append(COLUMN_FK_MEMBER_TYPE_ID_PERIOD).append(" AS FkMemberTypeID, ")
+                .append("MT.").append(COLUMN_MT_NAME).append(" AS MemberTypeName ")
+                .append("FROM ").append(TABLE_MEMBERS).append(" M ")
+                .append("INNER JOIN ").append(TABLE_MEMBERSHIP_PERIODS).append(" MP ON M.")
+                .append(COLUMN_MEMBER_ID).append(" = MP.").append(COLUMN_FK_MEMBER_ID_PERIOD).append(" ")
+                .append("LEFT JOIN ").append(TABLE_MEMBER_TYPES).append(" MT ON MP.")
+                .append(COLUMN_FK_MEMBER_TYPE_ID_PERIOD).append(" = MT.").append(COLUMN_MT_ID).append(" ");
+
+        List<String> selectionArgsList = new ArrayList<>();
+
+        queryBuilder.append("WHERE DATE(MP.").append(COLUMN_PERIOD_REGISTRATION_DATE).append(") >= DATE(?) ");
+        selectionArgsList.add(startDateToKeepStr);
+
+        if (registrationMonthFilter > 0 && registrationMonthFilter <= 12) {
+            // Add month filtering. SQLite's strftime('%m', date) returns month as '01', '02', ..., '12'
+            String monthString = String.format(Locale.US, "%02d", registrationMonthFilter);
+            queryBuilder.append("AND strftime('%m', MP.").append(COLUMN_PERIOD_REGISTRATION_DATE).append(") = ? ");
+            selectionArgsList.add(monthString);
+        }
+
+        queryBuilder.append("ORDER BY MP.").append(COLUMN_PERIOD_REGISTRATION_DATE).append(" DESC, M.")
+                .append(COLUMN_LASTNAME).append(" ASC, M.").append(COLUMN_FIRSTNAME).append(" ASC");
+
+        String finalQuery = queryBuilder.toString();
+        String[] selectionArgs = selectionArgsList.toArray(new String[0]);
+
+        Log.d(TAG, "Query for getMembershipsStartedInLastThreeMonthsForDisplay (Month: " + registrationMonthFilter + "): " + finalQuery + " with args: " + Arrays.toString(selectionArgs));
+
+        try {
+            cursor = db.rawQuery(finalQuery, selectionArgs);
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    String memberId = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MEMBER_ID));
+                    String firstName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FIRSTNAME));
+                    String lastName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LASTNAME));
+                    String phoneNumber = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PHONE_NUMBER));
+                    String gender = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GENDER));
+                    int age = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_AGE));
+                    String imagePath = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE_FILE_PATH));
+                    int periodId = cursor.getInt(cursor.getColumnIndexOrThrow("PeriodID"));
+                    String regDateStr = cursor.getString(cursor.getColumnIndexOrThrow("RegDate"));
+                    String expDateStr = cursor.getString(cursor.getColumnIndexOrThrow("ExpDate"));
+                    String receiptNumber = cursor.getString(cursor.getColumnIndexOrThrow("Receipt"));
+                    int fkMemberTypeId = cursor.getInt(cursor.getColumnIndexOrThrow("FkMemberTypeID"));
+                    String memberTypeName = cursor.getString(cursor.getColumnIndexOrThrow("MemberTypeName"));
+
+                    LocalDate registrationDate = null;
+                    if (regDateStr != null) try { registrationDate = LocalDate.parse(regDateStr, SQLITE_DATE_FORMATTER); } catch (Exception ignored) {}
+                    LocalDate expirationDate = null;
+                    if (expDateStr != null) try { expirationDate = LocalDate.parse(expDateStr, SQLITE_DATE_FORMATTER); } catch (Exception ignored) {}
+
+
+                    boolean isActive = (expirationDate != null && !expirationDate.isBefore(LocalDate.now()));
+
+                    membersList.add(new MemberDisplayInfo(
+                            memberId, firstName, lastName, phoneNumber, gender,
+                            age,
+                            imagePath,
+                            periodId, fkMemberTypeId, memberTypeName != null ? memberTypeName : "N/A",
+                            registrationDate, expirationDate, receiptNumber, isActive
+                    ));
+                } while (cursor.moveToNext());
+            }
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, "Error in getMembershipsStartedInLastThreeMonthsForDisplay (Month: " + registrationMonthFilter + ")", e);
         } finally {
             if (cursor != null) {
                 cursor.close();
             }
         }
-        Log.d(TAG, "Found " + memberIds.size() + " member IDs for receipt query: " + receiptNumber);
-        return memberIds;
+        Log.d(TAG, "getMembershipsStartedInLastThreeMonthsForDisplay (Month: " + registrationMonthFilter + ") returned " + membersList.size() + " records.");
+        return membersList;
+    }
+
+    public boolean deleteMembershipPeriodsStartedBeforeThreeMonthsWindow() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        boolean success = false;
+        Log.d(TAG, "Attempting to delete membership periods started before the three-month display window.");
+
+        try {
+            // Calculate the first day of the month that is two months prior to the current month.
+            // Records older than this date will be deleted.
+            LocalDate today = LocalDate.now();
+            LocalDate firstDayOfTwoMonthsAgo = today.minusMonths(2).withDayOfMonth(1);
+            String deleteRecordsBeforeDateStr = firstDayOfTwoMonthsAgo.format(SQLITE_DATE_FORMATTER);
+
+            List<Integer> periodIdsToDelete = new ArrayList<>();
+            HashMap<String, Boolean> memberIdsAffected = new HashMap<>();
+
+            String queryPeriods = "SELECT " + COLUMN_PERIOD_ID + ", " + COLUMN_FK_MEMBER_ID_PERIOD + ", " + COLUMN_PERIOD_REGISTRATION_DATE +
+                    " FROM " + TABLE_MEMBERSHIP_PERIODS +
+                    " WHERE DATE(" + COLUMN_PERIOD_REGISTRATION_DATE + ") < DATE(?)"; // Records BEFORE this date
+
+            Log.d(TAG, "Query to find periods to delete (older than " + deleteRecordsBeforeDateStr + "): " + queryPeriods);
+
+            try (Cursor cursor = db.rawQuery(queryPeriods, new String[]{deleteRecordsBeforeDateStr})) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    int periodIdIndex = cursor.getColumnIndexOrThrow(COLUMN_PERIOD_ID);
+                    int memberIdIndex = cursor.getColumnIndexOrThrow(COLUMN_FK_MEMBER_ID_PERIOD);
+                    int regDateIndex = cursor.getColumnIndexOrThrow(COLUMN_PERIOD_REGISTRATION_DATE);
+                    Log.d(TAG, "--- Periods identified for deletion ---");
+                    do {
+                        periodIdsToDelete.add(cursor.getInt(periodIdIndex));
+                        memberIdsAffected.put(cursor.getString(memberIdIndex), true);
+                        Log.d(TAG, "To Delete - Period ID: " + cursor.getInt(periodIdIndex) +
+                                ", Member ID: " + cursor.getString(memberIdIndex) +
+                                ", RegDate: " + cursor.getString(regDateIndex));
+                    } while (cursor.moveToNext());
+                    Log.d(TAG, "------------------------------------");
+                } else {
+                    Log.d(TAG, "No periods found with RegistrationDate < " + deleteRecordsBeforeDateStr);
+                }
+            }
+            Log.d(TAG, "Found " + periodIdsToDelete.size() + " periods to delete for " + memberIdsAffected.size() + " unique members.");
+
+            if (!periodIdsToDelete.isEmpty()) {
+                StringBuilder inClause = new StringBuilder();
+                for (int i = 0; i < periodIdsToDelete.size(); i++) {
+                    inClause.append("?");
+                    if (i < periodIdsToDelete.size() - 1) {
+                        inClause.append(",");
+                    }
+                }
+                String[] periodIdArgs = periodIdsToDelete.stream().map(String::valueOf).toArray(String[]::new);
+
+                int periodsDeleted = db.delete(
+                        TABLE_MEMBERSHIP_PERIODS,
+                        COLUMN_PERIOD_ID + " IN (" + inClause.toString() + ")",
+                        periodIdArgs
+                );
+                Log.d(TAG, "Deleted " + periodsDeleted + " membership periods.");
+
+                // ... (rest of your existing logic for deleting orphaned members and their images)
+                // (This part can remain the same)
+                for (String memberId : memberIdsAffected.keySet()) {
+                    boolean hasRemainingPeriods = false;
+                    try (Cursor checkCursor = db.query(
+                            TABLE_MEMBERSHIP_PERIODS,
+                            new String[]{COLUMN_PERIOD_ID},
+                            COLUMN_FK_MEMBER_ID_PERIOD + " = ?",
+                            new String[]{memberId},
+                            null, null, null, "1"
+                    )) {
+                        if (checkCursor != null && checkCursor.moveToFirst()) {
+                            hasRemainingPeriods = true;
+                        }
+                    }
+
+                    if (!hasRemainingPeriods) {
+                        Log.d(TAG, "Member " + memberId + " has no remaining periods. Attempting to delete member.");
+                        String imagePathToDelete = null;
+                        try (Cursor memberCursor = db.query(
+                                TABLE_MEMBERS,
+                                new String[]{COLUMN_IMAGE_FILE_PATH},
+                                COLUMN_MEMBER_ID + " = ?",
+                                new String[]{memberId}, null, null, null)) {
+                            if (memberCursor != null && memberCursor.moveToFirst()) {
+                                int imagePathColIdx = memberCursor.getColumnIndex(COLUMN_IMAGE_FILE_PATH);
+                                if (imagePathColIdx != -1 && !memberCursor.isNull(imagePathColIdx)) {
+                                    imagePathToDelete = memberCursor.getString(imagePathColIdx);
+                                }
+                            }
+                        }
+
+                        int memberRowsDeleted = db.delete(TABLE_MEMBERS, COLUMN_MEMBER_ID + " = ?", new String[]{memberId});
+                        Log.d(TAG, "Deleted " + memberRowsDeleted + " rows for member " + memberId);
+
+                        if (memberRowsDeleted > 0 && imagePathToDelete != null && !imagePathToDelete.isEmpty()) {
+                            try {
+                                File imageFile = new File(imagePathToDelete);
+                                if (imageFile.exists()) {
+                                    if(imageFile.delete()){
+                                        Log.d(TAG, "Deleted image file: " + imagePathToDelete);
+                                    } else {
+                                        Log.w(TAG, "Failed to delete image file: " + imagePathToDelete);
+                                    }
+                                }
+                            } catch (SecurityException e) {
+                                Log.e(TAG, "SecurityException, Failed to delete image file: " + imagePathToDelete, e);
+                            }
+                        }
+                    } else {
+                        Log.d(TAG, "Member " + memberId + " still has remaining periods.");
+                    }
+                }
+            } else {
+                Log.d(TAG, "No old membership periods found to delete based on the new criteria.");
+            }
+
+            db.setTransactionSuccessful();
+            success = true;
+        } catch (Exception e) {
+            Log.e(TAG, "Error deleting membership periods started before three-month window: " + e.getMessage(), e);
+            success = false;
+        } finally {
+            db.endTransaction();
+            Log.d(TAG, "Transaction ended for deleteMembershipPeriodsStartedBeforeThreeMonthsWindow. Success: " + success);
+        }
+        return success;
     }
 
     public MemberDisplayInfo getMemberDisplayInfo(String memberId) {
@@ -793,7 +952,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "LEFT JOIN " + TABLE_MEMBER_TYPES + " MT ON LatestMP." + COLUMN_FK_MEMBER_TYPE_ID_PERIOD + " = MT." + COLUMN_MT_ID + " " +
                 "WHERE M." + COLUMN_MEMBER_ID + " = ?";
 
-        Log.d(TAG_DB, "getMemberDisplayInfo query for ID " + memberId + ": " + query);
+        
 
         try {
             cursor = db.rawQuery(query, new String[]{memberId, memberId});
@@ -828,8 +987,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 if (latestRegDateStr != null) {
                     try {
                         registrationDate = LocalDate.parse(latestRegDateStr, SQLITE_DATE_FORMATTER);
-                    } catch (Exception e) {
-                        Log.e(TAG_DB, "Error parsing registration date for member " + memberId, e);
+                    } catch (Exception ignored) {
+                        
                     }
                 }
 
@@ -837,8 +996,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 if (latestExpDateStr != null) {
                     try {
                         expirationDate = LocalDate.parse(latestExpDateStr, SQLITE_DATE_FORMATTER);
-                    } catch (Exception e) {
-                        Log.e(TAG_DB, "Error parsing expiration date for member " + memberId, e);
+                    } catch (Exception ignored) {
+                        
                     }
                 }
 
@@ -857,11 +1016,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         latestReceipt,
                         isActive
                 );
-            } else {
-                Log.d(TAG_DB, "No member found with ID: " + memberId + " for display info.");
             }
-        } catch (Exception e) {
-            Log.e(TAG_DB, "Error getting member display info for ID: " + memberId, e);
+        } catch (Exception ignored) {
+            
         } finally {
             if (cursor != null) {
                 cursor.close();
@@ -887,29 +1044,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (cursor != null && cursor.moveToFirst()) {
                 isActive = true;
             }
-        } catch (Exception e) {
-            Log.e(TAG_DB, "Error checking if membership is active for ID: " + memberId, e);
+        } catch (Exception ignored) {
+            
         } finally {
             if (cursor != null) {
                 cursor.close();
             }
         }
-        Log.d(TAG_DB, "Membership active check for " + memberId + ": " + isActive);
+        
         return isActive;
     }
 
     public MemberType getMemberTypeById(int typeId) {
         SQLiteDatabase db = this.getReadableDatabase();
         MemberType memberType = null;
-        Cursor cursor = null;
 
-        try {
-            cursor = db.query(
-                    TABLE_MEMBER_TYPES,
-                    new String[]{COLUMN_MT_ID, COLUMN_MT_NAME, COLUMN_MT_DURATION_DAYS, COLUMN_MT_IS_TWO_IN_ONE},
-                    COLUMN_MT_ID + " = ?",
-                    new String[]{String.valueOf(typeId)},
-                    null, null, null);
+        try (Cursor cursor = db.query(
+                TABLE_MEMBER_TYPES,
+                new String[]{COLUMN_MT_ID, COLUMN_MT_NAME, COLUMN_MT_DURATION_DAYS, COLUMN_MT_IS_TWO_IN_ONE},
+                COLUMN_MT_ID + " = ?",
+                new String[]{String.valueOf(typeId)},
+                null, null, null)) {
 
             if (cursor != null && cursor.moveToFirst()) {
                 int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_MT_ID));
@@ -919,14 +1074,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 memberType = new MemberType(id, name, durationDays, isTwoInOne);
             }
-        } catch (IllegalArgumentException e) {
-            Log.e(TAG, "Error getting member type by ID: " + typeId + ". Column not found?", e);
-        } catch (Exception e) {
-            Log.e(TAG, "Error getting member type by ID: " + typeId, e);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
+        } catch (Exception ignored) {
+
         }
         return memberType;
     }
@@ -934,18 +1083,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private boolean isMemberTypeInUse(SQLiteDatabase db, int memberTypeId) {
         String query = "SELECT 1 FROM " + TABLE_MEMBERSHIP_PERIODS +
                 " WHERE " + COLUMN_FK_MEMBER_TYPE_ID_PERIOD + " = ? LIMIT 1";
-        Cursor cursor = null;
-        try {
-            cursor = db.rawQuery(query, new String[]{String.valueOf(memberTypeId)});
+        try (Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(memberTypeId)})) {
             if (cursor != null && cursor.moveToFirst()) {
                 return true;
             }
-        } catch (Exception e) {
-            Log.e(TAG, "Error checking if member type " + memberTypeId + " is in use.", e);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
+        } catch (Exception ignored) {
+
         }
         return false;
     }
@@ -954,9 +1097,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         boolean success = false;
 
-        if (isMemberTypeInUse(db, typeIdToDelete)) {
-            Log.w(TAG, "Attempted to delete MemberType ID: " + typeIdToDelete +
-                    ", but it is currently in use by one or more membership periods.");
+        if (isMemberTypeInUse(db, typeIdToDelete))
+        {
             return false;
         }
 
@@ -966,13 +1108,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (rowsAffected > 0) {
                 db.setTransactionSuccessful();
                 success = true;
-                Log.d(TAG, "Successfully deleted member type with ID: " + typeIdToDelete);
+                
             } else {
-                Log.w(TAG, "Could not delete member type with ID: " + typeIdToDelete + ". It might not exist.");
+                
                 success = false;
             }
         } catch (SQLException e) {
-            Log.e(TAG, "SQL Error deleting member type with ID: " + typeIdToDelete, e);
+            
             success = false;
         } finally {
             db.endTransaction();
@@ -1015,11 +1157,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "  AND DATE(ActiveFutureCheck." + COLUMN_PERIOD_EXPIRATION_DATE + ") >= DATE('" + currentDate + "')) " +
                 "ORDER BY M." + COLUMN_LASTNAME + " ASC, M." + COLUMN_FIRSTNAME + " ASC";
 
-        Log.d("DatabaseHelper_Expired", "Executing query for expired members: " + query);
+        
 
         try {
             cursor = db.rawQuery(query, null);
-            Log.d("DatabaseHelper_Expired", "Query returned " + (cursor == null ? "null cursor" : cursor.getCount() + " rows"));
 
             if (cursor != null && cursor.moveToFirst()) {
                 do {
@@ -1044,16 +1185,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     if (latestRegDateStr != null) {
                         try {
                             registrationDate = LocalDate.parse(latestRegDateStr, SQLITE_DATE_FORMATTER);
-                        } catch (Exception e) {
-                            Log.e("DatabaseHelper_Expired", "Error parsing reg date: " + latestRegDateStr, e);
+                        } catch (Exception ignored) {
+                            
                         }
                     }
                     LocalDate expirationDate = null;
                     if (latestExpDateStr != null) {
                         try {
                             expirationDate = LocalDate.parse(latestExpDateStr, SQLITE_DATE_FORMATTER);
-                        } catch (Exception e) {
-                            Log.e("DatabaseHelper_Expired", "Error parsing exp date: " + latestExpDateStr, e);
+                        } catch (Exception ignored) {
+                            
                         }
                     }
 
@@ -1070,18 +1211,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             isActive
                     );
                     expiredMembersList.add(memberInfo);
-                    Log.d("DatabaseHelper_Expired", "Added expired member: " + firstName + " " + lastName + ", Exp: " + latestExpDateStr);
+                    
 
                 } while (cursor.moveToNext());
             }
-        } catch (Exception e) {
-            Log.e("DatabaseHelper_Expired", "Error getting expired members: " + e.getMessage(), e);
+        } catch (Exception ignored) {
+            
         } finally {
             if (cursor != null) {
                 cursor.close();
             }
         }
-        Log.d("DatabaseHelper_Expired", "getExpiredMembersForDisplay returning " + expiredMembersList.size() + " members.");
+        
         return expiredMembersList;
     }
 
@@ -1103,15 +1244,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (cursor != null && cursor.getCount() > 0) {
                 exists = true;
             }
-        } catch (Exception e) {
-            Log.e(TAG, "Error checking if receipt number '" + receiptNumber + "' exists: " + e.getMessage(), e);
+        } catch (Exception ignored) {
+            
         } finally {
             if (cursor != null) {
                 cursor.close();
             }
-        }
-        if (exists) {
-            Log.d(TAG, "Receipt number '" + receiptNumber + "' already exists (excluding period ID " + periodIdToExclude + ").");
         }
         return exists;
     }
@@ -1119,42 +1257,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<String> getAllMemberImagePaths() {
         List<String> imagePaths = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = null;
         String query = "SELECT DISTINCT " + COLUMN_IMAGE_FILE_PATH + " FROM " + TABLE_MEMBERS +
                 " WHERE " + COLUMN_IMAGE_FILE_PATH + " IS NOT NULL AND " +
                 COLUMN_IMAGE_FILE_PATH + " != ''";
-        try {
-            cursor = db.rawQuery(query, null);
+        try (Cursor cursor = db.rawQuery(query, null)) {
             if (cursor != null && cursor.moveToFirst()) {
                 int columnIndex = cursor.getColumnIndex(COLUMN_IMAGE_FILE_PATH);
                 if (columnIndex != -1) {
                     do {
                         imagePaths.add(cursor.getString(columnIndex));
                     } while (cursor.moveToNext());
-                } else {
-                    Log.e("DatabaseHelper", "Column " + COLUMN_IMAGE_FILE_PATH + " not found in " + TABLE_MEMBERS);
                 }
             }
-        } catch (Exception e) {
-            Log.e("DatabaseHelper", "Error fetching all image paths", e);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
+        } catch (Exception ignored) {
+
         }
-        Log.d("DatabaseHelper", "Found " + imagePaths.size() + " unique image paths for export.");
         return imagePaths;
     }
 
     public HashMap<String, byte[]> getAllFingerprintTemplates() {
         HashMap<String, byte[]> templates = new HashMap<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = null;
-        try {
-            cursor = db.query(TABLE_MEMBERS,
-                    new String[]{COLUMN_MEMBER_ID, COLUMN_FINGERPRINT_TEMPLATE},
-                    COLUMN_FINGERPRINT_TEMPLATE + " IS NOT NULL",
-                    null, null, null, null);
+        try (Cursor cursor = db.query(TABLE_MEMBERS,
+                new String[]{COLUMN_MEMBER_ID, COLUMN_FINGERPRINT_TEMPLATE},
+                COLUMN_FINGERPRINT_TEMPLATE + " IS NOT NULL",
+                null, null, null, null)) {
 
             if (cursor != null && cursor.moveToFirst()) {
                 do {
@@ -1165,18 +1292,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     }
                 } while (cursor.moveToNext());
             }
-        } catch (Exception e) {
-            Log.e(TAG_DB, "Error getting all fingerprint templates", e);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
+        } catch (Exception ignored) {
+
         }
         return templates;
     }
 
     public synchronized void closeDatabase() {
         super.close();
-        Log.d(TAG, "Database connection closed via closeDatabase().");
     }
 }

@@ -60,7 +60,7 @@
             android:gravity="center"/>
 
         <TextView
-            android:id="@+id/membershipType_TextView"
+            android:id="@+id/membershipTypeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
@@ -74,11 +74,23 @@
 
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_150sdp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_toEndOf="@+id/memberPictureImageView"
             android:layout_marginStart="@dimen/_20sdp">
+
+            <TextView
+                android:id="@+id/expiringTextWarning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="warning text here"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_8ssp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/fullName_Title_TextView"
@@ -116,61 +128,51 @@
                 android:textSize="@dimen/_7ssp"
                 android:background="@drawable/border_background_grey"/>
 
-            <TextView
-                android:id="@+id/phoneNumber_Title_TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:text="@string/PhoneNumber"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_8ssp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/phoneNumber_TextView"
-                android:layout_width="@dimen/_150sdp"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_7ssp"
-                android:background="@drawable/border_background_grey"/>
-
-            <TextView
-                android:id="@+id/membershipStarted_Title_TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:text="@string/MembershipStarted"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_8ssp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/membershipStarted_TextView"
-                android:layout_width="@dimen/_150sdp"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_7ssp"
-                android:background="@drawable/border_background_grey"/>
-
-            <TextView
-                android:id="@+id/expiring_Title_TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:text="@string/MembershipExpiring"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_8ssp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/expiring_TextView"
-                android:layout_width="@dimen/_150sdp"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_7ssp"
-                android:background="@drawable/border_background_grey"/>
-
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/membershipStarted_Title_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/memberId_Title_TextView"
+            android:layout_toEndOf="@id/memberPictureImageView"
+            android:layout_alignStart="@id/linearLayout"
+            android:text="@string/MembershipStarted"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8ssp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/membershipStarted_TextView"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/membershipStarted_Title_TextView"
+            android:layout_alignStart="@id/membershipStarted_Title_TextView"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_7ssp"
+            android:background="@drawable/border_background_grey"/>
+
+        <TextView
+            android:id="@+id/expiring_Title_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/membershipType_Title_TextView"
+            android:layout_toEndOf="@id/memberPictureImageView"
+            android:layout_alignStart="@id/linearLayout"
+            android:text="@string/MembershipExpiring"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8ssp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/expiring_TextView"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/expiring_Title_TextView"
+            android:layout_alignStart="@id/expiring_Title_TextView"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_7ssp"
+            android:background="@drawable/border_background_grey"/>
 
         <TextView
             android:id="@+id/daysLeft_Title_TextView"
@@ -201,10 +203,10 @@
             android:textSize="@dimen/_7ssp"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonClearPage"
+            android:id="@+id/buttonConfirmEdit"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_45sdp"
-            android:layout_alignBottom="@id/linearLayout"
+            android:layout_alignBottom="@id/expiring_TextView"
             android:layout_alignEnd="@id/daysLeft_TextView"
             android:layout_alignStart="@id/daysLeft_TextView"
             android:gravity="center"
@@ -212,8 +214,7 @@
             android:text="@string/ClearPage"
             android:background="@drawable/border_background_grey"
             app:backgroundTint="@color/grey"
-            android:textColor="@color/black"
-            android:layout_marginEnd="@dimen/_4sdp"/>
+            android:textColor="@color/black" />
 
     </RelativeLayout>
 

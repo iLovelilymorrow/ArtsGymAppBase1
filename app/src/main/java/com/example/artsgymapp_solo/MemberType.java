@@ -36,9 +36,9 @@ public class MemberType
         return durationDays;
     }
 
-    // Important for Spinner display
+    
     @Override
     public String toString() {
-        return name; // This is what the ArrayAdapter will display in the Spinner
+        return name; 
     }
 }

@@ -18,10 +18,10 @@ import java.util.Locale;
 public class ExpiredMemberAdapter extends RecyclerView.Adapter<ExpiredMemberAdapter.ViewHolder> {
 
     private List<MemberDisplayInfo> expiredMemberList;
-    private List<MemberDisplayInfo> expiredMemberListFull; // For search filtering
+    private List<MemberDisplayInfo> expiredMemberListFull; 
     private final OnExpiredMemberClickListener listener;
     private final Context context;
-    // Consistent date formatting
+    
     private static final DateTimeFormatter DISPLAY_DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.US);
 
 
@@ -83,9 +83,9 @@ public class ExpiredMemberAdapter extends RecyclerView.Adapter<ExpiredMemberAdap
         ImageView imageViewMemberPhoto;
         TextView textViewName;
         TextView textViewMemberId;
-        TextView textViewLastMembershipType; // Changed from textViewLastMembership
-        TextView textViewExpireDate;        // New
-        TextView textViewLastReceipt;       // New
+        TextView textViewLastMembershipType; 
+        TextView textViewExpireDate;        
+        TextView textViewLastReceipt;       
         TextView textViewPhoneNumber;
 
         ViewHolder(View itemView) {
@@ -93,7 +93,7 @@ public class ExpiredMemberAdapter extends RecyclerView.Adapter<ExpiredMemberAdap
             imageViewMemberPhoto = itemView.findViewById(R.id.imageViewMemberListItem);
             textViewName = itemView.findViewById(R.id.textViewNameListItem);
             textViewMemberId = itemView.findViewById(R.id.textViewMemberIdListItem);
-            textViewLastMembershipType = itemView.findViewById(R.id.textViewLastMembershipListItem); // Assuming this ID is for "Last Membership Type"
+            textViewLastMembershipType = itemView.findViewById(R.id.textViewLastMembershipListItem); 
             textViewExpireDate = itemView.findViewById(R.id.textViewExpireDateListItem);
             textViewLastReceipt = itemView.findViewById(R.id.textViewLastReceiptListItem);
             textViewPhoneNumber = itemView.findViewById(R.id.textViewPhoneNumberListItem);

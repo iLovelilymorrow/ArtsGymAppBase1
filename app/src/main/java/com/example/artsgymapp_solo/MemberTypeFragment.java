@@ -1,12 +1,11 @@
-package com.example.artsgymapp_solo; // Your package
+package com.example.artsgymapp_solo; 
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AlertDialog; // For confirmation dialog
+import androidx.appcompat.app.AlertDialog; 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +15,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-// Implement the adapter's delete listener interface
-public class MemberTypeFragment extends Fragment implements MemberTypeAdapter.OnMemberTypeDeleteListener {
 
-    private static final String TAG = "MemberTypeFragment";
+public class MemberTypeFragment extends Fragment implements MemberTypeAdapter.OnMemberTypeDeleteListener {
 
     private EditText editTextMemberTypeName;
     private EditText editTextDurationDays;
@@ -31,37 +28,37 @@ public class MemberTypeFragment extends Fragment implements MemberTypeAdapter.On
     private DatabaseHelper databaseHelper;
 
     public MemberTypeFragment() {
-        // Required empty public constructor
+        
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         databaseHelper = new DatabaseHelper(requireContext());
-        currentMemberTypesList = new ArrayList<>(); // Initialize the list
+        currentMemberTypesList = new ArrayList<>(); 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_membertype, container, false); // Your updated layout name
+        View view = inflater.inflate(R.layout.fragment_membertype, container, false); 
 
         editTextMemberTypeName = view.findViewById(R.id.editTextMemberTypeName);
         editTextDurationDays = view.findViewById(R.id.editTextDurationDays);
         isTwoInOneCheckbox = view.findViewById(R.id.isTwoInOneCheckbox);
         buttonSaveMemberType = view.findViewById(R.id.buttonSaveMemberType);
-        recyclerViewMemberTypes = view.findViewById(R.id.recyclerViewMemberTypes); // Added
+        recyclerViewMemberTypes = view.findViewById(R.id.recyclerViewMemberTypes); 
 
         buttonSaveMemberType.setOnClickListener(v -> saveMemberType());
 
         setupRecyclerView();
-        loadMemberTypesFromDb(); // Load initially
+        loadMemberTypesFromDb(); 
 
         return view;
     }
 
     private void setupRecyclerView() {
-        // Pass 'this' as the delete listener
+        
         memberTypeAdapter = new MemberTypeAdapter(requireContext(), currentMemberTypesList, this);
         recyclerViewMemberTypes.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerViewMemberTypes.setAdapter(memberTypeAdapter);
@@ -72,10 +69,7 @@ public class MemberTypeFragment extends Fragment implements MemberTypeAdapter.On
         if (types != null) {
             currentMemberTypesList.clear();
             currentMemberTypesList.addAll(types);
-            memberTypeAdapter.notifyDataSetChanged(); // Or adapter.updateData(types);
-            Log.d(TAG, "Loaded " + types.size() + " member types from DB.");
-        } else {
-            Log.d(TAG, "No member types found in DB or error loading.");
+            memberTypeAdapter.notifyDataSetChanged();
         }
     }
 
@@ -116,43 +110,43 @@ public class MemberTypeFragment extends Fragment implements MemberTypeAdapter.On
 
         if (databaseHelper.addMemberType(name, durationDays, isTwoInOne)) {
             Toast.makeText(getContext(), "Membership Type '" + name + "' added!", Toast.LENGTH_SHORT).show();
-            Log.i(TAG, "Membership Type added: " + name + ", Duration: " + durationDays + ", TwoInOne: " + isTwoInOne);
+            
             editTextMemberTypeName.setText("");
             editTextDurationDays.setText("");
             isTwoInOneCheckbox.setChecked(false);
             editTextMemberTypeName.requestFocus();
-            loadMemberTypesFromDb(); // Refresh the list after adding
+            loadMemberTypesFromDb(); 
         } else {
             Toast.makeText(getContext(), "Failed to add Membership Type. It might already exist.", Toast.LENGTH_LONG).show();
-            Log.e(TAG, "Failed to add Membership Type: " + name);
+            
         }
     }
 
-    // Implementation of OnMemberTypeDeleteListener
+    
     @Override
     public void onDeleteClicked(MemberType memberType) {
-        // Show a confirmation dialog before deleting
+        
         new AlertDialog.Builder(requireContext())
                 .setTitle("Delete Membership Type")
-                .setMessage("Are you sure you want to delete '" + memberType.getName() + "'?\nThis action cannot be undone and might affect existing members if this type is in use (consider implications).") // Add warning
+                .setMessage("Are you sure you want to delete '" + memberType.getName() + "'?\nThis action cannot be undone and might affect existing members if this type is in use (consider implications).") 
                 .setPositiveButton("Delete", (dialog, which) -> {
                     performDeleteMemberType(memberType);
                 })
                 .setNegativeButton("Cancel", null)
-                .setIcon(R.drawable.ic_delete) // Optional: show delete icon in dialog
+                .setIcon(R.drawable.ic_delete) 
                 .show();
     }
 
     private void performDeleteMemberType(MemberType memberType) {
-        // You'll need a delete method in DatabaseHelper by ID or name
-        // For now, let's assume delete by ID (which is better)
+        
+        
         if (databaseHelper.deleteMemberType(memberType.getId())) {
             Toast.makeText(getContext(), "'" + memberType.getName() + "' deleted successfully.", Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "Member type deleted: ID " + memberType.getId() + ", Name: " + memberType.getName());
-            loadMemberTypesFromDb(); // Refresh the list
+            
+            loadMemberTypesFromDb(); 
         } else {
             Toast.makeText(getContext(), "Failed to delete '" + memberType.getName() + "'. It might be in use or an error occurred.", Toast.LENGTH_LONG).show();
-            Log.e(TAG, "Failed to delete member type: ID " + memberType.getId());
+            
         }
     }
 }

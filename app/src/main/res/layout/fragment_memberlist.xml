@@ -32,18 +32,34 @@
                 android:layout_marginEnd="@dimen/_4sdp"/>
 
             <RadioButton
-                android:id="@+id/radioButtonFilterCurrentMonth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Current Month Reg"
-                android:layout_marginEnd="@dimen/_4sdp"/>
-
-            <RadioButton
                 android:id="@+id/radioButtonFilterExpiringSoon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Expiring Soon"/>
         </RadioGroup>
+
+    <TextView
+        android:id="@+id/filterByMonthTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/radioGroupFilters"
+        android:gravity="center"
+        android:text="@string/FilterByMonth"
+        android:textStyle="bold"
+        android:layout_alignBottom="@id/radioGroupFilters"
+        android:layout_alignTop="@id/radioGroupFilters"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:textColor="@color/black"/>
+
+    <Spinner
+        android:id="@+id/filterByMonthSpinner"
+        android:padding="0dp"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/filterByMonthTextView"
+        android:layout_alignBottom="@id/filterByMonthTextView"
+        android:layout_alignTop="@id/filterByMonthTextView"
+        android:gravity="center"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/exportButton"
@@ -72,13 +88,22 @@
         android:background="@drawable/border_background_grey"
         android:textColor="@color/black"/>
 
+    <TextView
+        android:id="@+id/memberCountByMembershipType_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/radioGroupFilters"
+        android:layout_marginBottom="@dimen/_3sdp"
+        android:text="awdawd"
+        android:textColor="@color/black"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/membersRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/radioGroupFilters"
+        android:layout_below="@id/memberCountByMembershipType_TextView"
         android:layout_alignParentBottom="true"
-        tools:listitem="@layout/item_member"/>
+        tools:listitem="@layout/item_member"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     <TextView
@@ -88,7 +113,7 @@
         android:layout_marginTop="@dimen/_3sdp"
         android:layout_below="@id/radioGroupFilters"
         android:layout_centerInParent="true"
-        android:text="No expired members found."
+        android:text="No recorded members found."
         android:textSize="18sp"
         android:visibility="gone" />
 

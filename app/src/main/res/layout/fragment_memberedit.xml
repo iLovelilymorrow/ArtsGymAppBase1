@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingVertical="@dimen/_30sdp"
-    android:paddingHorizontal="@dimen/_60sdp"
+    android:paddingHorizontal="@dimen/_30sdp"
     android:background="@color/greytransparent">
 
     <RelativeLayout
@@ -66,24 +66,61 @@
             android:textColor="@color/black"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonRecaptureFingerprint"
+            android:id="@+id/buttonRenewMembership"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="wrap_content"
             android:layout_below="@id/expirationDateTextView"
             android:layout_marginTop="@dimen/_3sdp"
 
-            android:text="@string/RecaptureFingerprint"
+            android:text="@string/renewMembership_Title"
             android:background="@drawable/border_background_grey"
             app:backgroundTint="@color/grey"
             android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/fingerprintTitle_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/firstNameEditText"
+            android:layout_marginBottom="@dimen/_3sdp"
+            android:layout_marginStart="@dimen/_25sdp"
+
+            android:text="@string/RecaptureFingerprint"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8ssp"
+            android:textStyle="bold"/>
+
+        <ImageView
+            android:id="@+id/fingerprintImageView"
+            android:layout_width="@dimen/_88sdp"
+            android:layout_height="@dimen/_88sdp"
+            android:layout_below="@id/fingerprintTitle_TextView"
+            android:layout_alignStart="@id/fingerprintTitle_TextView"
+
+            android:background="@drawable/border_background_grey"
+            android:src="@drawable/addfingerprint"
+            android:scaleType="fitXY"/>
+
+        <TextView
+            android:id="@+id/fingerprintStatusTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/StartCapture"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8ssp"
+            android:textStyle="bold"
+
+            android:layout_below="@id/fingerprintImageView"
+            android:layout_alignStart="@id/fingerprintImageView"
+            android:layout_alignEnd="@id/fingerprintImageView"
+            android:gravity="center"/>
 
         <TextView
             android:id="@+id/firstNameEditText_Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/memberImageView"
-            android:layout_marginStart="@dimen/_10sdp"
-
+            android:layout_marginStart="@dimen/_25sdp"
             android:text="@string/FirstName"
             android:textSize="@dimen/_7ssp"/>
 
@@ -91,6 +128,7 @@
             android:id="@+id/firstNameEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/_10sdp"
             android:minWidth="@dimen/_200sdp"
             android:layout_below="@id/firstNameEditText_Title"
             android:layout_alignStart="@id/firstNameEditText_Title"
@@ -106,7 +144,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/memberImageView"
-            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_30sdp"
             android:layout_below="@id/firstNameEditText"
             android:layout_marginTop="@dimen/_6sdp"
 
@@ -117,6 +155,7 @@
             android:id="@+id/lastNameEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/_10sdp"
             android:minWidth="@dimen/_200sdp"
             android:layout_below="@id/lastNameEditText_Title"
             android:layout_alignStart="@id/firstNameEditText_Title"
@@ -128,26 +167,27 @@
             android:inputType="text"/>
 
         <TextView
-            android:id="@+id/membershipTypeSpinner_Title"
+            android:id="@+id/membershipTypeTextView_Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/memberImageView"
-            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_25sdp"
             android:layout_below="@id/lastNameEditText"
             android:layout_marginTop="@dimen/_6sdp"
 
             android:text="@string/MembershipType"
             android:textSize="@dimen/_7ssp"/>
 
-        <Spinner
-            android:id="@+id/membershipTypeSpinner"
+        <TextView
+            android:id="@+id/membershipTypeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
             android:minWidth="@dimen/_200sdp"
-            android:layout_below="@id/membershipTypeSpinner_Title"
-            android:layout_alignStart="@id/membershipTypeSpinner_Title"
+            android:layout_below="@id/membershipTypeTextView_Title"
+            android:layout_alignStart="@id/membershipTypeTextView_Title"
             android:layout_marginTop="@dimen/_3sdp"
-
             android:background="@drawable/border_background_grey" />
 
         <TextView
@@ -155,8 +195,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/memberImageView"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_below="@id/membershipTypeSpinner"
+            android:layout_marginStart="@dimen/_25sdp"
+            android:layout_below="@id/membershipTypeTextView"
             android:layout_marginTop="@dimen/_6sdp"
 
             android:text="@string/Gender"
@@ -178,7 +218,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/memberImageView"
-            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_25sdp"
             android:layout_below="@id/genderSpinner2ndMember"
             android:layout_marginTop="@dimen/_6sdp"
 
@@ -189,6 +229,7 @@
             android:id="@+id/receiptNumberEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/_10sdp"
             android:minWidth="@dimen/_200sdp"
             android:layout_below="@id/receiptNumberEditText_Title"
             android:layout_alignStart="@id/receiptNumberEditText_Title"
@@ -204,7 +245,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/memberImageView"
-            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_25sdp"
             android:layout_below="@id/receiptNumberEditText"
             android:layout_marginTop="@dimen/_6sdp"
 
@@ -215,6 +256,7 @@
             android:id="@+id/ageEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/_10sdp"
             android:minWidth="@dimen/_200sdp"
             android:layout_below="@id/ageEditText_Title"
             android:layout_alignStart="@id/ageEditText_Title"
@@ -230,7 +272,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/memberImageView"
-            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_25sdp"
             android:layout_below="@id/ageEditText"
             android:layout_marginTop="@dimen/_6sdp"
 
@@ -241,6 +283,8 @@
             android:id="@+id/phoneNumberEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/_10sdp"
+            android:textColor="@color/black"
             android:minWidth="@dimen/_200sdp"
             android:layout_below="@id/phoneNumberEditText_Title"
             android:layout_alignStart="@id/phoneNumberEditText_Title"
@@ -262,7 +306,7 @@
             android:layout_alignParentEnd="true">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonClearPage"
+                android:id="@+id/buttonConfirmEdit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

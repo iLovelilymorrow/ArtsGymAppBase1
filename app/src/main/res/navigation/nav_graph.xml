@@ -86,5 +86,18 @@
             app:argType="integer"
             android:defaultValue="-1" />
 
+        <action
+            android:id="@+id/action_RenewMembershipFragment_to_memberListFragment"
+            app:destination="@id/memberListFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
+
     </fragment>
+
+    <fragment
+        android:id="@+id/recordsFragment"
+        android:name="com.example.artsgymapp_solo.RecordsFragment"
+        android:label="Records"
+        tools:layout="@layout/fragment_records"/>
+
 </navigation>

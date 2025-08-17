@@ -16,15 +16,15 @@ import java.util.Random;
  * usb permission and hotplug
  */
 public class ZKUSBManager {
-    //usb's vendor id for zkteco
+    
     private int vid = 0x1b55;
-    //usb's product id
+    
     private int pid = 0;
-    //application context
+    
     private Context mContext = null;
 
-    /////////////////////////////////////////////
-    //for usb permission
+    
+    
     private static final String SOURCE_STRING = "0123456789-_abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ";
     private static final int DEFAULT_LENGTH = 16;
     private String ACTION_USB_PERMISSION;
@@ -110,8 +110,8 @@ public class ZKUSBManager {
         mbRegisterFilter = false;
     }
 
-    //End USB Permission
-    /////////////////////////////////////////////
+    
+    
 
     public ZKUSBManager(@NonNull Context context, @NonNull ZKUSBManagerListener listener)
     {
@@ -125,9 +125,9 @@ public class ZKUSBManager {
         mContext = context;
     }
 
-    //0 means success
-    //-1 means device no found
-    //-2 means device no permission
+    
+    
+    
     public void initUSBPermission(int vid, int pid){
         UsbManager usbManager = (UsbManager)mContext.getSystemService(Context.USB_SERVICE);
         UsbDevice usbDevice = null;

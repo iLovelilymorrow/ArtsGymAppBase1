@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ArtsGymApp_Solo</string>
+    <string name="app_name">Art\'s Gym App</string>
 
     <string name="Open">Open</string>
     <string name="Close">Close</string>
@@ -12,6 +12,7 @@
     <string name="View3">Member List </string>
     <string name="View4">Member Types</string>
     <string name="View5">Expired Members</string>
+    <string name="View6">Records</string>
     <string name="memberList_NameEmpty">Member Name: N/A</string>
     <string name="memberList_AgeEmpty">Age: N/A</string>
     <string name="memberList_SearchMembers">Search Members ....</string>
@@ -53,6 +54,9 @@
     <string name="StartCapture">Tap to Scan Fingerprint</string>
     <string name="CapturingTemplate">Capturing Template...</string>
     <string name="PlaceFinger">Place your finger on the sensor.</string>
+    <string name="FilterByMonth">Filter by Month:</string>
+    <string name="ClearRecords">Clear Records</string>
+    <string name="SearchMembers">Search Members</string>
 
     <string name="renewMembership_Title">Renew Membership</string>
     <string name="renewMembership_MemberInfo">Member Information</string>
@@ -71,5 +75,10 @@
     <string name="hint_age">Age*</string>
     <string name="hint_receiptnumber">Receipt Number*</string>
     <string name="hint_memberId">Existing Member ID*</string>
+
+    <string name="Expiring">Expiring</string>
+    <string name="Expired">Expired</string>
+    <string name="Active">Active</string>
+    <string name="New">New</string>
 
 </resources>

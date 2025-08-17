@@ -58,7 +58,7 @@ public class MemberTypeAdapter extends RecyclerView.Adapter<MemberTypeAdapter.Me
         if (newMemberTypeList != null) {
             this.memberTypeList.addAll(newMemberTypeList);
         }
-        notifyDataSetChanged(); // Consider using DiffUtil for better performance with large lists
+        notifyDataSetChanged(); 
     }
 
     static class MemberTypeViewHolder extends RecyclerView.ViewHolder {

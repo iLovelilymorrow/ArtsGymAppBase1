@@ -28,5 +28,10 @@
             android:title="@string/View5"
             android:icon="@drawable/membertypeicon"/>
 
+        <item
+            android:id="@+id/recordsFragment"
+            android:title="@string/View6"
+            android:icon="@drawable/membertypeicon"/>
+
     </group>
 </menu>

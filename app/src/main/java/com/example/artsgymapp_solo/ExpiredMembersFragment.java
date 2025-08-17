@@ -9,8 +9,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.os.Looper; // Import Looper
-import android.os.Handler; // Import Handler
+import android.os.Looper; 
+import android.os.Handler; 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,13 +30,13 @@ public class ExpiredMembersFragment extends Fragment implements ExpiredMemberAda
     private TextView textViewNoExpiredMembers;
     private NavController navController;
 
-    // Executor for background tasks
+    
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 
 
     public ExpiredMembersFragment() {
-        // Required empty public constructor
+        
     }
 
     @Override
@@ -67,15 +67,15 @@ public class ExpiredMembersFragment extends Fragment implements ExpiredMemberAda
         recyclerViewExpiredMembers.setAdapter(adapter);
 
         setupSearchView();
-        // Load data when the fragment is created or becomes visible
-        // loadExpiredMembers(); // Moved to onResume
+        
+        
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        // Refresh data every time the fragment comes to the foreground
-        // This is important if a member is renewed and should disappear from this list
+        
+        
         loadExpiredMembers();
     }
 
@@ -96,11 +96,11 @@ public class ExpiredMembersFragment extends Fragment implements ExpiredMemberAda
     }
 
     private void loadExpiredMembers() {
-        // Show loading indicator if you have one
+        
         executorService.execute(() -> {
             List<MemberDisplayInfo> members = dbHelper.getExpiredMembersForDisplay();
             mainThreadHandler.post(() -> {
-                // Hide loading indicator
+                
                 if (members.isEmpty()) {
                     textViewNoExpiredMembers.setVisibility(View.VISIBLE);
                     recyclerViewExpiredMembers.setVisibility(View.GONE);
@@ -115,34 +115,27 @@ public class ExpiredMembersFragment extends Fragment implements ExpiredMemberAda
 
     @Override
     public void onExpiredMemberClick(MemberDisplayInfo memberDisplayInfo) {
-        // Navigate to RenewMembershipFragment, passing the memberID
+        
         Bundle bundle = new Bundle();
         bundle.putString("memberID", memberDisplayInfo.getMemberID());
-        // You could also pass other relevant info if needed, like the last period ID
-        // bundle.putInt("lastPeriodID", memberDisplayInfo.getPeriodId());
 
         navController.navigate(R.id.action_expiredMembersFragment_to_renewMembershipFragment, bundle);
-        // Ensure you have this action defined in your nav_graph.xml
+        
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // It's good practice to clear references, though NavComponent handles some of this.
+        
         recyclerViewExpiredMembers = null;
         searchViewExpiredMembers = null;
         textViewNoExpiredMembers = null;
-        adapter = null; // Let GC collect it
+        adapter = null; 
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (dbHelper != null) {
-            // If you open dbHelper per fragment instance, close it.
-            // If it's a singleton or managed application-wide, don't close here.
-            // For now, assuming it's okay not to explicitly close as it's passed around.
-        }
         if (!executorService.isShutdown()) {
             executorService.shutdown();
         }

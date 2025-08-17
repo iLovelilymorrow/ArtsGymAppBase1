@@ -58,7 +58,7 @@
             android:layout_width="@dimen/_200sdp"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/memberPictureImageView"
-            android:layout_marginStart="52dp"
+            android:layout_marginStart="@dimen/_40sdp"
             android:layout_marginTop="-1dp"
             android:layout_toEndOf="@id/memberPictureImageView"
 
@@ -168,8 +168,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_below="@id/invisibleLineStart"
-            android:visibility="gone">
+            android:layout_below="@id/invisibleLineStart">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -215,7 +214,7 @@
                 android:inputType="text"
                 android:layout_toEndOf="@id/memberPreviewImageView2"
                 android:layout_alignTop="@id/memberPreviewImageView2"
-                android:layout_marginStart="@dimen/_20sdp"/>
+                android:layout_marginStart="@dimen/_40sdp"/>
 
             <EditText
                 android:id="@+id/lastNameEditText2"

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/_8sdp"
+    android:background="?android:attr/selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/imageViewMemberListItem"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_launcher_background" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/_8sdp">
+
+        <TextView
+                android:id="@+id/textViewNameListItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:text="Member Name"
+                android:textSize="@dimen/_8ssp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/textViewMemberIdListItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID: 0000"
+            android:textSize="@dimen/_7ssp"/>
+
+        <TextView
+            android:id="@+id/textViewLastMembershipListItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Last Membership: XX"
+            android:textSize="@dimen/_7ssp"/>
+
+        <TextView
+            android:id="@+id/textViewStartDateListItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Date: XX"
+            android:textSize="@dimen/_7ssp"/>
+
+        <TextView
+            android:id="@+id/textViewExpireDateListItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Expire Date: XX"
+            android:textSize="@dimen/_7ssp"/>
+
+        <TextView
+            android:id="@+id/textViewLastReceiptListItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Last Receipt: xxxxx"
+            android:textSize="@dimen/_7ssp"/>
+
+        <TextView
+            android:id="@+id/textViewPhoneNumberListItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone Number: xxxxx-xxxx-xx"
+            android:textSize="@dimen/_7ssp"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/statusTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_2sdp"
+            android:text="STATUS"
+            android:textSize="@dimen/_8ssp"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            android:textColor="@android:color/black"/>
+
+        <ImageButton
+            android:id="@+id/buttonDeleteItemMemberRecord"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_below="@+id/statusTextView"
+            android:src="@drawable/ic_delete"
+            android:scaleType="fitXY"
+            android:layout_marginEnd="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@android:color/holo_red_dark"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

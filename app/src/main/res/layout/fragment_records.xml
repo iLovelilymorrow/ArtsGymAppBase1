@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingVertical="@dimen/_10sdp"
+    android:paddingHorizontal="@dimen/_20sdp">
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchBarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_background_grey_corner"
+        app:iconifiedByDefault="false"
+        app:queryHint="@string/SearchMembers"/>
+
+    <TextView
+        android:id="@+id/filterByMonthTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/FilterByMonth"
+        android:textStyle="bold"
+        android:layout_alignBottom="@id/clearRecordsButton"
+        android:layout_alignTop="@id/clearRecordsButton"
+        android:textColor="@color/black"/>
+
+    <Spinner
+        android:id="@+id/filterByMonthSpinner"
+        android:padding="0dp"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/filterByMonthTextView"
+        android:layout_alignBottom="@id/filterByMonthTextView"
+        android:layout_alignTop="@id/filterByMonthTextView"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/textViewStatusCounts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/clearRecordsButton"
+        android:layout_marginBottom="@dimen/_3sdp"
+        android:text="awdawd"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/textViewTotalCounts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/filterByMonthSpinner"
+        android:layout_below="@id/searchBarView"
+        android:layout_alignBottom="@id/clearRecordsButton"
+        android:layout_alignTop="@id/clearRecordsButton"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:gravity="center"
+        android:text="awdawd"
+        android:textColor="@color/black"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/clearRecordsButton"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/searchBarView"
+        android:layout_alignEnd="@id/searchBarView"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/_4sdp"
+
+        app:backgroundTint="@color/grey"
+        android:text="@string/ClearRecords"
+        android:background="@drawable/border_background_grey"
+        android:textColor="@color/black"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewExpiredMembers"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/textViewStatusCounts"
+        android:layout_alignParentBottom="true"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_member_record"/>
+
+    <TextView
+        android:id="@+id/textViewNoExpiredMembers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="No records yet."
+        android:textSize="18sp"
+        android:visibility="gone"/>
+
+</RelativeLayout>

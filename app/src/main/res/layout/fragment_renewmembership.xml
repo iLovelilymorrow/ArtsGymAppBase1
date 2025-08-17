@@ -417,44 +417,52 @@
                     android:singleLine="true"
                     android:background="@drawable/border_background_grey"/>
 
-                <TextView
-                    android:id="@+id/fingerprintTitle_TextView"
+                <RelativeLayout
+                    android:id="@+id/fingerprintContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/genderSpinner2ndMember"
-                    android:layout_marginStart="@dimen/_10sdp"
+                    android:visibility="gone">
 
-                    android:text="@string/Fingerprint"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_8ssp"
-                    android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/fingerprintTitle_TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
 
-                <ImageView
-                    android:id="@+id/fingerprintImageView"
-                    android:layout_width="@dimen/_88sdp"
-                    android:layout_height="@dimen/_88sdp"
-                    android:layout_below="@id/fingerprintTitle_TextView"
-                    android:layout_alignStart="@id/fingerprintTitle_TextView"
+                        android:text="@string/Fingerprint"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_8ssp"
+                        android:textStyle="bold"/>
 
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="-2dp"
-                    android:background="@drawable/border_background_grey"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/addfingerprint" />
+                    <ImageView
+                        android:id="@+id/fingerprintImageView"
+                        android:layout_width="@dimen/_88sdp"
+                        android:layout_height="@dimen/_88sdp"
+                        android:layout_below="@id/fingerprintTitle_TextView"
+                        android:layout_alignStart="@id/fingerprintTitle_TextView"
 
-                <TextView
-                    android:id="@+id/fingerprintStatusTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/StartCapture"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_8ssp"
-                    android:textStyle="bold"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="-2dp"
+                        android:background="@drawable/border_background_grey"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/addfingerprint" />
 
-                    android:layout_below="@id/fingerprintImageView"
-                    android:layout_alignStart="@id/fingerprintImageView"
-                    android:layout_alignEnd="@id/fingerprintImageView"
-                    android:gravity="center"/>
+                    <TextView
+                        android:id="@+id/fingerprintStatusTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/StartCapture"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_8ssp"
+                        android:textStyle="bold"
+
+                        android:layout_below="@id/fingerprintImageView"
+                        android:layout_alignStart="@id/fingerprintImageView"
+                        android:layout_alignEnd="@id/fingerprintImageView"
+                        android:gravity="center"/>
+
+                </RelativeLayout>
 
             </RelativeLayout>
 
@@ -473,7 +481,7 @@
             android:textSize="@dimen/_10ssp"/>
 
         <TextView
-            android:id="@+id/membershipTypeSpinner_Title"
+            android:id="@+id/membershipTypeTextView_Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvTitle2"
@@ -488,7 +496,7 @@
             android:id="@+id/memberTypeSpinner"
             android:layout_width="@dimen/_175sdp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/membershipTypeSpinner_Title"
+            android:layout_below="@id/membershipTypeTextView_Title"
 
             android:background="@drawable/border_background_grey"/>
 
