@@ -6,8 +6,6 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class ZipUtils {
-
-    private static final String TAG = "ZipUtils";
     private static final int BUFFER_SIZE = 4096; 
 
     public static void zipDirectory(File sourceDir, OutputStream destinationZipFile) throws IOException {
@@ -35,7 +33,6 @@ public class ZipUtils {
 
         for (File file : files)
         {
-
             String entryName = currentPathInZip.isEmpty() ? file.getName() : currentPathInZip + "/" + file.getName();
 
             if (file.isDirectory()) {

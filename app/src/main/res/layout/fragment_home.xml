@@ -1,20 +1,142 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_margin="@dimen/_30sdp">
+    android:background="@color/white"
+    android:tag="port">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/grey"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineTopBarMaxHeight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/titleLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.234" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/titleRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.35" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/titleTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.28" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/titleBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.75" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/bebasneue"
+            android:text="@string/Home"
+            android:textColor="@color/black"
+            android:textSize="@dimen/titlepagesize"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/titleBottom"
+            app:layout_constraintEnd_toStartOf="@+id/titleRight"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/titleLeft"
+            app:layout_constraintTop_toTopOf="@+id/titleTop"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/marginGuidelineTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".12" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/marginGuidelineBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.975" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/marginGuidelineStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.036111113" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/marginGuidelineEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9611111" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTopBarMaxHeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".1" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/marginGuidelineBottom"
+        app:layout_constraintEnd_toStartOf="@+id/marginGuidelineEnd"
+        app:layout_constraintStart_toStartOf="@+id/marginGuidelineStart"
+        app:layout_constraintTop_toTopOf="@+id/marginGuidelineTop">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/imageLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".275" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/imageRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".725" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/imageBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".275" />
 
         <ImageView
             android:id="@+id/memberPictureImageView"
-            android:layout_width="@dimen/_150sdp"
-            android:layout_height="@dimen/_150sdp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:background="@drawable/border_background_grey"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toTopOf="@+id/imageBottom"
+            app:layout_constraintEnd_toStartOf="@+id/imageRight"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/imageLeft"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/memberId_Title_TextView"
@@ -22,27 +144,67 @@
             android:layout_height="wrap_content"
             android:text="@string/MemberId"
             android:textColor="@color/black"
-            android:textSize="@dimen/_8ssp"
+            android:textSize="@dimen/regularTitleTextHomeFragment"
             android:textStyle="bold"
-
-            android:layout_below="@id/memberPictureImageView"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_alignStart="@id/memberPictureImageView"
-            android:layout_alignEnd="@id/memberPictureImageView"
-            android:gravity="center"/>
+            app:layout_constraintBottom_toTopOf="@+id/memberidBottom"
+            app:layout_constraintEnd_toStartOf="@+id/memberidtitleRight"
+            app:layout_constraintHorizontal_bias="0.384"
+            app:layout_constraintStart_toStartOf="@+id/memberidLeft"
+            app:layout_constraintTop_toTopOf="@+id/memberidTop" />
 
         <TextView
             android:id="@+id/memberId_TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_background_grey"
+            android:textColor="@color/black"
+            android:textSize="@dimen/regularTextHomeFragment"
+            app:layout_constraintBottom_toTopOf="@+id/memberidBottom"
+            app:layout_constraintEnd_toStartOf="@+id/memberidRight"
+            app:layout_constraintStart_toStartOf="@+id/memberidtextLeft"
+            app:layout_constraintTop_toTopOf="@+id/memberidTop" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/memberidTop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_7ssp"
-            android:background="@drawable/border_background_grey"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".296"/>
 
-            android:layout_below="@id/memberId_Title_TextView"
-            android:layout_alignStart="@id/memberPictureImageView"
-            android:layout_alignEnd="@id/memberPictureImageView"
-            android:gravity="center"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/memberidBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".33"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/memberidLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".304"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/memberidRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".694"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/memberidtitleRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".514"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/memberidtextLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".542"/>
 
         <TextView
             android:id="@+id/membershipType_Title_TextView"
@@ -50,172 +212,402 @@
             android:layout_height="wrap_content"
             android:text="@string/MembershipType"
             android:textColor="@color/black"
-            android:textSize="@dimen/_8ssp"
+            android:textSize="@dimen/regularTitleTextHomeFragment"
             android:textStyle="bold"
-
-            android:layout_below="@id/memberId_TextView"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_alignStart="@id/memberPictureImageView"
-            android:layout_alignEnd="@id/memberPictureImageView"
-            android:gravity="center"/>
+            app:layout_constraintEnd_toStartOf="@+id/memberidRight"
+            app:layout_constraintStart_toStartOf="@+id/memberidLeft"
+            app:layout_constraintTop_toTopOf="@+id/membershiptypeTop" />
 
         <TextView
             android:id="@+id/membershipTypeTextView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:textAlignment="center"
+            android:background="@drawable/border_background_grey"
+            android:textColor="@color/black"
+            android:textSize="@dimen/regularTextHomeFragment"
+            app:layout_constraintBottom_toTopOf="@+id/membershiptypeBottom"
+            app:layout_constraintEnd_toStartOf="@+id/memberidRight"
+            app:layout_constraintStart_toStartOf="@+id/memberidLeft"
+            app:layout_constraintTop_toBottomOf="@+id/membershipType_Title_TextView" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/membershiptypeTop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".345"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/membershiptypeBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".414"/>
+
+        <TextView
+            android:id="@+id/fullName_Title_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Name"
             android:textColor="@color/black"
-            android:textSize="@dimen/_7ssp"
+            android:textSize="@dimen/regularTitleTextHomeFragment"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/nameTitleLeft"
+            app:layout_constraintStart_toStartOf="@+id/nameTitleRight"
+            app:layout_constraintTop_toTopOf="@+id/nameTop" />
+
+        <TextView
+            android:id="@+id/fullName_TextView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:background="@drawable/border_background_grey"
+            android:textColor="@color/black"
+            android:textSize="@dimen/regularTextHomeFragment"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/nameBottom"
+            app:layout_constraintEnd_toStartOf="@+id/nameLeft"
+            app:layout_constraintStart_toStartOf="@+id/nameRight"
+            app:layout_constraintTop_toBottomOf="@+id/fullName_Title_TextView" />
 
-            android:layout_below="@id/membershipType_Title_TextView"
-            android:layout_alignStart="@id/memberPictureImageView"
-            android:layout_alignEnd="@id/memberPictureImageView"
-            android:gravity="center"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/nameTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".43"/>
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="@dimen/_150sdp"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/nameBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".495"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/nameRight"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_toEndOf="@+id/memberPictureImageView"
-            android:layout_marginStart="@dimen/_20sdp">
+            app:layout_constraintGuide_percent=".197"/>
 
-            <TextView
-                android:id="@+id/expiringTextWarning"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="warning text here"
-                android:textColor="@color/red"
-                android:textSize="@dimen/_8ssp"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:visibility="gone"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/nameLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".797"/>
 
-            <TextView
-                android:id="@+id/fullName_Title_TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="@string/Name"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_8ssp"
-                android:textStyle="bold" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/nameTitleRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".445"/>
 
-            <TextView
-                android:id="@+id/fullName_TextView"
-                android:layout_width="@dimen/_150sdp"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_7ssp"
-                android:background="@drawable/border_background_grey"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/nameTitleLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".556"/>
 
-            <TextView
-                android:id="@+id/age_Title_TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:text="@string/Age"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_8ssp"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/age_Title_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Age"
+            android:textColor="@color/black"
+            android:textSize="@dimen/regularTitleTextHomeFragment"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/ageTitleRight"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/ageTitleLeft"
+            app:layout_constraintTop_toTopOf="@+id/ageTop" />
 
-            <TextView
-                android:id="@+id/age_TextView"
-                android:layout_width="@dimen/_150sdp"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_7ssp"
-                android:background="@drawable/border_background_grey"/>
+        <TextView
+            android:id="@+id/age_TextView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/border_background_grey"
+            android:textColor="@color/black"
+            android:textSize="@dimen/regularTextHomeFragment"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/ageBottom"
+            app:layout_constraintEnd_toStartOf="@+id/ageLeft"
+            app:layout_constraintStart_toStartOf="@+id/ageRight"
+            app:layout_constraintTop_toBottomOf="@+id/age_Title_TextView" />
 
-        </LinearLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/ageTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".514"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/ageBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".58"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/ageRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".386"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/ageLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".613"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/ageTitleLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".463"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/ageTitleRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".538"/>
 
         <TextView
             android:id="@+id/membershipStarted_Title_TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/memberId_Title_TextView"
-            android:layout_toEndOf="@id/memberPictureImageView"
-            android:layout_alignStart="@id/linearLayout"
             android:text="@string/MembershipStarted"
             android:textColor="@color/black"
-            android:textSize="@dimen/_8ssp"
-            android:textStyle="bold" />
+            android:textSize="@dimen/regularTitleTextHomeFragment"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/startedBottom"
+            app:layout_constraintEnd_toStartOf="@+id/memberidtextLeft"
+            app:layout_constraintHorizontal_bias="0.508"
+            app:layout_constraintStart_toStartOf="@+id/startedLeft"
+            app:layout_constraintTop_toTopOf="@+id/startedTop"
+            app:layout_constraintVertical_bias="0.5" />
 
         <TextView
             android:id="@+id/membershipStarted_TextView"
-            android:layout_width="@dimen/_150sdp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/membershipStarted_Title_TextView"
-            android:layout_alignStart="@id/membershipStarted_Title_TextView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/border_background_grey"
             android:textColor="@color/black"
-            android:textSize="@dimen/_7ssp"
-            android:background="@drawable/border_background_grey"/>
+            android:textSize="@dimen/regularTextHomeFragment"
+            app:layout_constraintBottom_toTopOf="@+id/startedBottom"
+            app:layout_constraintEnd_toStartOf="@+id/startedRight"
+            app:layout_constraintStart_toStartOf="@+id/startedTextLeft"
+            app:layout_constraintTop_toTopOf="@+id/startedTop" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/startedTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".613"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/startedBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".646"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/startedLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".05"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/startedRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".953"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/startedTextLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".56"/>
 
         <TextView
             android:id="@+id/expiring_Title_TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/membershipType_Title_TextView"
-            android:layout_toEndOf="@id/memberPictureImageView"
-            android:layout_alignStart="@id/linearLayout"
             android:text="@string/MembershipExpiring"
             android:textColor="@color/black"
-            android:textSize="@dimen/_8ssp"
-            android:textStyle="bold" />
+            android:textSize="@dimen/regularTitleTextHomeFragment"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/expiringBottom"
+            app:layout_constraintEnd_toStartOf="@+id/memberidtextLeft"
+            app:layout_constraintStart_toStartOf="@+id/expiringTitleLeft"
+            app:layout_constraintTop_toTopOf="@+id/expiringTop" />
 
         <TextView
             android:id="@+id/expiring_TextView"
-            android:layout_width="@dimen/_150sdp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/expiring_Title_TextView"
-            android:layout_alignStart="@id/expiring_Title_TextView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/border_background_grey"
             android:textColor="@color/black"
-            android:textSize="@dimen/_7ssp"
-            android:background="@drawable/border_background_grey"/>
+            android:textSize="@dimen/regularTextHomeFragment"
+            app:layout_constraintBottom_toTopOf="@+id/expiringBottom"
+            app:layout_constraintEnd_toStartOf="@+id/startedRight"
+            app:layout_constraintStart_toStartOf="@+id/startedTextLeft"
+            app:layout_constraintTop_toTopOf="@+id/expiringTop" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/expiringTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".676"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/expiringBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".71"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/expiringTitleLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".044"/>
 
         <TextView
             android:id="@+id/daysLeft_Title_TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_toEndOf="@id/linearLayout"
-            android:layout_marginStart="@dimen/_25sdp"
-            android:layout_marginEnd="@dimen/_25sdp"
-            android:textAlignment="center"
             android:text="@string/DaysLeft"
+            android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="@dimen/_8ssp"
-            android:textStyle="bold" />
+            android:textSize="@dimen/regularTitleTextHomeFragment"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/daysleftTitleRight"
+            app:layout_constraintHorizontal_bias="0.515"
+            app:layout_constraintStart_toStartOf="@+id/daysleftTitleLeft"
+            app:layout_constraintTop_toTopOf="@+id/daysleftTop" />
 
         <TextView
-            android:id="@+id/daysLeft_TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/daysLeft_Title_TextView"
-            android:layout_alignStart="@id/daysLeft_Title_TextView"
-            android:layout_alignEnd="@id/daysLeft_Title_TextView"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/_3sdp"
-
+            android:id="@+id/daysLeftTextView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:background="@drawable/border_background_grey"
             android:textColor="@color/black"
-            android:textSize="@dimen/_7ssp"/>
+            android:textSize="@dimen/regularTextHomeFragment"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/daysleftBottom"
+            app:layout_constraintEnd_toStartOf="@+id/daysleftTextRight"
+            app:layout_constraintStart_toStartOf="@+id/daysleftTextLeft"
+            app:layout_constraintTop_toBottomOf="@+id/daysLeft_Title_TextView" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/daysleftTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".744"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/daysleftBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".8106"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/daysleftTitleLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".23"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/daysleftTitleRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".769"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/daysleftTextLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".349"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/daysleftTextRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".649"/>
+
+        <TextView
+            android:id="@+id/expiringTextWarning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="warning text here"
+            android:visibility="gone"
+            android:textAlignment="center"
+            android:textColor="@color/red"
+            android:textSize="@dimen/regularTitleTextHomeFragment"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/warningBottom"
+            app:layout_constraintEnd_toStartOf="@+id/daysleftTextRight"
+            app:layout_constraintStart_toStartOf="@+id/daysleftTextLeft"
+            app:layout_constraintTop_toTopOf="@+id/warningTop" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/warningTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".827"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/warningBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".859"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/buttonClearPageTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".90" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonConfirmEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_45sdp"
-            android:layout_alignBottom="@id/expiring_TextView"
-            android:layout_alignEnd="@id/daysLeft_TextView"
-            android:layout_alignStart="@id/daysLeft_TextView"
-            android:gravity="center"
-
-            android:text="@string/ClearPage"
+            android:id="@+id/buttonClearPage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:background="@drawable/border_background_grey"
+            android:text="@string/ClearPage"
+            android:textColor="@color/black"
+            android:textSize="@dimen/buttonTextHomeFragment"
+            android:textStyle="bold"
             app:backgroundTint="@color/grey"
-            android:textColor="@color/black" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/buttonClearPageTop" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

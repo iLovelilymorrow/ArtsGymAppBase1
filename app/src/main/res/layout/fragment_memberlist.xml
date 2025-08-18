@@ -1,120 +1,239 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingVertical="@dimen/_10sdp"
-    android:paddingHorizontal="@dimen/_20sdp">
+    android:background="@color/white"
+    android:tag="port">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchBarView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/border_background_grey_corner"
-        app:iconifiedByDefault="false"
-        app:queryHint="@string/memberList_SearchMembers"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/grey"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineTopBarMaxHeight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <RadioGroup
-            android:id="@+id/radioGroupFilters"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/titleLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.234" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/titleRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.35" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/titleTop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_below="@+id/searchBarView1"
-            android:layout_marginVertical="@dimen/_4sdp">
+            app:layout_constraintGuide_percent="0.28" />
 
-            <RadioButton
-                android:id="@+id/radioButtonNoFilter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="All"
-                android:checked="true"
-                android:layout_marginEnd="@dimen/_4sdp"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/titleBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.75" />
 
-            <RadioButton
-                android:id="@+id/radioButtonFilterExpiringSoon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Expiring Soon"/>
-        </RadioGroup>
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/bebasneue"
+            android:text="@string/MemberList"
+            android:textColor="@color/black"
+            android:textSize="@dimen/titlepagesize"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/titleBottom"
+            app:layout_constraintEnd_toStartOf="@+id/titleRight"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/titleLeft"
+            app:layout_constraintTop_toTopOf="@+id/titleTop"
+            app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/filterByMonthTextView"
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/marginGuidelineTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/radioGroupFilters"
-        android:gravity="center"
-        android:text="@string/FilterByMonth"
-        android:textStyle="bold"
-        android:layout_alignBottom="@id/radioGroupFilters"
-        android:layout_alignTop="@id/radioGroupFilters"
-        android:layout_marginStart="@dimen/_20sdp"
-        android:textColor="@color/black"/>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".12" />
 
-    <Spinner
-        android:id="@+id/filterByMonthSpinner"
-        android:padding="0dp"
-        android:layout_width="@dimen/_80sdp"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/filterByMonthTextView"
-        android:layout_alignBottom="@id/filterByMonthTextView"
-        android:layout_alignTop="@id/filterByMonthTextView"
-        android:gravity="center"/>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/exportButton"
-        android:layout_width="wrap_content"
-        android:layout_below="@id/searchBarView1"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/_4sdp"
-        android:layout_alignEnd="@id/searchBarView1"
-
-        app:backgroundTint="@color/grey"
-        android:text="@string/exportButton"
-        android:background="@drawable/border_background_grey"
-        android:textColor="@color/black"/>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/importButton"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/marginGuidelineBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/searchBarView1"
-        android:layout_toStartOf="@id/exportButton"
-        android:layout_marginVertical="@dimen/_4sdp"
-        android:layout_marginEnd="@dimen/_8sdp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.975" />
 
-        app:backgroundTint="@color/grey"
-        android:text="@string/importButton"
-        android:background="@drawable/border_background_grey"
-        android:textColor="@color/black"/>
-
-    <TextView
-        android:id="@+id/memberCountByMembershipType_TextView"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/marginGuidelineStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/radioGroupFilters"
-        android:layout_marginBottom="@dimen/_3sdp"
-        android:text="awdawd"
-        android:textColor="@color/black"/>
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.036111113" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/membersRecyclerView"
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/marginGuidelineEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9611111" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTopBarMaxHeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".1" />
+
+    <ScrollView
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_below="@id/memberCountByMembershipType_TextView"
-        android:layout_alignParentBottom="true"
-        tools:listitem="@layout/item_member"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        app:layout_constraintBottom_toTopOf="@+id/marginGuidelineBottom"
+        app:layout_constraintEnd_toStartOf="@+id/marginGuidelineEnd"
+        app:layout_constraintStart_toStartOf="@+id/marginGuidelineStart"
+        app:layout_constraintTop_toTopOf="@+id/marginGuidelineTop">
 
-    <TextView
-        android:id="@+id/textViewNoExpiredMembers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_3sdp"
-        android:layout_below="@id/radioGroupFilters"
-        android:layout_centerInParent="true"
-        android:text="No recorded members found."
-        android:textSize="18sp"
-        android:visibility="gone" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-</RelativeLayout>
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchBarView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_background_grey_corner"
+                android:padding="@dimen/_2sdp"
+                app:iconifiedByDefault="false"
+                app:queryHint="@string/memberList_SearchMembers" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_8sdp">
+
+                <RadioGroup
+                    android:id="@+id/radioGroupFilters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border_background_grey_corner"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/_6sdp"
+                    android:layout_marginVertical="@dimen/_4sdp">
+
+                    <RadioButton
+                        android:id="@+id/radioButtonNoFilter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/_4sdp"
+                        android:paddingEnd="@dimen/_4sdp"
+                        android:button="@drawable/radio_button_selector"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:text="All"
+                        android:checked="true"
+                        android:buttonTint="@null"
+                        />
+
+                    <RadioButton
+                        android:id="@+id/radioButtonFilterExpiringSoon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_14sdp"
+                        android:paddingStart="@dimen/_4sdp"
+                        android:button="@drawable/radio_button_selector"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:text="Expiring Soon"
+                        android:buttonTint="@null"
+                        />
+
+                </RadioGroup>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/exportButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    app:backgroundTint="@color/grey"
+                    android:textSize="@dimen/_6ssp"
+                    android:textStyle="bold"
+                    android:text="@string/exportButton"
+                    android:background="@drawable/border_background_grey"
+                    android:textColor="@color/black" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/importButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="@dimen/_6ssp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/grey"
+                    android:text="@string/importButton"
+                    android:background="@drawable/border_background_grey"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/filterByMonthTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/FilterByMonth"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="@dimen/_8sdp" />
+
+            <Spinner
+                android:id="@+id/filterByMonthSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="0dp" />
+
+            <TextView
+                android:id="@+id/memberCountByMembershipType_TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_6sdp"
+                android:text="Member Count: 0"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/membersRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/item_member"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <TextView
+                android:id="@+id/textViewNoExpiredMembers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:visibility="gone"
+                android:layout_gravity="center_horizontal"
+                android:text="No recorded member found."
+                android:textSize="@dimen/_12ssp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

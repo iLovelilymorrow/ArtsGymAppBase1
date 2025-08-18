@@ -3,6 +3,7 @@ package com.example.artsgymapp_solo
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -58,5 +59,20 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     fun logoutAdmin() {
         _isAdminModeActive.value = false
+    }
+
+    private val _runCount = MutableLiveData<Int>(0)
+    val runCount: LiveData<Int> get() = _runCount
+
+    fun setRunCount(value: Int) {
+        _runCount.value = value
+    }
+
+    fun incrementRunCount() {
+        _runCount.value = (_runCount.value ?: 0) + 1
+    }
+
+    fun getRunCountValue(): Int {
+        return _runCount.value ?: 0
     }
 }

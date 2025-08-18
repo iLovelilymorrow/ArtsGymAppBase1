@@ -11,12 +11,16 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
         android:hint="Admin Username">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextAdminLoginUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/border_background_grey"
+            android:textStyle="bold"
             android:inputType="text"
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -27,6 +31,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
         android:hint="Admin Password"
         app:passwordToggleEnabled="true">
 
@@ -34,6 +40,8 @@
             android:id="@+id/editTextAdminLoginPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/border_background_grey"
+            android:textStyle="bold"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -45,10 +53,12 @@
 
         <Button
             android:id="@+id/buttonAdminCancelLogin"
-            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="@color/grey"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:text="Cancel"
             android:layout_marginEnd="8dp"/>
 
@@ -57,6 +67,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="@color/grey"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:text="Login"
             android:layout_marginStart="8dp"/>
     </LinearLayout>

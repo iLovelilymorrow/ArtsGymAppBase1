@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/headerTitle"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/_10ssp"
                 android:textColor="@color/black"
                 android:textStyle="bold"/>
 
@@ -42,8 +42,9 @@
                 android:layout_height="wrap_content"
                 android:text="@string/headerSubtitle"
                 android:layout_marginTop="@dimen/_2sdp"
-                android:textSize="@dimen/_9ssp"
-                android:textColor="@color/black"/>
+                android:textSize="@dimen/_7ssp"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
 
         </LinearLayout>
 
@@ -55,6 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_2sdp"
         android:textColor="@color/black"
+        android:textStyle="bold"
         app:thumbTint="@color/switch_thumb_selector"/>
 
 </LinearLayout>

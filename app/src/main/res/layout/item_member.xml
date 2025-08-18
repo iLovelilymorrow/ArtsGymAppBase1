@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="@dimen/_8sdp"
-    android:background="?attr/selectableItemBackground">
+    android:background="@drawable/border_background_grey"
+    android:layout_marginBottom="@dimen/_3sdp">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -79,7 +80,7 @@
             android:layout_height="wrap_content"
             android:text="Gender"
             android:textSize="@dimen/_7ssp"
-            android:textColor="@android:color/darker_gray"/>
+            android:textColor="@android:color/white"/>
 
         <TextView
             android:id="@+id/memberAgeTextView"
@@ -87,7 +88,7 @@
             android:layout_height="wrap_content"
             android:text="Age"
             android:textSize="@dimen/_7ssp"
-            android:textColor="@android:color/darker_gray"/>
+            android:textColor="@android:color/white"/>
 
         <TextView
             android:id="@+id/memberPhoneNumberTextView"
@@ -95,7 +96,7 @@
             android:layout_height="wrap_content"
             android:text="Phone Number"
             android:textSize="@dimen/_7ssp"
-            android:textColor="@android:color/darker_gray"/>
+            android:textColor="@android:color/white"/>
 
         <TextView
             android:id="@+id/startDateTextView"

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,16 +51,18 @@ import androidx.navigation.Navigation;
 
 import com.google.android.material.button.MaterialButton;
 
-public class MemberListFragment extends Fragment {
+public class MemberListFragment extends Fragment
+{
     private static final String TAG = "MemberListFragment";
     private RecyclerView membersRecyclerView;
     private MemberAdapter memberAdapter;
     private List<MemberDisplayInfo> allMembersDisplayList;
     private DatabaseHelper databaseHelper;
-    private SearchView searchView;
+    private SearchView searchBarView1;
     private NavController navController;
     private RadioGroup radioGroupFilters;
     private TextView memberCountByMembershipType_TextView;
+    private TextView textViewNoExpiredMembers;
     private Spinner filterByMonthSpinner;
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -91,12 +94,21 @@ public class MemberListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_memberlist, container, false);
 
         membersRecyclerView = view.findViewById(R.id.membersRecyclerView);
-        searchView = view.findViewById(R.id.searchBarView1);
+        searchBarView1 = view.findViewById(R.id.searchBarView1);
         radioGroupFilters = view.findViewById(R.id.radioGroupFilters);
         exportButton = view.findViewById(R.id.exportButton);
         importButton = view.findViewById(R.id.importButton);
         filterByMonthSpinner = view.findViewById(R.id.filterByMonthSpinner);
         memberCountByMembershipType_TextView = view.findViewById(R.id.memberCountByMembershipType_TextView);
+        textViewNoExpiredMembers = view.findViewById(R.id.textViewNoExpiredMembers);
+
+        int searchSrcTextId = getResources().getIdentifier("search_src_text", "id", requireContext().getPackageName());
+        TextView searchText = searchBarView1.findViewById(searchSrcTextId);
+
+        if (searchText != null) {
+            int hintColor = ContextCompat.getColor(requireContext(), R.color.white);
+            searchText.setHintTextColor(hintColor);
+        }
 
         return view;
     }
@@ -128,11 +140,12 @@ public class MemberListFragment extends Fragment {
         }
     }
 
-    private void setupMonthSpinner() {
+    private void setupMonthSpinner()
+    {
         ArrayAdapter<CharSequence> monthAdapter = ArrayAdapter.createFromResource(requireContext(),
-                R.array.month_array, android.R.layout.simple_spinner_item);
+                R.array.month_array, R.layout.spinner_item_months_collapsed);
 
-        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        monthAdapter.setDropDownViewResource(R.layout.spinner_item_months);
         filterByMonthSpinner.setAdapter(monthAdapter);
 
         LocalDate today = LocalDate.now();
@@ -494,7 +507,8 @@ public class MemberListFragment extends Fragment {
         }
 
         
-        if (memberAdapter != null) {
+        if (memberAdapter != null)
+        {
             allMembersDisplayList.clear();
             memberAdapter.setMemberDisplayInfoList(new ArrayList<>()); 
         }
@@ -504,15 +518,16 @@ public class MemberListFragment extends Fragment {
         Toast.makeText(getContext(), "Refreshing Data.", Toast.LENGTH_SHORT).show();
     }
 
-    private void setupRecyclerView() {
+    private void setupRecyclerView()
+    {
         memberAdapter = new MemberAdapter(new ArrayList<>(), requireContext()); 
 
         membersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         membersRecyclerView.setHasFixedSize(true);
         membersRecyclerView.setAdapter(memberAdapter);
-
         
-        memberAdapter.setOnItemClickListener(memberInfo -> {
+        memberAdapter.setOnItemClickListener(memberInfo ->
+        {
             if (memberInfo != null && memberInfo.getMemberID() != null) {
                 
                 Log.d(TAG, "Item clicked: " + memberInfo.getFirstName() + " ID: " + memberInfo.getMemberID() +
@@ -529,12 +544,12 @@ public class MemberListFragment extends Fragment {
                 
                 bundle.putInt("periodID", memberInfo.getPeriodId()); 
 
-                if (navController != null) {
-                    
-                    
+                if (navController != null)
+                {
                     navController.navigate(R.id.action_memberListFragment_to_memberEditFragment, bundle);
-                } else {
-                    
+                }
+                else
+                {
                     Toast.makeText(getContext(), "Error: Cannot open edit screen.", Toast.LENGTH_SHORT).show();
                 }
             } else {
@@ -592,8 +607,9 @@ public class MemberListFragment extends Fragment {
         }
     }
 
-    private void setupSearchView() {
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+    private void setupSearchView()
+    {
+        searchBarView1.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 currentSearchQuery = query;
@@ -649,7 +665,8 @@ public class MemberListFragment extends Fragment {
         memberCountByMembershipType_TextView.setVisibility(View.VISIBLE);
     }
 
-    private void applyFiltersAndSearch() {
+    private void applyFiltersAndSearch()
+    {
         if (allMembersDisplayList == null) {
             allMembersDisplayList = new ArrayList<>();
         }
@@ -702,7 +719,20 @@ public class MemberListFragment extends Fragment {
 
         updateMemberTypeCounts(finalList);
 
-        if (finalList.isEmpty() && (currentSearchQuery != null && !currentSearchQuery.trim().isEmpty())) {
+        if (textViewNoExpiredMembers != null)
+        {
+            if (finalList.isEmpty())
+            {
+                textViewNoExpiredMembers.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                textViewNoExpiredMembers.setVisibility(View.GONE);
+            }
+        }
+
+        if (finalList.isEmpty() && (currentSearchQuery != null && !currentSearchQuery.trim().isEmpty()))
+        {
             Toast.makeText(getContext(), "No members found matching your criteria.", Toast.LENGTH_SHORT).show();
 
             if (memberCountByMembershipType_TextView != null) {
@@ -717,7 +747,8 @@ public class MemberListFragment extends Fragment {
                 memberCountByMembershipType_TextView.setVisibility(View.GONE);
             }
         } else if (!finalList.isEmpty()){
-            if (memberCountByMembershipType_TextView != null) {
+            if (memberCountByMembershipType_TextView != null)
+            {
                 memberCountByMembershipType_TextView.setVisibility(View.VISIBLE);
             }
         }
@@ -770,7 +801,7 @@ public class MemberListFragment extends Fragment {
         super.onDestroyView();
         
         membersRecyclerView = null;
-        searchView = null;
+        searchBarView1 = null;
         radioGroupFilters = null;
         exportButton = null;
         importButton = null;

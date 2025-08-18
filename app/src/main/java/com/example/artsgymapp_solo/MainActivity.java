@@ -2,17 +2,26 @@ package com.example.artsgymapp_solo;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -20,12 +29,15 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Looper;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +45,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -55,12 +68,11 @@ import android.os.Handler;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity
+{
     private static MainActivity instance;
     private NavController navController;
     private AppBarConfiguration appBarConfiguration;
-    Toolbar toolbar;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     private FrameLayout idleOverlayView;
@@ -78,12 +90,34 @@ public class MainActivity extends AppCompatActivity {
     private Handler idleHandler;
     private Runnable idleRunnable;
 
+    private MainActivityViewModel mainActivityViewModel;
+
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /// ////////////////////////////////////////////////////////////
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        float densityDpi = metrics.densityDpi;
+        int widthPixels = metrics.widthPixels;
+        int heightPixels = metrics.heightPixels;
+
+        // Approximate physical size in inches
+        double widthInches = (double) widthPixels / densityDpi;
+        double heightInches = (double) heightPixels / densityDpi;
+        double diagonalInches = Math.sqrt(widthInches * widthInches + heightInches * heightInches);
+
+        Log.d("ScreenInfo", "Density: " + densityDpi + " dpi, Resolution: " + widthPixels + "x" + heightPixels +
+                ", Approx. Size: " + String.format("%.2f", diagonalInches) + " inches");
+
+        /// ///////////////////////////////////////////////////////
+
+        mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
         instance = this;
         databaseHelper = new DatabaseHelper(this);
         settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
@@ -92,9 +126,6 @@ public class MainActivity extends AppCompatActivity {
             currentStoredAdminUsername = username;
             
         });
-
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -112,7 +143,8 @@ public class MainActivity extends AppCompatActivity {
                 .setOpenableLayout(drawerLayout)
                 .build();
 
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        ImageButton imageButton = findViewById(R.id.imageButton_open_drawer);
+        imageButton.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
 
         if (navigationView != null)
         {
@@ -120,11 +152,11 @@ public class MainActivity extends AppCompatActivity {
             setupTripleTapForCredentials(navigationView);
         }
 
-        
-        settingsViewModel.isAdminModeActiveLiveData().observe(this, isActive -> {
-            if (adminModeToggleSwitch != null) {
+        settingsViewModel.isAdminModeActiveLiveData().observe(this, isActive ->
+        {
+            if (adminModeToggleSwitch != null)
+            {
                 adminModeToggleSwitch.setChecked(isActive);
-                
             }
         });
 
@@ -137,7 +169,6 @@ public class MainActivity extends AppCompatActivity {
             hideIdleOverlay();
             resetIdleTimer();
         });
-
 
         idleOverlayView.setVisibility(View.GONE);
         idleHandler = new Handler(Looper.getMainLooper());
@@ -155,6 +186,13 @@ public class MainActivity extends AppCompatActivity {
         zkusbManager.registerUSBPermissionReceiver();
 
         attemptAutoStartDevice();
+
+        ViewCompat.setOnApplyWindowInsetsListener(rootView, (v, insets) ->
+        {
+            Insets navBarInsets = insets.getInsets(WindowInsetsCompat.Type.navigationBars());
+            rootView.setPadding(0, 0, 0, navBarInsets.bottom);
+            return insets;
+        });
     }
 
     @Override
@@ -191,21 +229,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void stopIdleTimer() {
-        if (idleHandler != null && idleRunnable != null) {
+    private void stopIdleTimer()
+    {
+        if (idleHandler != null && idleRunnable != null)
+        {
             idleHandler.removeCallbacks(idleRunnable);
-            
         }
     }
 
-    private void showIdleOverlay() {
-        if (idleOverlayView != null) {
+    private void showIdleOverlay()
+    {
+        if (idleOverlayView != null)
+        {
             ViewGroup rootView = findViewById(R.id.drawer_layout);
 
             drawerLayout.closeDrawers();
 
-            if (idleOverlayView.getParent() == null && rootView != null) {
+            if (idleOverlayView.getParent() == null && rootView != null)
+            {
                 rootView.addView(idleOverlayView);
+                mainActivityViewModel.clearAllData();
             }
 
             idleOverlayView.setVisibility(View.VISIBLE);
@@ -238,9 +281,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-            if (drawerLayout != null && drawerLayout.isDrawerOpen(navigationView))
+            if (drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START))
             {
-                drawerLayout.closeDrawers();
+                drawerLayout.closeDrawer(GravityCompat.START);
             }
         }
     }
@@ -324,8 +367,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void promptForAdminLogin() {
-        if (getSupportFragmentManager().findFragmentByTag("AdminLoginDialog") != null) {
+    private void promptForAdminLogin()
+    {
+        if (getSupportFragmentManager().findFragmentByTag("AdminLoginDialog") != null)
+        {
             return;
         }
 
@@ -350,6 +395,11 @@ public class MainActivity extends AppCompatActivity {
                 .setView(dialogView)
                 .setCancelable(false)
                 .create();
+
+        dialog.setOnDismissListener(dialogInterface ->
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        });
 
         loginButton.setOnClickListener(v -> {
             String enteredUsername = usernameEditText.getText().toString().trim();
@@ -394,6 +444,7 @@ public class MainActivity extends AppCompatActivity {
             dialog.dismiss();
         });
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         dialog.show();
     }
 
@@ -453,6 +504,11 @@ public class MainActivity extends AppCompatActivity {
                 .setCancelable(false) 
                 .create();
 
+        dialog.setOnDismissListener(dialogInterface ->
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        });
+
         saveButton.setOnClickListener(v -> {
             String newUsername = usernameEditText.getText().toString().trim();
             String newPassword = passwordEditText.getText().toString().trim();
@@ -479,8 +535,8 @@ public class MainActivity extends AppCompatActivity {
                 isValid = false;
             }
 
-            if (isValid) {
-                
+            if (isValid)
+            {
                 settingsViewModel.updateAdminCredentials(newUsername, newPassword);
                 Toast.makeText(MainActivity.this, "Admin credentials updated!", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
@@ -488,6 +544,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         cancelButton.setOnClickListener(v -> dialog.dismiss());
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         dialog.show();
     }
 
@@ -497,7 +555,6 @@ public class MainActivity extends AppCompatActivity {
                 NavigationUI.navigateUp(navController, appBarConfiguration))
                 || super.onSupportNavigateUp();
     }
-    
 
     private static final int ZKTECO_VID = 0x1b55;
     private static final int LIVE20R_PID = 0x0120;
@@ -524,15 +581,18 @@ public class MainActivity extends AppCompatActivity {
 
     private byte[] tempMember1TemplateForVerification;
 
-    private FingerprintCaptureListener fingerprintCaptureListener = new FingerprintCaptureListener() {
+    private FingerprintCaptureListener fingerprintCaptureListener = new FingerprintCaptureListener()
+    {
         @Override
-        public void captureOK(byte[] fpImage) {
-
+        public void captureOK(byte[] fpImage)
+        {
             Bitmap bitmap = ToolUtils.renderCroppedGreyScaleBitmap(fpImage, fingerprintSensor.getImageWidth(), fingerprintSensor.getImageHeight());
             
             finalEnrollmentBitmap = bitmap;
-            runOnUiThread(() -> {
-                if (currentEnrollmentCallback != null) {
+            runOnUiThread(() ->
+            {
+                if (currentEnrollmentCallback != null)
+                {
                     currentEnrollmentCallback.onEnrollmentProgress(activeEnrollmentTarget, enroll_index + 1, ENROLL_COUNT, "Image captured.");
                 }
             });
@@ -594,19 +654,24 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 
-                if (regTemplates[enroll_index] == null || regTemplates[enroll_index].length < fpTemplate.length) {
+                if (regTemplates[enroll_index] == null || regTemplates[enroll_index].length < fpTemplate.length)
+                {
                     regTemplates[enroll_index] = new byte[fpTemplate.length];
                 }
+
                 System.arraycopy(fpTemplate, 0, regTemplates[enroll_index], 0, fpTemplate.length);
 
                 enroll_index++;
 
                 runOnUiThread(() -> {
-                    if (currentEnrollmentCallback != null) {
-                        if (enroll_index < ENROLL_COUNT) {
+                    if (currentEnrollmentCallback != null)
+                    {
+                        if (enroll_index < ENROLL_COUNT)
+                        {
                             currentEnrollmentCallback.onEnrollmentProgress(activeEnrollmentTarget, enroll_index, ENROLL_COUNT, "Place same finger again (" + enroll_index + "/" + ENROLL_COUNT + ")");
-                        } else {
-                            
+                        }
+                        else
+                        {
                             byte[] tempMergedTemplate = new byte[2048];
                             int mergedLen = ZKFingerService.merge(regTemplates[0], regTemplates[1], regTemplates[2], tempMergedTemplate);
                             if (mergedLen > 0) {
@@ -615,8 +680,9 @@ public class MainActivity extends AppCompatActivity {
                                 
                                 currentEnrollmentCallback.onEnrollmentComplete(activeEnrollmentTarget, finalEnrollmentBitmap, finalMergedTemplate); 
                                 resetEnrollmentState();
-                            } else {
-                                
+                            }
+                            else
+                            {
                                 currentEnrollmentCallback.onEnrollmentFailed(activeEnrollmentTarget, "Enrollment failed (merge error: " + mergedLen + ")");
                                 resetEnrollmentState();
                             }
@@ -705,17 +771,30 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void attemptAutoStartDevice() {
-        if (bStarted) {
-            Toast.makeText(getApplicationContext(), "Scanner Already Connected.", Toast.LENGTH_LONG).show();
+    private void attemptAutoStartDevice()
+    {
+        int runCount = settingsViewModel.getRunCountValue();
+
+        if (bStarted)
+        {
+            if (runCount == 0)
+            {
+                Toast.makeText(getApplicationContext(), "Scanner Already Connected.", Toast.LENGTH_LONG).show();
+                settingsViewModel.incrementRunCount();
+            }
             return;
         }
-        if (!enumSensor()) {
-            
-            Toast.makeText(getApplicationContext(), "Scanner Not Found.", Toast.LENGTH_LONG).show();
+
+        if (!enumSensor())
+        {
+            if (runCount == 0)
+            {
+                Toast.makeText(getApplicationContext(), "Scanner Not Found.", Toast.LENGTH_LONG).show();
+                settingsViewModel.incrementRunCount();
+            }
             return;
         }
-        
+
         tryGetUSBPermission();
     }
 
@@ -817,12 +896,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static void startFingerprintEnrollment(int target, FingerprintEnrollmentCallback callback, @Nullable byte[] member1Template) {
-        if (instance != null) {
+    public static void startFingerprintEnrollment(int target, FingerprintEnrollmentCallback callback, @Nullable byte[] member1Template)
+    {
+        if (instance != null)
+        {
             instance.startEnrollmentInternal(target, callback, member1Template);
-        } else {
-            
-            if (callback != null) {
+        }
+        else
+        {
+            if (callback != null)
+            {
                 callback.onEnrollmentFailed(target, "App not ready.");
             }
         }
@@ -834,30 +917,38 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void startEnrollmentInternal(int target, FingerprintEnrollmentCallback callback, @Nullable byte[] member1Template) {
-        if (fingerprintSensor != null && bStarted) {
+    private void startEnrollmentInternal(int target, FingerprintEnrollmentCallback callback, @Nullable byte[] member1Template)
+    {
+        if (fingerprintSensor != null && bStarted)
+        {
             bRegister = true; 
             enroll_index = 0; 
             
-            for (int i = 0; i < ENROLL_COUNT; i++) {
+            for (int i = 0; i < ENROLL_COUNT; i++)
+            {
                 regTemplates[i] = null;
             }
+
             currentEnrollmentCallback = callback; 
             activeEnrollmentTarget = target;
             this.tempMember1TemplateForVerification = member1Template;
 
-            if (currentEnrollmentCallback != null) {
+            if (currentEnrollmentCallback != null)
+            {
                 currentEnrollmentCallback.onEnrollmentProgress(activeEnrollmentTarget, 0, ENROLL_COUNT, "Place finger on scanner (1/3)");
             }
-        } else {
-            
-            if (callback != null) {
+        }
+        else
+        {
+            if (callback != null)
+            {
                 callback.onEnrollmentFailed(target, "Sensor not ready.");
             }
         }
     }
 
-    private void stopEnrollmentInternal() {
+    private void stopEnrollmentInternal()
+    {
         bRegister = false; 
         enroll_index = 0; 
         currentEnrollmentCallback = null; 
@@ -975,7 +1066,6 @@ public class MainActivity extends AppCompatActivity {
             Log.e("NavDebug", "NavController.getCurrentDestination() is null, cannot navigate.");
         }
     }
-
 
     private void closeDevice()
     {

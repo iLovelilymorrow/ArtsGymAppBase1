@@ -12,51 +12,58 @@ import androidx.annotation.NonNull;
 
 import java.util.Random;
 
-/**
- * usb permission and hotplug
- */
-public class ZKUSBManager {
-    
+public class ZKUSBManager
+{
     private int vid = 0x1b55;
     
     private int pid = 0;
     
-    private Context mContext = null;
+    private Context mContext;
 
-    
-    
     private static final String SOURCE_STRING = "0123456789-_abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ";
     private static final int DEFAULT_LENGTH = 16;
     private String ACTION_USB_PERMISSION;
     private boolean mbRegisterFilter = false;
-    private ZKUSBManagerListener zknirusbManagerListener = null;
+    private ZKUSBManagerListener zknirusbManagerListener;
 
-    private BroadcastReceiver usbMgrReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver usbMgrReceiver = new BroadcastReceiver()
+    {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, Intent intent)
+        {
             String action = intent.getAction();
+
             if (ACTION_USB_PERMISSION.equals(action))
             {
-                UsbDevice device = (UsbDevice)intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
-                if (device.getVendorId() == vid && device.getProductId() == pid) {
-                    if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
+                UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+
+                if (device.getVendorId() == vid && device.getProductId() == pid)
+                {
+                    if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false))
+                    {
                         zknirusbManagerListener.onCheckPermission(0);
-                    } else {
+                    }
+                    else
+                    {
                         zknirusbManagerListener.onCheckPermission(-2);
                     }
                 }
             }
             else if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action))
             {
-                UsbDevice device = (UsbDevice)intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
-                if (device.getVendorId() == vid && device.getProductId() == pid) {
+                UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+
+                if (device.getVendorId() == vid && device.getProductId() == pid)
+                {
                     zknirusbManagerListener.onUSBArrived(device);
                 }
             }
             else if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action))
             {
-                UsbDevice device = (UsbDevice)intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
-                if (device.getVendorId() == vid && device.getProductId() == pid) {
+                UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+
+                if (device.getVendorId() == vid && device.getProductId() == pid)
+                {
                     zknirusbManagerListener.onUSBRemoved(device);
                 }
             }
@@ -64,22 +71,27 @@ public class ZKUSBManager {
     };
 
 
-    private boolean isNullOrEmpty(String target) {
-        if (null == target || "".equals(target) || target.isEmpty()) {
+    private boolean isNullOrEmpty(String target)
+    {
+        if (null == target || "".equals(target) || target.isEmpty())
+        {
             return true;
         }
         return false;
     }
 
-    private String createRandomString(String source, int length) {
-        if (this.isNullOrEmpty(source)) {
+    private String createRandomString(String source, int length)
+    {
+        if (this.isNullOrEmpty(source))
+        {
             return "";
         }
 
         StringBuffer result = new StringBuffer();
         Random random = new Random();
 
-        for(int index = 0; index < length; index++) {
+        for(int index = 0; index < length; index++)
+        {
             result.append(source.charAt(random.nextInt(source.length())));
         }
         return result.toString();
@@ -91,11 +103,12 @@ public class ZKUSBManager {
         {
             return false;
         }
+
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_USB_PERMISSION);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
-        mContext.registerReceiver(usbMgrReceiver, filter);
+        mContext.registerReceiver(usbMgrReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
         mbRegisterFilter = true;
         return true;
     }
@@ -106,12 +119,10 @@ public class ZKUSBManager {
         {
             return;
         }
+
         mContext.unregisterReceiver(usbMgrReceiver);
         mbRegisterFilter = false;
     }
-
-    
-    
 
     public ZKUSBManager(@NonNull Context context, @NonNull ZKUSBManagerListener listener)
     {
@@ -120,18 +131,19 @@ public class ZKUSBManager {
         {
             throw new NullPointerException("context or listener is null");
         }
+
         zknirusbManagerListener = listener;
         ACTION_USB_PERMISSION = createRandomString(SOURCE_STRING, DEFAULT_LENGTH);
         mContext = context;
     }
 
-    
-    
-    
-    public void initUSBPermission(int vid, int pid){
+    public void initUSBPermission(int vid, int pid)
+    {
         UsbManager usbManager = (UsbManager)mContext.getSystemService(Context.USB_SERVICE);
         UsbDevice usbDevice = null;
-        for (UsbDevice device : usbManager.getDeviceList().values()) {
+
+        for (UsbDevice device : usbManager.getDeviceList().values())
+        {
             int device_vid = device.getVendorId();
             int device_pid = device.getProductId();
             if (device_vid == vid && device_pid == pid)
@@ -140,22 +152,25 @@ public class ZKUSBManager {
                 break;
             }
         }
+
         if (null == usbDevice)
         {
             zknirusbManagerListener.onCheckPermission(-1);
             return;
         }
+
         this.vid = vid;
         this.pid = pid;
+
         if (!usbManager.hasPermission(usbDevice))
         {
             Intent intent = new Intent(this.ACTION_USB_PERMISSION);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, 0);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_IMMUTABLE);
             usbManager.requestPermission(usbDevice, pendingIntent);
         }
-        else {
+        else
+        {
             zknirusbManagerListener.onCheckPermission(0);
         }
     }
-
 }

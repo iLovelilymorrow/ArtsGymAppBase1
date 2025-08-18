@@ -26,7 +26,7 @@
 
         <action
             android:id="@+id/action_memberListFragment_to_memberEditFragment"
-            app:destination="@id/MemberEditFragment" />
+            app:destination="@id/MemberEditFragment"/>
 
     </fragment>
 
@@ -45,12 +45,12 @@
     <argument
         android:name="memberID"
         app:argType="string"
-        app:nullable="false" />
+        app:nullable="false"/>
 
         <argument
             android:name="periodID"
             app:argType="integer"
-            app:nullable="false" />
+            app:nullable="false"/>
 
         <action
             android:id="@+id/action_memberEditFragment_to_renewMembershipFragment"
@@ -67,7 +67,7 @@
 
         <action
             android:id="@+id/action_expiredMembersFragment_to_renewMembershipFragment"
-            app:destination="@id/RenewMembershipFragment" />
+            app:destination="@id/RenewMembershipFragment"/>
 
     </fragment>
 
@@ -79,18 +79,18 @@
 
         <argument
             android:name="memberID"
-            app:argType="string" />
+            app:argType="string"/>
 
         <argument
             android:name="selectedMemberTypeID"
             app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"/>
 
         <action
             android:id="@+id/action_RenewMembershipFragment_to_memberListFragment"
             app:destination="@id/memberListFragment"
             app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="false" />
+            app:popUpToInclusive="false"/>
 
     </fragment>
 

@@ -17,6 +17,8 @@ sdp = "1.1.1"
 ssp = "1.1.1"
 kotlin = "2.0.21"
 coreKtx = "1.16.0"
+navigationFragmentKtx = "2.9.4"
+navigationUiKtx = "2.9.4"
 
 [libraries]
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
@@ -38,8 +40,9 @@ navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version
 sdp-android = { group = "com.intuit.sdp", name = "sdp-android", version.ref = "sdp" }
 ssp-android = { group = "com.intuit.ssp", name = "ssp-android", version.ref = "ssp" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
+navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-

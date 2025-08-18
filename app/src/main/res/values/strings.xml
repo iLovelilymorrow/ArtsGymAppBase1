@@ -7,49 +7,53 @@
     <string name="headerTitle">Art\'s Gym App</string>
     <string name="headerSubtitle">Gym Management App</string>
 
-    <string name="View1">Home</string>
-    <string name="View2">Add Member</string>
-    <string name="View3">Member List </string>
-    <string name="View4">Member Types</string>
-    <string name="View5">Expired Members</string>
-    <string name="View6">Records</string>
+    <string name="View1">HOME</string>
+    <string name="View2">ADD MEMBER</string>
+    <string name="View3">MEMBER LIST</string>
+    <string name="View4">MEMBER TYPES</string>
+    <string name="View5">EXPIRED MEMBERS</string>
+    <string name="View6">RECORDS</string>
     <string name="memberList_NameEmpty">Member Name: N/A</string>
     <string name="memberList_AgeEmpty">Age: N/A</string>
     <string name="memberList_SearchMembers">Search Members ....</string>
 
     <string name="Identification_UpperCase">IDENTIFICATION</string>
-    <string name="MemberPicture">Member Picture</string>
-    <string name="Membership">Membership</string>
+    <string name="MemberPicture">MEMBER PICTURE</string>
+    <string name="Indicates">* Indicates Required Field</string>
+    <string name="Membership">MEMBERSHIP</string>
     <string name="SearchExpiredMembers">Search Expired Members ....</string>
-    <string name="MemberId">Member ID</string>
-    <string name="FirstName">First Name</string>
-    <string name="LastName">Last Name</string>
-    <string name="MembershipType">Membership Type</string>
-    <string name="ReceiptNumber">Receipt Number</string>
-    <string name="Age">Age</string>
-    <string name="Gender">Gender</string>
-    <string name="PhoneNumber">Phone Number</string>
-    <string name="DeleteMember">Delete Member</string>
-    <string name="ConfirmEdit">Confirm Edit</string>
-    <string name="CancelEdit">Cancel Edit</string>
-    <string name="AddNewMembershipType">Add New Membership Type</string>
+    <string name="MemberId">MEMBER ID</string>
+    <string name="FirstName">FIRST NAME</string>
+    <string name="LastName">LAST NAME</string>
+    <string name="MembershipType">MEMBERSHIP TYPE</string>
+    <string name="ReceiptNumber">RECEIPT NUMBER</string>
+    <string name="Age">AGE</string>
+    <string name="Gender">GENDER</string>
+    <string name="PhoneNumber">PHONE NUMBER</string>
+    <string name="DeleteMember">DELETE MEMBER</string>
+    <string name="ConfirmEdit">CONFIRM EDIT</string>
+    <string name="CancelEdit">CANCEL EDIT</string>
+    <string name="AddNewMembershipType">ADD NEW MEMBERSHIP TYPE</string>
     <string name="MembershipTypeName">Membership Type Name</string>
     <string name="MembershipDuration">Membership Duration (in days)</string>
-    <string name="SaveMembershipType">Save Membership Type</string>
+    <string name="SaveMembershipType">SAVE MEMBERSHIP TYPE</string>
     <string name="ActiveMembershipTypes">Active Membership Types</string>
     <string name="TwoInOnePackage">Two In One Package?</string>
-    <string name="StartDate">Start Date</string>
-    <string name="EndDate">End Date</string>
-    <string name="Partner">Partner</string>
+    <string name="StartDate">START DATE</string>
+    <string name="EndDate">END DATE</string>
+    <string name="Partner">PARTNER</string>
     <string name="AddMember">Add Member</string>
+    <string name="RenewMembership">Renew Membership</string>
+    <string name="MemberEdit">Member Edit</string>
+    <string name="MemberList">Member List</string>
     <string name="Cancel">Cancel</string>
-    <string name="Name">Name</string>
-    <string name="MembershipStarted">Membership Started on</string>
-    <string name="MembershipExpiring">Membership Expiring on</string>
-    <string name="DaysLeft">Your Monthly Membership has:</string>
-    <string name="Fingerprint">Fingerprint</string>
+    <string name="Name">NAME</string>
+    <string name="MembershipStarted">MEMBERSHIP STARTED ON</string>
+    <string name="MembershipExpiring">MEMBERSHIP EXPIRING ON</string>
+    <string name="DaysLeft">Your Monthly Membership has</string>
+    <string name="Fingerprint">FINGERPRINT</string>
     <string name="RecaptureFingerprint">Recapture Fingerprint</string>
-    <string name="ClearPage">Clear page</string>
+    <string name="ClearPage">CLEAR PAGE</string>
     <string name="FingerprintCaptured">Fingerprint Captured!</string>
     <string name="StartCapture">Tap to Scan Fingerprint</string>
     <string name="CapturingTemplate">Capturing Template...</string>
@@ -59,9 +63,8 @@
     <string name="SearchMembers">Search Members</string>
     <string name="NoRecordsYet">No records yet.</string>
 
-    <string name="renewMembership_Title">Renew Membership</string>
-    <string name="renewMembership_MemberInfo">Member Information</string>
-    <string name="renewMembership_MemberImage">Member Image</string>
+    <string name="renewMembership_Title">RENEW MEMBERSHIP</string>
+    <string name="renewMembership_MemberInfo">MEMBER INFORMATION</string>
     <string name="renewMembership_NewReceiptNumber">New Receipt Number</string>
     <string name="renewMembership_ConfirmRenew">Confirm Renew</string>
     <string name="renewMembership_CancelRenew">Cancel Renew</string>
@@ -75,11 +78,17 @@
     <string name="hint_lastname">Last Name*</string>
     <string name="hint_age">Age*</string>
     <string name="hint_receiptnumber">Receipt Number*</string>
+    <string name="hint_phonenumber">Phone Number</string>
     <string name="hint_memberId">Existing Member ID*</string>
 
     <string name="Expiring">Expiring</string>
     <string name="Expired">Expired</string>
     <string name="Active">Active</string>
     <string name="New">New</string>
+
+    <string name="Home">HOME</string>
+
+    <string name="navigation_drawer_open">Drawer Open</string>
+    <string name="navigation_drawer_close">Drawer Close</string>
 
 </resources>

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -117,12 +119,16 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
     private Bitmap capturedFingerprintBitmap1; 
     private Bitmap capturedFingerprintBitmap2; 
 
-    private int activeFingerprintTarget = 0; 
+    private int activeFingerprintTarget = 0;
+
+    private MainActivityViewModel mainActivityViewModel;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         databaseHelper = new DatabaseHelper(getContext());
+        mainActivityViewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
         
         requestPermissionsLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestMultiplePermissions(),
@@ -174,7 +180,8 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                         }
                     } else {
                         if (activeImageTarget == 1) {
-                            if (currentPhotoPath1 != null) {
+                            if (currentPhotoPath1 != null)
+                            {
                                 File photoFile = new File(currentPhotoPath1);
                                 if (photoFile.exists() && photoFile.length() == 0) 
                                 {
@@ -201,16 +208,20 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         pickImageLauncher = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
                 uri -> {
-                    if (uri != null) {
+                    if (uri != null) { //todo 3 data survival
                         if (activeImageTarget == 1) {
                             selectedImageUri1 = uri;
+                            mainActivityViewModel.setUri1(selectedImageUri1);
                             capturedImageUri1 = null;
                             currentPhotoPath1 = null;
-                            if (memberPreviewImageView != null) {
+
+                            if (memberPreviewImageView != null)
+                            {
                                 Glide.with(AddMemberFragment.this).load(selectedImageUri1).into(memberPreviewImageView);
                             }
                         } else {
                             selectedImageUri2 = uri;
+                            mainActivityViewModel.setUri2(selectedImageUri2);
                             capturedImageUri2 = null;
                             currentPhotoPath2 = null;
                             if (memberPreviewImageView2 != null) {
@@ -234,9 +245,11 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         if (fingerprintStatusTextView1 != null) fingerprintStatusTextView1.setText(R.string.StartCapture);
         if (fingerprintStatusTextView2 != null) fingerprintStatusTextView2.setText(R.string.StartCapture);
         
-        fingerprintImageView1.setOnClickListener(v -> {
+        fingerprintImageView1.setOnClickListener(v ->
+        {
             MainActivity mainActivity = (MainActivity) getActivity();
-            if (mainActivity != null) {
+            if (mainActivity != null)
+            {
                 activeFingerprintTarget = 1;
                 mainActivity.startFingerprintEnrollment(activeFingerprintTarget, this, null);
 
@@ -249,7 +262,8 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
             }
         });
 
-        fingerprintImageView2.setOnClickListener(v -> {
+        fingerprintImageView2.setOnClickListener(v ->
+        {
             if(capturedFingerprintTemplate1 != null)
             {
                 MainActivity mainActivity = (MainActivity) getActivity();
@@ -270,11 +284,78 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                 Toast.makeText(getContext(), "Please capture fingerprint for Member 1 first.", Toast.LENGTH_LONG).show();
             }
         });
+
+        // DATA SURVIVAL
+        String imagePath1 = mainActivityViewModel.getImagePath1().getValue();
+        String imagePath2 = mainActivityViewModel.getImagePath2().getValue();
+        Bitmap capturedFingerprintBitmap1 = mainActivityViewModel.getBitmap1().getValue();
+        Bitmap capturedFingerprintBitmap2 = mainActivityViewModel.getBitmap2().getValue();
+        byte[] capturedFingerprintTemplate1 = mainActivityViewModel.getByte1().getValue();
+        byte[] capturedFingerprintTemplate2 = mainActivityViewModel.getByte2().getValue();
+        Uri image1 = mainActivityViewModel.getUri1().getValue();
+        Uri image2 = mainActivityViewModel.getUri2().getValue();
+
+        if (capturedFingerprintBitmap1 != null)
+        {
+            fingerprintImageView1.setImageBitmap(capturedFingerprintBitmap1);
+        }
+
+        if (capturedFingerprintBitmap2 != null)
+        {
+            fingerprintImageView2.setImageBitmap(capturedFingerprintBitmap2);
+        }
+
+        if (capturedFingerprintTemplate1 != null)
+        {
+            this.capturedFingerprintTemplate1 = capturedFingerprintTemplate1;
+        }
+
+        if (capturedFingerprintTemplate2 != null)
+        {
+            this.capturedFingerprintTemplate2 = capturedFingerprintTemplate2;
+        }
+
+        if (image1 != null)
+        {
+            Glide.with(this).load(image1).into(memberPreviewImageView);
+
+            if (imagePath1 != null && !imagePath1.isEmpty())
+            {
+                this.currentPhotoPath1 = imagePath1;
+                this.capturedImageUri1 = image1;
+                this.selectedImageUri1 = null;
+            }
+            else
+            {
+                this.selectedImageUri1 = image1;
+                this.currentPhotoPath1 = null;
+                this.capturedImageUri1 = null;
+            }
+        }
+
+        if (image2 != null)
+        {
+            Glide.with(this).load(image2).into(memberPreviewImageView2);
+
+            if (imagePath2 != null && !imagePath2.isEmpty())
+            {
+                this.currentPhotoPath2 = imagePath2;
+                this.capturedImageUri2 = image2;
+                this.selectedImageUri2 = null;
+            }
+            else
+            {
+                this.selectedImageUri2 = image2;
+                this.currentPhotoPath2 = null;
+                this.capturedImageUri2 = null;
+            }
+        }
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
         View view = inflater.inflate(R.layout.fragment_addmember, container, false);
 
         firstNameEditText = view.findViewById(R.id.firstNameEditText);
@@ -348,19 +429,27 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         }
     }
     @Override
-    public void onEnrollmentComplete(int targetMember, Bitmap finalImage, byte[] finalTemplate) {
-        
-        if (targetMember == 1) {
+    public void onEnrollmentComplete(int targetMember, Bitmap finalImage, byte[] finalTemplate)
+    {
+        //todo data survival fingerprint
+        if (targetMember == 1)
+        {
             capturedFingerprintTemplate1 = finalTemplate;
             capturedFingerprintBitmap1 = finalImage; 
             if (fingerprintImageView1 != null) fingerprintImageView1.setImageBitmap(finalImage);
             if (fingerprintStatusTextView1 != null) fingerprintStatusTextView1.setText(R.string.FingerprintCaptured);
+            mainActivityViewModel.setByte1(capturedFingerprintTemplate1);
+            mainActivityViewModel.setBitmap1(capturedFingerprintBitmap1);
             Toast.makeText(getContext(), "Fingerprint enrolled for Member 1!", Toast.LENGTH_SHORT).show();
-        } else if (targetMember == 2) {
+        }
+        else if (targetMember == 2)
+        {
             capturedFingerprintTemplate2 = finalTemplate;
             capturedFingerprintBitmap2 = finalImage; 
             if (fingerprintImageView2 != null) fingerprintImageView2.setImageBitmap(finalImage);
             if (fingerprintStatusTextView2 != null) fingerprintStatusTextView2.setText(R.string.FingerprintCaptured);
+            mainActivityViewModel.setByte2(capturedFingerprintTemplate2);
+            mainActivityViewModel.setBitmap2(capturedFingerprintBitmap2);
             Toast.makeText(getContext(), "Fingerprint enrolled for Member 2!", Toast.LENGTH_SHORT).show();
         }
         activeFingerprintTarget = 0; 
@@ -414,9 +503,12 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
     }
 
     @Override
-    public void onDestroyView() {
+    public void onDestroyView()
+    {
         super.onDestroyView();
-        
+
+        clearForm();
+
         capturedFingerprintTemplate1 = null;
         capturedFingerprintTemplate2 = null;
         capturedFingerprintBitmap1 = null;
@@ -425,13 +517,14 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
 
         MainActivity.stopFingerprintEnrollment();
 
-        if (executorService != null && !executorService.isShutdown()) {
+        if (executorService != null && !executorService.isShutdown())
+        {
             executorService.shutdown();
         }
-        
     }
 
-    private void attemptSaveMember() {
+    private void attemptSaveMember()
+    {
         if (firstNameEditText != null) firstNameEditText.setError(null);
         if (lastNameEditText != null) lastNameEditText.setError(null);
         if (ageEditText != null) ageEditText.setError(null);
@@ -543,9 +636,12 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         }
 
         String imagePathToSave1 = null;
-        if (capturedImageUri1 != null && currentPhotoPath1 != null && !currentPhotoPath1.isEmpty()) {
+        if (capturedImageUri1 != null && currentPhotoPath1 != null && !currentPhotoPath1.isEmpty())
+        {
             imagePathToSave1 = currentPhotoPath1;
-        } else if (selectedImageUri1 != null) {
+        }
+        else if (selectedImageUri1 != null)
+        {
             if (getContext() != null) {
                 String timeStamp1 = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss_M1", java.util.Locale.getDefault()).format(new java.util.Date());
                 String imageFileName1 = "MEMBER_IMG_" + timeStamp1 + ".jpg";
@@ -561,9 +657,9 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                 return;
             }
         }
-
         
-        if (capturedFingerprintTemplate1 == null) {
+        if (capturedFingerprintTemplate1 == null)
+        {
             Toast.makeText(getContext(), "Fingerprint scan is required for Member 1.", Toast.LENGTH_LONG).show();
             if (fingerprintStatusTextView1 != null) fingerprintStatusTextView1.setText("Fingerprint required!");
             
@@ -636,7 +732,8 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
 
             phoneNumber2 = phoneNumberEditText2.getText().toString().trim();
 
-            if (capturedImageUri2 != null && currentPhotoPath2 != null && !currentPhotoPath2.isEmpty()) {
+            if (capturedImageUri2 != null && currentPhotoPath2 != null && !currentPhotoPath2.isEmpty())
+            {
                 imagePathToSave2 = currentPhotoPath2;
             } else if (selectedImageUri2 != null) {
                 if (getContext() != null) {
@@ -699,15 +796,17 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
             final boolean finalProceedWithSave = localProceedWithSave;
             final String finalReceiptErrMessageForPost = localReceiptErrorMessage;
 
-            mainThreadHandler.post(() -> {
-                if (!finalProceedWithSave && finalReceiptErrMessageForPost != null) {
+            mainThreadHandler.post(() ->
+            {
+                if (!finalProceedWithSave && finalReceiptErrMessageForPost != null)
+                {
                     receiptNumberEditText.setError(finalReceiptErrMessageForPost);
                     receiptNumberEditText.requestFocus();
                     Toast.makeText(getContext(), finalReceiptErrMessageForPost, Toast.LENGTH_SHORT).show();
                     
-                } else {
-                    
-
+                }
+                else
+                {
                     saveMemberData(
                             finalFirstName1, finalLastName1, finalPhoneNumber1, finalGender1, finalAge1, finalImagePath1,
                             finalSelectedMemberTypeId, finalRegDate, finalExpDate, finalReceiptNumber,
@@ -725,8 +824,9 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                                 LocalDate expirationDate, String receiptNumber, boolean isTwoInOneMembership,
                                 String firstName2, String lastName2, String phoneNumber2, String gender2, int age2,
                                 String imagePathToSave2, byte[] fingerprintTemplate1, byte[] fingerprintTemplate2
-    ) {
-
+    )
+    {
+        mainActivityViewModel.clearAllData();
         SQLiteDatabase db = null;
         boolean overallSuccess = false;
         String member1DbId = null;
@@ -963,13 +1063,14 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         }
     }
 
-    private void setupSpinners() {
+    private void setupSpinners()
+    {
         if (getContext() == null) return;
 
         ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(requireContext(),
-                R.array.gender_array, android.R.layout.simple_spinner_item);
+                R.array.gender_array, R.layout.spinner_item_collapsed);
 
-        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genderAdapter.setDropDownViewResource(R.layout.spinner_item);
         genderSpinner.setAdapter(genderAdapter);
         genderSpinner2.setAdapter(genderAdapter);
 
@@ -979,8 +1080,8 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         displayMemberTypes.add(new MemberType(0, "Select Membership Type*", 0, false));
         displayMemberTypes.addAll(memberTypeList);
 
-        ArrayAdapter<MemberType> memberTypeAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, displayMemberTypes);
-        memberTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<MemberType> memberTypeAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item_collapsed, displayMemberTypes);
+        memberTypeAdapter.setDropDownViewResource(R.layout.spinner_item);
         memberTypeSpinner.setAdapter(memberTypeAdapter);
     }
 
@@ -1008,7 +1109,7 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                         memberTypeSpinner.setBackground(defaultMemberTypeSpinnerBackground);
                         selectedRegistrationDate = LocalDate.now();
                         if (startDateTextView != null) {
-                            startDateTextView.setText(selectedRegistrationDate.format(uiDateFormatter));
+                            startDateTextView.setText(selectedRegistrationDate.format(uiDateFormatter)); //startDateTextView.setText(selectedRegistrationDate.format(uiDateFormatter));
                             
                         }
                         autoCalculateAndSetDefaultExpirationDate();
@@ -1087,51 +1188,65 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
         }
     }
 
-    private void openCamera() {
+    private void openCamera()
+    {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
+        if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null)
+        {
             File photoFile = null;
             try {
                 photoFile = createImageFile();
-            } catch (IOException ex) {
-                
+            }
+            catch (IOException ex)
+            {
                 Toast.makeText(getContext(), "Could not create image file.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            if (photoFile != null) {
+            if (photoFile != null)
+            {
                 Uri photoURI;
-                if (getContext() == null) {
-                    
+
+                if (getContext() == null)
+                {
                     return;
                 }
 
                 String authority = requireContext().getPackageName() + ".provider";
 
-                if (activeImageTarget == 1) {
+                //todo 2 data survival
+                if (activeImageTarget == 1)
+                {
                     capturedImageUri1 = FileProvider.getUriForFile(requireContext(), authority, photoFile);
+                    mainActivityViewModel.setUri1(capturedImageUri1);
                     photoURI = capturedImageUri1;
-                    
-                } else {
+                }
+                else
+                {
                     capturedImageUri2 = FileProvider.getUriForFile(requireContext(), authority, photoFile);
+                    mainActivityViewModel.setUri2(capturedImageUri2);
                     photoURI = capturedImageUri2;
-                    
                 }
 
-                if (photoURI != null) {
+                if (photoURI != null)
+                {
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                     takePictureLauncher.launch(takePictureIntent);
-                } else {
-                    
+                }
+                else
+                {
                     Toast.makeText(getContext(), "Failed to prepare image for camera.", Toast.LENGTH_SHORT).show();
                 }
             }
-        } else {
+        }
+        else
+        {
             Toast.makeText(getContext(), "No camera app found.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private File createImageFile() throws IOException {
+    private File createImageFile() throws IOException
+    {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
 
@@ -1150,12 +1265,16 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
                 storageDir
         );
 
-        if (activeImageTarget == 1) {
+        //todo 4 data survival
+        if (activeImageTarget == 1)
+        {
             currentPhotoPath1 = image.getAbsolutePath();
-            
-        } else {
+            mainActivityViewModel.setImagePath1(currentPhotoPath1);
+        }
+        else
+        {
             currentPhotoPath2 = image.getAbsolutePath();
-            
+            mainActivityViewModel.setImagePath2(currentPhotoPath2);
         }
         return image;
     }
@@ -1243,6 +1362,8 @@ public class AddMemberFragment extends Fragment implements FingerprintEnrollment
 
         activeFingerprintTarget = 0;
     }
+
+
 
     private String saveImageFromUriToInternalStorage(Uri contentUri, String fileName) {
         if (getContext() == null || contentUri == null) {

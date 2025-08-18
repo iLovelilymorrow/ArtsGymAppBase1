@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment
+{
     private FragmentHomeBinding binding;
     private DatabaseHelper databaseHelper;
 
@@ -44,8 +46,13 @@ public class HomeFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
+
+        Object layoutTag = binding.getRoot().getTag();
+        Log.d("FragmentLayoutTracker", "HomeFragment using layout: " + layoutTag);
+
         return binding.getRoot();
     }
 
@@ -61,7 +68,7 @@ public class HomeFragment extends Fragment {
             return false;
         });
 
-        binding.buttonConfirmEdit.setOnClickListener(v ->
+        binding.buttonClearPage.setOnClickListener(v ->
         {
             clearDisplayedMemberInfo();
             stopMemberInfoDisplayTimer();
@@ -165,41 +172,53 @@ public class HomeFragment extends Fragment {
                     binding.membershipStartedTextView.setText("N/A");
                 }
 
-                if (memberInfo.getExpirationDate() != null) {
+                if (memberInfo.getExpirationDate() != null)
+                {
                     binding.expiringTextView.setText(memberInfo.getExpirationDate().format(formatter));
                     long daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), memberInfo.getExpirationDate());
-                    binding.daysLeftTextView.setText(String.valueOf(daysLeft) + " days left");
+                    binding.daysLeftTextView.setText(String.valueOf(daysLeft));
 
                     if(daysLeft <= 3)
                     {
                         binding.expiringTextWarning.setVisibility(View.VISIBLE);
                         binding.expiringTextWarning.setText("Membership is Expiring in: " + daysLeft + " days");
                     }
-
-                } else {
+                }
+                else
+                {
+                    binding.daysLeftTextView.setVisibility(View.GONE);
                     binding.expiringTextView.setText("N/A");
                     binding.daysLeftTextView.setText("N/A");
                 }
 
                 binding.ageTextView.setText(String.valueOf(memberInfo.getAge()));
 
-                if (memberInfo.getImageFilePath() != null && !memberInfo.getImageFilePath().isEmpty()) {
+                if (memberInfo.getImageFilePath() != null && !memberInfo.getImageFilePath().isEmpty())
+                {
                     File imgFile = new File(memberInfo.getImageFilePath());
-                    if (imgFile.exists()) {
+
+                    if (imgFile.exists())
+                    {
                         Glide.with(this)
                                 .load(imgFile)
                                 .placeholder(R.mipmap.ic_launcher_round)
                                 .error(R.mipmap.ic_launcher_round)
                                 .into(binding.memberPictureImageView);
-                    } else {
+                    }
+                    else
+                    {
                         binding.memberPictureImageView.setImageResource(R.mipmap.ic_launcher_round);
                     }
-                } else {
+                }
+                else
+                {
                     binding.memberPictureImageView.setImageResource(R.mipmap.ic_launcher_round);
                 }
-            } else {
-                
-                if (getContext() != null) {
+            }
+            else
+            {
+                if (getContext() != null)
+                {
                     Toast.makeText(getContext(), "Membership for " + memberInfo.getFullName() + " is inactive.", Toast.LENGTH_LONG).show();
                 }
                 clearDisplayedMemberInfo();

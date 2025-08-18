@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -67,10 +68,10 @@ public class RenewMembershipFragment extends Fragment implements  FingerprintEnr
     private TextView startDateTextView, endDateTextView;
     private MaterialButton renewMemberButton, cancelButton, verifyExistingMemberButton;
 
-    private RelativeLayout secondMemberContainer;
-    private RelativeLayout secondMemberViews;
+    private LinearLayout secondMemberContainer;
+    private LinearLayout secondMemberViews;
 
-    private RelativeLayout fingerprintContainer;
+    private LinearLayout fingerprintContainer;
     private EditText firstNameEditText2, lastNameEditText2, phoneNumberEditText2, ageEditText2, existingMemberIdEditText;
     private ImageView memberImageView2ndMember, fingerprintImageView;
     private Spinner genderSpinner2, secondMemberSpinner;
@@ -270,15 +271,15 @@ public class RenewMembershipFragment extends Fragment implements  FingerprintEnr
     public void setupSpinners() {
         
         genderAdapter2 = ArrayAdapter.createFromResource(requireContext(),
-                R.array.gender_array, android.R.layout.simple_spinner_item);
-        genderAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.array.gender_array, R.layout.spinner_item_collapsed);
+        genderAdapter2.setDropDownViewResource(R.layout.spinner_item);
         genderSpinner2.setAdapter(genderAdapter2);
         genderSpinner2.setSelection(0); 
 
         
         ArrayAdapter<CharSequence> secondMemberOptionsAdapter = ArrayAdapter.createFromResource(requireContext(),
-                R.array.member_array, android.R.layout.simple_spinner_item); 
-        secondMemberOptionsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.array.member_array, R.layout.spinner_item_collapsed);
+        secondMemberOptionsAdapter.setDropDownViewResource(R.layout.spinner_item);
         secondMemberSpinner.setAdapter(secondMemberOptionsAdapter);
         secondMemberSpinner.setSelection(0); 
     }
@@ -836,7 +837,8 @@ public class RenewMembershipFragment extends Fragment implements  FingerprintEnr
             mainThreadHandler.post(() -> {
                 if (success) {
                     Toast.makeText(getContext(), "Membership renewed successfully!", Toast.LENGTH_SHORT).show();
-                    if (navController != null) {
+                    if (navController != null)
+                    {
                         navController.navigate(R.id.action_RenewMembershipFragment_to_memberListFragment);
                     }
                 } else {
@@ -895,7 +897,8 @@ public class RenewMembershipFragment extends Fragment implements  FingerprintEnr
         }
     }
 
-    private void loadMemberTypes() {
+    private void loadMemberTypes()
+    {
         executorService.execute(() -> {
             List<MemberType> typesFromDb = dbHelper.getAllMemberTypes();
             mainThreadHandler.post(() -> {
@@ -910,8 +913,8 @@ public class RenewMembershipFragment extends Fragment implements  FingerprintEnr
                 }
 
                 memberTypeArrayAdapter = new ArrayAdapter<>(requireContext(),
-                        android.R.layout.simple_spinner_item, memberTypesList);
-                memberTypeArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        R.layout.spinner_item_collapsed, memberTypesList);
+                memberTypeArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
                 memberTypeSpinner.setAdapter(memberTypeArrayAdapter);
 
                 

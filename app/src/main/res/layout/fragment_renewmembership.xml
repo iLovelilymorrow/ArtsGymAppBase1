@@ -1,610 +1,616 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fillViewport="true">
+    android:background="@color/white"
+    android:tag="port">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/grey"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineTopBarMaxHeight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/titleLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.234" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/titleRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.35" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/titleTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.28" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/titleBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.75" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/bebasneue"
+            android:text="@string/RenewMembership"
+            android:textColor="@color/black"
+            android:textSize="@dimen/titlepagesize"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/titleBottom"
+            app:layout_constraintEnd_toStartOf="@+id/titleRight"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/titleLeft"
+            app:layout_constraintTop_toTopOf="@+id/titleTop"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/marginGuidelineTop"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingVertical="@dimen/_10sdp"
-        android:paddingHorizontal="@dimen/_20sdp">
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".12" />
 
-        <TextView
-            android:id="@+id/tvTitle1"
-            android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/marginGuidelineBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.975" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/marginGuidelineStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.036111113" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/marginGuidelineEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9611111" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTopBarMaxHeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".1" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/marginGuidelineBottom"
+        app:layout_constraintEnd_toStartOf="@+id/marginGuidelineEnd"
+        app:layout_constraintStart_toStartOf="@+id/marginGuidelineStart"
+        app:layout_constraintTop_toTopOf="@+id/marginGuidelineTop">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="@dimen/_6sdp"
-
-            android:text="@string/renewMembership_MemberInfo"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="@dimen/_10ssp"/>
-
-        <TextView
-            android:id="@+id/memberImageView_Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvTitle1"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="@dimen/_3sdp"
-
-            android:text="@string/renewMembership_MemberImage"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="@dimen/_7ssp"/>
-
-        <ImageView
-            android:id="@+id/memberImageView"
-            android:layout_width="@dimen/_76sdp"
-            android:layout_height="@dimen/_76sdp"
-            android:src="@drawable/addimage"
-            android:scaleType="fitXY"
-            android:layout_below="@id/memberImageView_Title"/>
-
-        <TextView
-            android:id="@+id/firstNameTextView_Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_3sdp"
-            android:layout_marginStart="@dimen/_85sdp"
-            android:layout_alignTop="@id/memberImageView_Title"
-
-            android:text="@string/FirstName"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="@dimen/_7ssp"/>
-
-        <TextView
-            android:id="@+id/firstNameTextView"
-            android:layout_width="@dimen/_150sdp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/firstNameTextView_Title"
-            android:layout_alignStart="@id/firstNameTextView_Title"
-
-            android:text="FIRSTNAME"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_7ssp"
-            android:background="@drawable/border_background_grey"/>
-
-        <TextView
-            android:id="@+id/lastNameTextView_Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/firstNameTextView"
-            android:layout_alignStart="@id/firstNameTextView"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:layout_marginBottom="@dimen/_3sdp"
-
-            android:text="@string/LastName"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="@dimen/_7ssp"/>
-
-        <TextView
-            android:id="@+id/lastNameTextView"
-            android:layout_width="@dimen/_150sdp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/lastNameTextView_Title"
-            android:layout_alignStart="@id/lastNameTextView_Title"
-
-            android:text="LASTNAME"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_7ssp"
-            android:background="@drawable/border_background_grey"/>
-
-        <TextView
-            android:id="@+id/genderTextView_Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/firstNameTextView_Title"
-            android:layout_toEndOf="@id/firstNameTextView"
-            android:layout_marginBottom="@dimen/_3sdp"
-            android:layout_marginStart="@dimen/_20sdp"
-
-            android:text="@string/Gender"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="@dimen/_7ssp"/>
-
-        <TextView
-            android:id="@+id/genderTextView"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/genderTextView_Title"
-            android:layout_alignStart="@id/genderTextView_Title"
-
-            android:text="GENDER"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_7ssp"
-            android:background="@drawable/border_background_grey"/>
-
-        <TextView
-            android:id="@+id/phoneNumberTextView_Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/lastNameTextView"
-            android:layout_alignStart="@id/lastNameTextView"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:layout_marginBottom="@dimen/_3sdp"
-
-            android:text="@string/PhoneNumber"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="@dimen/_7ssp"/>
-
-        <TextView
-            android:id="@+id/phoneNumberTextView"
-            android:layout_width="@dimen/_150sdp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/phoneNumberTextView_Title"
-            android:layout_alignStart="@id/phoneNumberTextView_Title"
-
-            android:text="PHONE NUMBER"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_7ssp"
-            android:background="@drawable/border_background_grey"/>
-
-        <TextView
-            android:id="@+id/ageTextView_Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/genderTextView"
-            android:layout_alignStart="@id/genderTextView"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:layout_marginBottom="@dimen/_3sdp"
-
-            android:text="@string/Age"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="@dimen/_7ssp"/>
-
-        <TextView
-            android:id="@+id/ageTextView"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ageTextView_Title"
-            android:layout_alignStart="@id/ageTextView_Title"
-
-            android:text="AGE"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_7ssp"
-            android:background="@drawable/border_background_grey"/>
-
-        <TextView
-            android:id="@+id/memberIdTextView_Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ageTextView"
-            android:layout_alignStart="@id/ageTextView"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:layout_marginBottom="@dimen/_3sdp"
-
-            android:text="@string/MemberId"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="@dimen/_7ssp"/>
-
-        <TextView
-            android:id="@+id/memberIdTextView"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/memberIdTextView_Title"
-            android:layout_alignStart="@id/memberIdTextView_Title"
-
-            android:text="MEMBER ID"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_7ssp"
-            android:background="@drawable/border_background_grey"/>
-
-        <TextView
-            android:id="@+id/invisibleLine"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:layout_below="@id/memberImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <RelativeLayout
-            android:id="@+id/secondMemberContainer"
-            android:layout_below="@id/invisibleLine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/secondMemberTitle_TextView"
+                android:id="@+id/tvTitle1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginBottom="@dimen/_6sdp"
-
-                android:text="@string/Partner"
+                android:text="@string/renewMembership_MemberInfo"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="@dimen/_10ssp"/>
+                android:textSize="@dimen/_10ssp"
+                android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/secondMemberSpinner"
-                android:layout_width="@dimen/_175sdp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/secondMemberTitle_TextView"
-                android:background="@drawable/border_background_grey"/>
-
-            <EditText
-                android:id="@+id/existingMemberIdEditText"
-                android:layout_width="@dimen/_175sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_toEndOf="@id/secondMemberSpinner"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_alignBottom="@id/secondMemberSpinner"
-
-                android:background="@drawable/border_background_grey"
-                android:hint="@string/hint_memberId"
-                android:inputType="text"
-                android:singleLine="true" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/verifyExistingMemberButton"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_toEndOf="@id/existingMemberIdEditText"
-                android:layout_alignBottom="@id/existingMemberIdEditText"
-                android:layout_marginStart="@dimen/_8sdp"
-
-                app:backgroundTint="@color/grey"
-                android:textSize="@dimen/_6ssp"
-                android:text="@string/renewMembership_ConfirmExistingMember"
-                android:background="@drawable/border_background_grey"
-                android:textColor="@color/black"/>
-
-            <RelativeLayout
-                android:id="@+id/secondMemberViews"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:layout_below="@id/secondMemberSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/memberImageView_Title2"
+                    android:id="@+id/memberImageView_Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginBottom="@dimen/_3sdp"
-
-                    android:text="@string/renewMembership_MemberImage"
+                    android:text="@string/MemberPicture"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/_7ssp"/>
+                    android:textSize="@dimen/_8ssp"
+                    android:textStyle="bold" />
 
                 <ImageView
-                    android:id="@+id/memberImageView2ndMember"
-                    android:layout_width="@dimen/_76sdp"
-                    android:layout_height="@dimen/_76sdp"
-                    android:src="@drawable/addimage"
+                    android:id="@+id/memberImageView"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@drawable/border_background_grey"
                     android:scaleType="fitXY"
-                    android:layout_below="@id/memberImageView_Title2"/>
+                    android:src="@drawable/addimage" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/firstNameTextView_Title2"
+                    android:id="@+id/firstNameTextView_Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/_3sdp"
-                    android:layout_marginStart="@dimen/_85sdp"
-                    android:layout_alignTop="@id/memberImageView_Title2"
-
                     android:text="@string/FirstName"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/_7ssp"/>
-
-                <EditText
-                    android:id="@+id/firstNameEditText2ndMember"
-                    android:layout_width="@dimen/_150sdp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/firstNameTextView_Title2"
-                    android:layout_alignStart="@id/firstNameTextView_Title2"
-
-                    android:hint="@string/hint_firstname"
-                    android:textColor="@color/black"
                     android:textSize="@dimen/_7ssp"
-                    android:singleLine="true"
-                    android:background="@drawable/border_background_grey"/>
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/lastNameTextView_Title2"
+                    android:id="@+id/firstNameTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:background="@drawable/border_background_grey"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9ssp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/lastNameTextView_Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/firstNameEditText2ndMember"
-                    android:layout_alignStart="@id/firstNameEditText2ndMember"
                     android:layout_marginTop="@dimen/_6sdp"
-                    android:layout_marginBottom="@dimen/_3sdp"
-
                     android:text="@string/LastName"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/_7ssp"/>
-
-                <EditText
-                    android:id="@+id/lastNameEditText2ndMember"
-                    android:layout_width="@dimen/_150sdp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/lastNameTextView_Title2"
-                    android:layout_alignStart="@id/lastNameTextView_Title2"
-
-                    android:hint="@string/hint_lastname"
-                    android:textColor="@color/black"
                     android:textSize="@dimen/_7ssp"
-                    android:singleLine="true"
-                    android:background="@drawable/border_background_grey"/>
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/genderTextView_Title2"
+                    android:id="@+id/lastNameTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:background="@drawable/border_background_grey"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9ssp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/genderTextView_Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@id/firstNameTextView_Title2"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="@dimen/_3sdp"
-
-                    android:layout_toEndOf="@id/firstNameEditText2ndMember"
+                    android:layout_marginTop="@dimen/_6sdp"
                     android:text="@string/Gender"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_7ssp"
                     android:textStyle="bold" />
 
-                <Spinner
-                    android:id="@+id/genderSpinner2ndMember"
-                    android:layout_width="@dimen/_100sdp"
+                <TextView
+                    android:id="@+id/genderTextView"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
                     android:background="@drawable/border_background_grey"
-
-                    android:layout_alignStart="@id/genderTextView_Title2"
-                    android:layout_below="@id/genderTextView_Title2"/>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9ssp"
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/phoneNumberTextView_Title2"
+                    android:id="@+id/phoneNumberTextView_Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/lastNameEditText2ndMember"
-                    android:layout_alignStart="@id/lastNameEditText2ndMember"
                     android:layout_marginTop="@dimen/_6sdp"
-                    android:layout_marginBottom="@dimen/_3sdp"
-
                     android:text="@string/PhoneNumber"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/_7ssp"/>
-
-                <EditText
-                    android:id="@+id/phoneNumberEditText2ndMember"
-                    android:layout_width="@dimen/_150sdp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/phoneNumberTextView_Title2"
-                    android:layout_alignStart="@id/phoneNumberTextView_Title2"
-
-                    android:hint="@string/PhoneNumber"
-                    android:inputType="phone"
-                    android:textColor="@color/black"
                     android:textSize="@dimen/_7ssp"
-                    android:singleLine="true"
-                    android:background="@drawable/border_background_grey"/>
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/ageTextView_Title2"
+                    android:id="@+id/phoneNumberTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:background="@drawable/border_background_grey"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9ssp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/ageTextView_Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/genderSpinner2ndMember"
-                    android:layout_alignStart="@id/genderSpinner2ndMember"
                     android:layout_marginTop="@dimen/_6sdp"
-                    android:layout_marginBottom="@dimen/_3sdp"
-
                     android:text="@string/Age"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/_7ssp"/>
-
-                <EditText
-                    android:id="@+id/ageEditText2ndMember"
-                    android:layout_width="@dimen/_100sdp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ageTextView_Title2"
-                    android:layout_alignStart="@id/ageTextView_Title2"
-
-                    android:hint="@string/hint_age"
-                    android:inputType="number"
-                    android:textColor="@color/black"
                     android:textSize="@dimen/_7ssp"
-                    android:singleLine="true"
-                    android:background="@drawable/border_background_grey"/>
+                    android:textStyle="bold" />
 
-                <RelativeLayout
-                    android:id="@+id/fingerprintContainer"
+                <TextView
+                    android:id="@+id/ageTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:background="@drawable/border_background_grey"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9ssp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/memberIdTextView_Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/genderSpinner2ndMember"
-                    android:visibility="gone">
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:text="@string/MemberId"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_7ssp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/memberIdTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:background="@drawable/border_background_grey"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9ssp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/secondMemberContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/fingerprintTitle_TextView"
+                        android:id="@+id/secondMemberTitle_TextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10sdp"
-
-                        android:text="@string/Fingerprint"
+                        android:text="@string/Partner"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_8ssp"
-                        android:textStyle="bold"/>
+                        android:textSize="@dimen/_10ssp"
+                        android:textStyle="bold" />
 
-                    <ImageView
-                        android:id="@+id/fingerprintImageView"
-                        android:layout_width="@dimen/_88sdp"
-                        android:layout_height="@dimen/_88sdp"
-                        android:layout_below="@id/fingerprintTitle_TextView"
-                        android:layout_alignStart="@id/fingerprintTitle_TextView"
+                    <Spinner
+                        android:id="@+id/secondMemberSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:background="@drawable/border_background_grey" />
 
-                        android:layout_marginStart="0dp"
-                        android:layout_marginTop="-2dp"
+                    <EditText
+                        android:id="@+id/existingMemberIdEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_6sdp"
                         android:background="@drawable/border_background_grey"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/addfingerprint" />
+                        android:hint="@string/hint_memberId"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textColorHint="@color/black"
+                        android:textSize="@dimen/_9ssp"
+                        android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/fingerprintStatusTextView"
-                        android:layout_width="wrap_content"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/verifyExistingMemberButton"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/StartCapture"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:background="@drawable/border_background_grey"
+                        android:text="@string/renewMembership_ConfirmExistingMember"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_8ssp"
-                        android:textStyle="bold"
+                        app:backgroundTint="@color/grey" />
 
-                        android:layout_below="@id/fingerprintImageView"
-                        android:layout_alignStart="@id/fingerprintImageView"
-                        android:layout_alignEnd="@id/fingerprintImageView"
-                        android:gravity="center"/>
+                </LinearLayout>
 
-                </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/secondMemberViews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:visibility="gone"
+                    android:orientation="vertical">
 
-            </RelativeLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
 
-        </RelativeLayout>
+                        <TextView
+                            android:id="@+id/memberImageView_Title2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/MemberPicture"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_8ssp"
+                            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvTitle2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/secondMemberContainer"
-            android:layout_marginVertical="@dimen/_6sdp"
+                        <ImageView
+                            android:id="@+id/memberImageView2ndMember"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="@dimen/_100sdp"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:background="@drawable/border_background_grey"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/addimage" />
+                    </LinearLayout>
 
-            android:text="@string/renewMembership_Title"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="@dimen/_10ssp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Indicates"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_8ssp"
+                        android:textStyle="italic" />
 
-        <TextView
-            android:id="@+id/membershipTypeTextView_Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvTitle2"
-            android:layout_marginBottom="@dimen/_3sdp"
+                    <EditText
+                        android:id="@+id/firstNameEditText2ndMember"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:background="@drawable/border_background_grey"
+                        android:hint="@string/hint_firstname"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black"
+                        android:textSize="@dimen/_9ssp"
+                        android:textStyle="bold" />
 
-            android:text="@string/MembershipType"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="@dimen/_7ssp"/>
+                    <EditText
+                        android:id="@+id/lastNameEditText2ndMember"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:background="@drawable/border_background_grey"
+                        android:hint="@string/hint_lastname"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black"
+                        android:textSize="@dimen/_9ssp"
+                        android:textStyle="bold" />
 
-        <Spinner
-            android:id="@+id/memberTypeSpinner"
-            android:layout_width="@dimen/_175sdp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/membershipTypeTextView_Title"
+                    <EditText
+                        android:id="@+id/ageEditText2ndMember"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:background="@drawable/border_background_grey"
+                        android:hint="@string/hint_age"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black"
+                        android:textSize="@dimen/_9ssp"
+                        android:textStyle="bold" />
 
-            android:background="@drawable/border_background_grey"/>
+                    <Spinner
+                        android:id="@+id/genderSpinner2ndMember"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:background="@drawable/border_background_grey" />
 
-        <TextView
-            android:id="@+id/receiptNumberEditText_Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvTitle2"
-            android:layout_toEndOf="@id/memberTypeSpinner"
-            android:layout_marginBottom="@dimen/_3sdp"
-            android:layout_marginStart="@dimen/_40sdp"
+                    <EditText
+                        android:id="@+id/phoneNumberEditText2ndMember"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:background="@drawable/border_background_grey"
+                        android:hint="@string/PhoneNumber"
+                        android:inputType="phone"
+                        android:maxLength="11"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black"
+                        android:textSize="@dimen/_9ssp"
+                        android:textStyle="bold" />
 
-            android:text="@string/renewMembership_NewReceiptNumber"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="@dimen/_7ssp"/>
+                    <LinearLayout
+                        android:id="@+id/fingerprintContainer"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/receiptNumberEditText"
-            android:layout_width="@dimen/_175sdp"
-            android:layout_height="@dimen/_25sdp"
-            android:layout_below="@id/receiptNumberEditText_Title"
-            android:layout_alignStart="@id/receiptNumberEditText_Title"
+                        <TextView
+                            android:id="@+id/fingerprintTitle_TextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/Fingerprint"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_8ssp"
+                            android:textStyle="bold" />
 
-            android:hint="@string/hint_receiptnumber"
-            android:background="@drawable/border_background_grey"
-            android:singleLine="true"
-            android:inputType="number"
-            android:textSize="@dimen/_9ssp"/>
+                        <ImageView
+                            android:id="@+id/fingerprintImageView"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="@dimen/_100sdp"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:background="@drawable/border_background_grey"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/addfingerprint" />
 
-        <TextView
-            android:id="@+id/startDateTextView_Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/memberTypeSpinner"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:layout_marginBottom="@dimen/_3sdp"
+                        <TextView
+                            android:id="@+id/fingerprintStatusTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:text="@string/StartCapture"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_8ssp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
-            android:text="@string/StartDate"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="@dimen/_7ssp"/>
+                </LinearLayout>
 
-        <TextView
-            android:id="@+id/startDateTextView"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/startDateTextView_Title"
+            </LinearLayout>
 
-            android:textSize="@dimen/_7ssp"
-            android:hint="Select Start Date"
-            android:background="@drawable/border_background_grey"
-            android:clickable="true"
-            android:focusable="true"
-            android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/tvTitle2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="@string/renewMembership_Title"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10ssp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/endDateTextView_Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/receiptNumberEditText"
-            android:layout_alignStart="@id/receiptNumberEditText"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:layout_marginBottom="@dimen/_3sdp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="vertical">
 
-            android:text="@string/EndDate"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="@dimen/_7ssp"/>
+                <TextView
+                    android:id="@+id/membershipTypeTextView_Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Membership"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_8ssp"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/endDateTextView"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/endDateTextView_Title"
-            android:layout_alignStart="@id/endDateTextView_Title"
+                <Spinner
+                    android:id="@+id/memberTypeSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@drawable/border_background_grey" />
 
-            android:textSize="@dimen/_7ssp"
-            android:hint="Select End Date"
-            android:background="@drawable/border_background_grey"
-            android:clickable="true"
-            android:focusable="true"
-            android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/startDateTextView_Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:text="@string/StartDate"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_7ssp"
+                    android:textStyle="bold" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/renewMemberbutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/startDateTextView"
-            android:layout_marginTop="@dimen/_40sdp"
+                <TextView
+                    android:id="@+id/startDateTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:background="@drawable/border_background_grey"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9ssp"
+                    android:textStyle="bold" />
 
-            app:backgroundTint="@color/grey"
-            android:text="@string/renewMembership_ConfirmRenew"
-            android:background="@drawable/border_background_grey"
-            android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/receiptNumberEditText_Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:text="@string/ReceiptNumber"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_8ssp"
+                    android:textStyle="bold" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/cancelButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/startDateTextView"
-            android:layout_marginTop="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_200sdp"
+                <EditText
+                    android:id="@+id/receiptNumberEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:background="@drawable/border_background_grey"
+                    android:hint="@string/hint_receiptnumber"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textColorHint="@color/black"
+                    android:textSize="@dimen/_9ssp"
+                    android:textStyle="bold" />
 
-            app:backgroundTint="@color/grey"
-            android:text="@string/renewMembership_CancelRenew"
-            android:background="@drawable/border_background_grey"
-            android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/endDateTextView_Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:text="@string/EndDate"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_7ssp"
+                    android:textStyle="bold" />
 
-    </RelativeLayout>
-</ScrollView>
+                <TextView
+                    android:id="@+id/endDateTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:background="@drawable/border_background_grey"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9ssp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/renewMemberbutton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/border_background_grey"
+                    android:text="@string/AddMember"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/grey" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/cancelButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/border_background_grey"
+                    android:text="@string/Cancel"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/grey" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

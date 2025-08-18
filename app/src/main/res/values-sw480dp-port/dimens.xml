@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="regularTextHomeFragment">13sp</dimen>
+    <dimen name="titlepagesize">32sp</dimen>
+    <dimen name="regularTitleTextHomeFragment">17sp</dimen>
+    <dimen name="dayRemainingCounter">59sp</dimen>
+    <dimen name="buttonTextHomeFragment">19sp</dimen>
+    <dimen name="regularTextHomeFragmentPadding">2dp</dimen>
+    <dimen name="navSizePadding">7dp</dimen>
+
+</resources>
