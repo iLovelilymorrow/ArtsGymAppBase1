@@ -42,7 +42,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/clearRecordsButton"
         android:layout_marginBottom="@dimen/_3sdp"
-        android:text="awdawd"
         android:textColor="@color/black"/>
 
     <TextView
@@ -55,7 +54,6 @@
         android:layout_alignTop="@id/clearRecordsButton"
         android:layout_marginStart="@dimen/_10sdp"
         android:gravity="center"
-        android:text="awdawd"
         android:textColor="@color/black"/>
 
     <com.google.android.material.button.MaterialButton
@@ -81,7 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="No records yet."
+        android:text="@string/NoRecordsYet"
         android:textSize="18sp"
         android:visibility="gone"/>
 

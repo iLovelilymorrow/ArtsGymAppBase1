@@ -1,5 +1,6 @@
 package com.example.artsgymapp_solo;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,26 +12,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.button.MaterialButton;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap; // Import HashMap
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map; // Import Map
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors; // For more advanced formatting if needed later
 
 public class RecordsFragment extends Fragment {
     private static final String TAG = "RecordsFragment";
@@ -147,6 +143,7 @@ public class RecordsFragment extends Fragment {
         });
     }
 
+    @SuppressLint("DefaultLocale")
     private void updateStatusCounts(List<MemberDisplayInfo> currentList) {
         if (currentList == null) {
             if (textViewStatusCounts != null) textViewStatusCounts.setText("");

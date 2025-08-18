@@ -57,6 +57,7 @@
     <string name="FilterByMonth">Filter by Month:</string>
     <string name="ClearRecords">Clear Records</string>
     <string name="SearchMembers">Search Members</string>
+    <string name="NoRecordsYet">No records yet.</string>
 
     <string name="renewMembership_Title">Renew Membership</string>
     <string name="renewMembership_MemberInfo">Member Information</string>
