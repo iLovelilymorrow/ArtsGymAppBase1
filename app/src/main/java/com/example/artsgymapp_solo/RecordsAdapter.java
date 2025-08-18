@@ -21,22 +21,15 @@ import java.util.Locale;
 public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHolder>
 {
     private List<MemberDisplayInfo> recordsList;
-    private List<MemberDisplayInfo> recordsListFull; // For filtering;;
+    private List<MemberDisplayInfo> recordsListFull;
     private final Context context;
-    private OnRecordActionListener listener; // Custom listener for actions
 
     private static final DateTimeFormatter DISPLAY_DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.US);
 
-    public interface OnRecordActionListener
-    {
-        void onDeleteClick(MemberDisplayInfo memberDisplayInfo);
-    }
-
-    public RecordsAdapter(Context context, List<MemberDisplayInfo> recordsList, OnRecordActionListener listener) {
+    public RecordsAdapter(Context context, List<MemberDisplayInfo> recordsList) {
         this.context = context;
         this.recordsList = new ArrayList<>(recordsList);
         this.recordsListFull = new ArrayList<>(recordsList);
-        this.listener = listener;
     }
 
     @NonNull
@@ -50,7 +43,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MemberDisplayInfo member = recordsList.get(position);
-        holder.bind(member, listener, context);
+        holder.bind(member, context);
     }
 
     @Override
@@ -135,12 +128,11 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         TextView textViewName;
         TextView textViewMemberId;
         TextView textViewLastMembershipType;
-        TextView textViewStartDate; // New from item_member_record
+        TextView textViewStartDate;
         TextView textViewExpireDate;
         TextView textViewLastReceipt;
         TextView textViewPhoneNumber;
         TextView statusTextView;
-        ImageButton buttonDeleteItemMemberRecord; // The delete button
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -152,11 +144,10 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
             textViewExpireDate = itemView.findViewById(R.id.textViewExpireDateListItem);
             textViewLastReceipt = itemView.findViewById(R.id.textViewLastReceiptListItem);
             textViewPhoneNumber = itemView.findViewById(R.id.textViewPhoneNumberListItem);
-            buttonDeleteItemMemberRecord = itemView.findViewById(R.id.buttonDeleteItemMemberRecord); // Initialize
             statusTextView = itemView.findViewById(R.id.statusTextView);
         }
 
-        void bind(final MemberDisplayInfo member, final OnRecordActionListener listener, Context context)
+        void bind(final MemberDisplayInfo member, Context context)
         {
             textViewName.setText(member.getFullName());
             textViewMemberId.setText("ID: " + (member.getMemberID() != null ? member.getMemberID() : "N/A"));
@@ -208,13 +199,6 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
                     break;
             }
             statusTextView.setVisibility(View.VISIBLE);
-
-            buttonDeleteItemMemberRecord.setOnClickListener(v ->
-            {
-                if (listener != null) {
-                    listener.onDeleteClick(member);
-                }
-            });
         }
     }
 }

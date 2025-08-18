@@ -48,7 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_FK_MEMBER_TYPE_ID_PERIOD = "FK_MemberTypeID"; 
     private static final String COLUMN_PERIOD_REGISTRATION_DATE = "RegistrationDate"; 
     private static final String COLUMN_PERIOD_EXPIRATION_DATE = "ExpirationDate"; 
-    private static final String COLUMN_PERIOD_RECEIPT_NUMBER = "ReceiptNumber"; 
+    private static final String COLUMN_PERIOD_RECEIPT_NUMBER = "ReceiptNumber";
 
     private static final DateTimeFormatter SQLITE_DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
 
@@ -785,134 +785,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         Log.d(TAG, "getMembershipsStartedInLastThreeMonthsForDisplay (Month: " + registrationMonthFilter + ") returned " + membersList.size() + " records.");
         return membersList;
-    }
-
-    public boolean deleteMembershipPeriodsStartedBeforeThreeMonthsWindow() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.beginTransaction();
-        boolean success = false;
-        Log.d(TAG, "Attempting to delete membership periods started before the three-month display window.");
-
-        try {
-            // Calculate the first day of the month that is two months prior to the current month.
-            // Records older than this date will be deleted.
-            LocalDate today = LocalDate.now();
-            LocalDate firstDayOfTwoMonthsAgo = today.minusMonths(2).withDayOfMonth(1);
-            String deleteRecordsBeforeDateStr = firstDayOfTwoMonthsAgo.format(SQLITE_DATE_FORMATTER);
-
-            List<Integer> periodIdsToDelete = new ArrayList<>();
-            HashMap<String, Boolean> memberIdsAffected = new HashMap<>();
-
-            String queryPeriods = "SELECT " + COLUMN_PERIOD_ID + ", " + COLUMN_FK_MEMBER_ID_PERIOD + ", " + COLUMN_PERIOD_REGISTRATION_DATE +
-                    " FROM " + TABLE_MEMBERSHIP_PERIODS +
-                    " WHERE DATE(" + COLUMN_PERIOD_REGISTRATION_DATE + ") < DATE(?)"; // Records BEFORE this date
-
-            Log.d(TAG, "Query to find periods to delete (older than " + deleteRecordsBeforeDateStr + "): " + queryPeriods);
-
-            try (Cursor cursor = db.rawQuery(queryPeriods, new String[]{deleteRecordsBeforeDateStr})) {
-                if (cursor != null && cursor.moveToFirst()) {
-                    int periodIdIndex = cursor.getColumnIndexOrThrow(COLUMN_PERIOD_ID);
-                    int memberIdIndex = cursor.getColumnIndexOrThrow(COLUMN_FK_MEMBER_ID_PERIOD);
-                    int regDateIndex = cursor.getColumnIndexOrThrow(COLUMN_PERIOD_REGISTRATION_DATE);
-                    Log.d(TAG, "--- Periods identified for deletion ---");
-                    do {
-                        periodIdsToDelete.add(cursor.getInt(periodIdIndex));
-                        memberIdsAffected.put(cursor.getString(memberIdIndex), true);
-                        Log.d(TAG, "To Delete - Period ID: " + cursor.getInt(periodIdIndex) +
-                                ", Member ID: " + cursor.getString(memberIdIndex) +
-                                ", RegDate: " + cursor.getString(regDateIndex));
-                    } while (cursor.moveToNext());
-                    Log.d(TAG, "------------------------------------");
-                } else {
-                    Log.d(TAG, "No periods found with RegistrationDate < " + deleteRecordsBeforeDateStr);
-                }
-            }
-            Log.d(TAG, "Found " + periodIdsToDelete.size() + " periods to delete for " + memberIdsAffected.size() + " unique members.");
-
-            if (!periodIdsToDelete.isEmpty()) {
-                StringBuilder inClause = new StringBuilder();
-                for (int i = 0; i < periodIdsToDelete.size(); i++) {
-                    inClause.append("?");
-                    if (i < periodIdsToDelete.size() - 1) {
-                        inClause.append(",");
-                    }
-                }
-                String[] periodIdArgs = periodIdsToDelete.stream().map(String::valueOf).toArray(String[]::new);
-
-                int periodsDeleted = db.delete(
-                        TABLE_MEMBERSHIP_PERIODS,
-                        COLUMN_PERIOD_ID + " IN (" + inClause.toString() + ")",
-                        periodIdArgs
-                );
-                Log.d(TAG, "Deleted " + periodsDeleted + " membership periods.");
-
-                // ... (rest of your existing logic for deleting orphaned members and their images)
-                // (This part can remain the same)
-                for (String memberId : memberIdsAffected.keySet()) {
-                    boolean hasRemainingPeriods = false;
-                    try (Cursor checkCursor = db.query(
-                            TABLE_MEMBERSHIP_PERIODS,
-                            new String[]{COLUMN_PERIOD_ID},
-                            COLUMN_FK_MEMBER_ID_PERIOD + " = ?",
-                            new String[]{memberId},
-                            null, null, null, "1"
-                    )) {
-                        if (checkCursor != null && checkCursor.moveToFirst()) {
-                            hasRemainingPeriods = true;
-                        }
-                    }
-
-                    if (!hasRemainingPeriods) {
-                        Log.d(TAG, "Member " + memberId + " has no remaining periods. Attempting to delete member.");
-                        String imagePathToDelete = null;
-                        try (Cursor memberCursor = db.query(
-                                TABLE_MEMBERS,
-                                new String[]{COLUMN_IMAGE_FILE_PATH},
-                                COLUMN_MEMBER_ID + " = ?",
-                                new String[]{memberId}, null, null, null)) {
-                            if (memberCursor != null && memberCursor.moveToFirst()) {
-                                int imagePathColIdx = memberCursor.getColumnIndex(COLUMN_IMAGE_FILE_PATH);
-                                if (imagePathColIdx != -1 && !memberCursor.isNull(imagePathColIdx)) {
-                                    imagePathToDelete = memberCursor.getString(imagePathColIdx);
-                                }
-                            }
-                        }
-
-                        int memberRowsDeleted = db.delete(TABLE_MEMBERS, COLUMN_MEMBER_ID + " = ?", new String[]{memberId});
-                        Log.d(TAG, "Deleted " + memberRowsDeleted + " rows for member " + memberId);
-
-                        if (memberRowsDeleted > 0 && imagePathToDelete != null && !imagePathToDelete.isEmpty()) {
-                            try {
-                                File imageFile = new File(imagePathToDelete);
-                                if (imageFile.exists()) {
-                                    if(imageFile.delete()){
-                                        Log.d(TAG, "Deleted image file: " + imagePathToDelete);
-                                    } else {
-                                        Log.w(TAG, "Failed to delete image file: " + imagePathToDelete);
-                                    }
-                                }
-                            } catch (SecurityException e) {
-                                Log.e(TAG, "SecurityException, Failed to delete image file: " + imagePathToDelete, e);
-                            }
-                        }
-                    } else {
-                        Log.d(TAG, "Member " + memberId + " still has remaining periods.");
-                    }
-                }
-            } else {
-                Log.d(TAG, "No old membership periods found to delete based on the new criteria.");
-            }
-
-            db.setTransactionSuccessful();
-            success = true;
-        } catch (Exception e) {
-            Log.e(TAG, "Error deleting membership periods started before three-month window: " + e.getMessage(), e);
-            success = false;
-        } finally {
-            db.endTransaction();
-            Log.d(TAG, "Transaction ended for deleteMembershipPeriodsStartedBeforeThreeMonthsWindow. Success: " + success);
-        }
-        return success;
     }
 
     public MemberDisplayInfo getMemberDisplayInfo(String memberId) {

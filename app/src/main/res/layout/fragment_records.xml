@@ -65,11 +65,7 @@
         android:layout_alignEnd="@id/searchBarView"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/_4sdp"
-
-        app:backgroundTint="@color/grey"
-        android:text="@string/ClearRecords"
-        android:background="@drawable/border_background_grey"
-        android:textColor="@color/black"/>
+        android:visibility="invisible"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewExpiredMembers"

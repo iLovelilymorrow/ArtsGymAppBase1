@@ -32,7 +32,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors; // For more advanced formatting if needed later
 
-public class RecordsFragment extends Fragment implements RecordsAdapter.OnRecordActionListener {
+public class RecordsFragment extends Fragment {
     private static final String TAG = "RecordsFragment";
     private RecyclerView recyclerViewRecords;
     private RecordsAdapter adapter;
@@ -42,7 +42,6 @@ public class RecordsFragment extends Fragment implements RecordsAdapter.OnRecord
 
     private TextView textViewStatusCounts; // For detailed status by type
     private TextView textViewTotalCounts;  // For total counts per membership type
-    private MaterialButton clearRecordsButton;
     private Spinner filterByMonthSpinner;
 
     private int selectedMonthFilter = 0;
@@ -73,17 +72,15 @@ public class RecordsFragment extends Fragment implements RecordsAdapter.OnRecord
         recyclerViewRecords = view.findViewById(R.id.recyclerViewExpiredMembers);
         searchViewRecords = view.findViewById(R.id.searchBarView);
         textViewNoRecords = view.findViewById(R.id.textViewNoExpiredMembers);
-        clearRecordsButton = view.findViewById(R.id.clearRecordsButton);
         filterByMonthSpinner = view.findViewById(R.id.filterByMonthSpinner);
         textViewStatusCounts = view.findViewById(R.id.textViewStatusCounts);
         textViewTotalCounts = view.findViewById(R.id.textViewTotalCounts); // Initialize this
 
         recyclerViewRecords.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new RecordsAdapter(getContext(), new ArrayList<>(), this);
+        adapter = new RecordsAdapter(getContext(), new ArrayList<>());
         recyclerViewRecords.setAdapter(adapter);
 
         setupSearchView();
-        setupClearRecordsButton();
         setupMonthSpinner();
 
         loadRecords();
@@ -136,37 +133,6 @@ public class RecordsFragment extends Fragment implements RecordsAdapter.OnRecord
                     loadRecords();
                 }
             }
-        });
-    }
-
-    private void setupClearRecordsButton() {
-        clearRecordsButton.setOnClickListener(v -> {
-            new AlertDialog.Builder(requireContext())
-                    .setTitle("Clear Old Records")
-                    .setMessage("Are you sure you want to permanently delete all records. This action cannot be undone.")
-                    .setPositiveButton("Clear Old Records", (dialog, which) -> clearRecordsOlderThanThreeMonthsWindow())
-                    .setNegativeButton("Cancel", null)
-                    .show();
-        });
-    }
-
-    private void clearRecordsOlderThanThreeMonthsWindow() {
-        executorService.execute(() -> {
-            boolean success = dbHelper.deleteMembershipPeriodsStartedBeforeThreeMonthsWindow();
-            mainThreadHandler.post(() -> {
-                if (success) {
-                    Toast.makeText(getContext(), "Old membership records cleared.", Toast.LENGTH_SHORT).show();
-                    selectedMonthFilter = 0;
-                    if (filterByMonthSpinner != null) {
-                        filterByMonthSpinner.setSelection(0, false);
-                    }
-                    searchViewRecords.setQuery("", false);
-                    currentSearchQuery = "";
-                    loadRecords();
-                } else {
-                    Toast.makeText(getContext(), "Failed to clear old records. Check logs.", Toast.LENGTH_LONG).show();
-                }
-            });
         });
     }
 
@@ -316,35 +282,11 @@ public class RecordsFragment extends Fragment implements RecordsAdapter.OnRecord
     }
 
     @Override
-    public void onDeleteClick(MemberDisplayInfo memberDisplayInfo) {
-        if (getContext() == null) return;
-        new AlertDialog.Builder(requireContext())
-                .setTitle("Delete Member Record")
-                .setMessage("Are you sure you want to delete " + memberDisplayInfo.getFullName() + "'s record (ID: " + memberDisplayInfo.getMemberID() + ")? This will delete ALL their membership periods and cannot be undone.")
-                .setPositiveButton("Delete", (dialog, which) -> {
-                    executorService.execute(() -> {
-                        boolean success = dbHelper.deleteMember(memberDisplayInfo.getMemberID());
-                        mainThreadHandler.post(() -> {
-                            if (success) {
-                                Toast.makeText(getContext(), memberDisplayInfo.getFullName() + "'s record deleted.", Toast.LENGTH_SHORT).show();
-                                loadRecords();
-                            } else {
-                                Toast.makeText(getContext(), "Failed to delete " + memberDisplayInfo.getFullName() + "'s record.", Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    });
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         recyclerViewRecords = null;
         searchViewRecords = null;
         textViewNoRecords = null;
-        clearRecordsButton = null;
         filterByMonthSpinner = null;
         textViewStatusCounts = null;
         textViewTotalCounts = null;

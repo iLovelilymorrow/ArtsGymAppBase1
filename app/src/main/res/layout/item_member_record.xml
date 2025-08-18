@@ -90,18 +90,6 @@
             android:visibility="invisible"
             android:textColor="@android:color/black"/>
 
-        <ImageButton
-            android:id="@+id/buttonDeleteItemMemberRecord"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:layout_below="@+id/statusTextView"
-            android:src="@drawable/ic_delete"
-            android:scaleType="fitXY"
-            android:layout_marginEnd="@dimen/_25sdp"
-            android:layout_marginTop="@dimen/_14sdp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            app:tint="@android:color/holo_red_dark"/>
-
     </RelativeLayout>
 
 </LinearLayout>
