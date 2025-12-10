@@ -633,9 +633,9 @@ public class MemberListFragment extends Fragment
             return;
         }
 
-        if (displayedMembers == null || displayedMembers.isEmpty()) {
+        if (displayedMembers == null || displayedMembers.isEmpty())
+        {
             memberCountByMembershipType_TextView.setText("Member Count: 0");
-            memberCountByMembershipType_TextView.setVisibility(View.GONE);
             return;
         }
 
@@ -650,7 +650,6 @@ public class MemberListFragment extends Fragment
 
         if (typeCounts.isEmpty()) {
             memberCountByMembershipType_TextView.setText("Member Count: 0");
-            memberCountByMembershipType_TextView.setVisibility(View.GONE);
             return;
         }
 
@@ -739,14 +738,12 @@ public class MemberListFragment extends Fragment
 
             if (memberCountByMembershipType_TextView != null) {
                 memberCountByMembershipType_TextView.setText("Member Count: 0");
-                memberCountByMembershipType_TextView.setVisibility(View.GONE);
             }
         } else if (finalList.isEmpty() && currentActiveFilter != ActiveFilter.NONE) {
             Toast.makeText(getContext(), "No members found for the selected filter.", Toast.LENGTH_SHORT).show();
 
             if (memberCountByMembershipType_TextView != null) {
                 memberCountByMembershipType_TextView.setText("Member Count: 0");
-                memberCountByMembershipType_TextView.setVisibility(View.GONE);
             }
         } else if (!finalList.isEmpty()){
             if (memberCountByMembershipType_TextView != null)

@@ -285,7 +285,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                app:layout_constraintGuide_percent=".24" />
+                                app:layout_constraintGuide_percent=".27" />
 
                             <androidx.constraintlayout.widget.Guideline
                                 android:id="@+id/filterTitleRight"
@@ -319,6 +319,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
                                 android:padding="0dp"
+                                android:background="@drawable/border_background_grey"
                                 app:layout_constraintBottom_toTopOf="@+id/filterBottom"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -329,7 +330,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                app:layout_constraintGuide_percent=".255" />
+                                app:layout_constraintGuide_percent=".285" />
 
                             <androidx.constraintlayout.widget.Guideline
                                 android:id="@+id/memberCountRight"
@@ -343,7 +344,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                app:layout_constraintGuide_percent=".289" />
+                                app:layout_constraintGuide_percent=".319" />
 
                             <TextView
                                 android:id="@+id/memberCountByMembershipType_TextView"
@@ -365,7 +366,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                app:layout_constraintGuide_percent=".3" />
+                                app:layout_constraintGuide_percent=".33" />
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/membersRecyclerView"
