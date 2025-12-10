@@ -2,12 +2,19 @@
 <resources>
 
     <!-- THIS IS GOOD -->
-    <dimen name="regularTextHomeFragment">10sp</dimen>
-    <dimen name="titlepagesize">@dimen/_20ssp</dimen>
-    <dimen name="regularTitleTextHomeFragment">10sp</dimen>
-    <dimen name="dayRemainingCounter">59sp</dimen>
+    <dimen name="regularTextHomeFragment">9sp</dimen>
+    <dimen name="titlepagesize">24sp</dimen>
+    <dimen name="regularTitleTextHomeFragment">11sp</dimen>
+    <dimen name="dayRemainingCounter">62sp</dimen>
     <dimen name="buttonTextHomeFragment">15sp</dimen>
     <dimen name="regularTextHomeFragmentPadding">1dp</dimen>
     <dimen name="navSizePadding">7dp</dimen>
+
+    <dimen name="radioTextSize">9sp</dimen>
+    <dimen name="regularTextSize">9sp</dimen>
+    <dimen name="mediumTextSize">12sp</dimen>
+    <dimen name="buttonTextSize">10sp</dimen>
+
+    <dimen name="formTitle">@dimen/_8ssp</dimen>
 
 </resources>

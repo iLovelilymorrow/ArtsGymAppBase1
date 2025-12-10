@@ -326,7 +326,6 @@
             android:background="@drawable/border_background_grey"
             android:textColor="@color/black"
             android:textSize="@dimen/regularTextHomeFragment"
-            android:text="awdawd"
             app:layout_constraintBottom_toTopOf="@+id/gl3"
             app:layout_constraintEnd_toStartOf="@+id/guideline10"
             app:layout_constraintHorizontal_bias="0.0"
@@ -347,7 +346,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/gl1"
             app:layout_constraintTop_toTopOf="@+id/gl4"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.5" />
 
         <TextView
             android:id="@+id/age_TextView"
@@ -604,7 +603,6 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="@dimen/dayRemainingCounter"
-            android:text="23"
             app:layout_constraintBottom_toTopOf="@+id/gl14"
             app:layout_constraintEnd_toStartOf="@+id/gl16"
             app:layout_constraintHorizontal_bias="0.491"

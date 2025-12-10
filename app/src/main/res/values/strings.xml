@@ -46,6 +46,9 @@
     <string name="RenewMembership">Renew Membership</string>
     <string name="MemberEdit">Member Edit</string>
     <string name="MemberList">Member List</string>
+    <string name="Records">Records</string>
+    <string name="ExpiredMembers">Expired Members</string>
+    <string name="MemberTypes">Membership Types</string>
     <string name="Cancel">Cancel</string>
     <string name="Name">NAME</string>
     <string name="MembershipStarted">MEMBERSHIP STARTED ON</string>

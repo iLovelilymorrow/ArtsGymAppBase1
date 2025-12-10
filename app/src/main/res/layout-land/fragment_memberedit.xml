@@ -100,326 +100,334 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/white"
         android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@+id/layoutGuidelineBottom"
-        app:layout_constraintEnd_toStartOf="@+id/layoutGuidelineRight"
-        app:layout_constraintStart_toStartOf="@+id/layoutGuidelineLeft"
-        app:layout_constraintTop_toTopOf="@+id/layoutGuidelineTop">
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toTopOf="@id/layoutGuidelineTop"
+        app:layout_constraintBottom_toTopOf="@id/layoutGuidelineBottom"
+        app:layout_constraintStart_toStartOf="@id/layoutGuidelineLeft"
+        app:layout_constraintEnd_toStartOf="@id/layoutGuidelineRight">
 
-        <LinearLayout
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:scrollbars="none"
+            android:fillViewport="true">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/memberImageView"
-                        android:layout_width="@dimen/_100sdp"
-                        android:layout_height="@dimen/_100sdp"
-                        android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher_round" />
-
-                    <TextView
-                        android:id="@+id/memberIdTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="@dimen/_6sdp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:text="@string/MemberId"
-                        android:textSize="@dimen/_7ssp"/>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/buttonDeleteMember"
-                        android:layout_width="@dimen/_100sdp"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:text="@string/DeleteMember"
-                        android:background="@drawable/border_background_grey"
-                        app:backgroundTint="@color/grey"
-                        android:textColor="@color/black"/>
-
-                    <TextView
-                        android:id="@+id/registrationDateTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_6sdp"
-                        android:text="@string/StartDate"
-                        android:textSize="@dimen/_7ssp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"/>
-
-                    <TextView
-                        android:id="@+id/expirationDateTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/_6sdp"
-                        android:text="@string/EndDate"
-                        android:textSize="@dimen/_7ssp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"/>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/buttonRenewMembership"
-                        android:layout_width="@dimen/_100sdp"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:text="@string/renewMembership_Title"
-                        android:background="@drawable/border_background_grey"
-                        app:backgroundTint="@color/grey"
-                        android:textColor="@color/black"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_30sdp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/firstNameEditText_Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:text="@string/FirstName"
-                        android:textSize="@dimen/_7ssp"/>
-
-                    <EditText
-                        android:id="@+id/firstNameEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/_9ssp"
-                        android:minWidth="@dimen/_200sdp"
-                        android:layout_marginTop="@dimen/_4sdp"
-                        android:textStyle="bold"
-                        android:textColorHint="@color/black"
-                        android:hint="@string/hint_firstname"
-                        android:background="@drawable/border_background_grey"
-                        android:singleLine="true"
-                        android:inputType="text"/>
-
-                    <TextView
-                        android:id="@+id/lastNameEditText_Title"
-                        android:text="@string/LastName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_6sdp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_7ssp"/>
-
-                    <EditText
-                        android:id="@+id/lastNameEditText"
-                        android:hint="@string/hint_lastname"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/_9ssp"
-                        android:minWidth="@dimen/_200sdp"
-                        android:layout_marginTop="@dimen/_4sdp"
-                        android:textStyle="bold"
-                        android:textColorHint="@color/black"
-                        android:background="@drawable/border_background_grey"
-                        android:singleLine="true"
-                        android:inputType="text"/>
-
-                    <TextView
-                        android:id="@+id/membershipTypeTextView_Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_6sdp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:text="@string/MembershipType"
-                        android:textSize="@dimen/_7ssp"/>
-
-                    <TextView
-                        android:id="@+id/membershipTypeTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_9ssp"
-                        android:minWidth="@dimen/_200sdp"
-                        android:layout_marginTop="@dimen/_4sdp"
-                        android:background="@drawable/border_background_grey" />
-
-                    <TextView
-                        android:id="@+id/genderSpinner_Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_6sdp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:text="@string/Gender"
-                        android:textSize="@dimen/_7ssp"/>
-
-                    <Spinner
-                        android:id="@+id/genderSpinner2ndMember"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="@dimen/_200sdp"
-                        android:layout_marginTop="@dimen/_4sdp"
-                        android:background="@drawable/border_background_grey" />
-
-                    <TextView
-                        android:id="@+id/receiptNumberEditText_Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_6sdp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:text="@string/ReceiptNumber"
-                        android:textSize="@dimen/_7ssp"/>
-
-                    <EditText
-                        android:id="@+id/receiptNumberEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/_9ssp"
-                        android:minWidth="@dimen/_200sdp"
-                        android:layout_marginTop="@dimen/_4sdp"
-                        android:textStyle="bold"
-                        android:textColorHint="@color/black"
-                        android:hint="@string/hint_receiptnumber"
-                        android:background="@drawable/border_background_grey"
-                        android:singleLine="true"
-                        android:inputType="number"/>
-
-                    <TextView
-                        android:id="@+id/ageEditText_Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_6sdp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:text="@string/Age"
-                        android:textSize="@dimen/_7ssp"/>
-
-                    <EditText
-                        android:id="@+id/ageEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/_10sdp"
-                        android:minWidth="@dimen/_200sdp"
-                        android:layout_marginTop="@dimen/_4sdp"
-                        android:textStyle="bold"
-                        android:textColorHint="@color/black"
-                        android:hint="@string/hint_age"
-                        android:background="@drawable/border_background_grey"
-                        android:singleLine="true"
-                        android:inputType="number"/>
-
-                    <TextView
-                        android:id="@+id/phoneNumberEditText_Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_6sdp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:text="@string/PhoneNumber"
-                        android:textSize="@dimen/_7ssp"/>
-
-                    <EditText
-                        android:id="@+id/phoneNumberEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/_9ssp"
-                        android:textColor="@color/black"
-                        android:minWidth="@dimen/_200sdp"
-                        android:layout_marginTop="@dimen/_4sdp"
-                        android:textStyle="bold"
-                        android:textColorHint="@color/black"
-                        android:maxLength="11"
-                        android:hint="@string/hint_phonenumber"
-                        android:background="@drawable/border_background_grey"
-                        android:singleLine="true"
-                        android:inputType="phone"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_25sdp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/fingerprintTitle_TextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/RecaptureFingerprint"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_8ssp"
-                        android:textStyle="bold"/>
-
-                    <ImageView
-                        android:id="@+id/fingerprintImageView"
-                        android:layout_width="@dimen/_88sdp"
-                        android:layout_height="@dimen/_88sdp"
-
-                        android:background="@drawable/border_background_grey"
-                        android:src="@drawable/addfingerprint"
-                        android:scaleType="fitXY"/>
-
-                    <TextView
-                        android:id="@+id/fingerprintStatusTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/StartCapture"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_8ssp"
-                        android:textStyle="bold"
-                        android:gravity="center"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/buttonsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/_20sdp">
+                android:orientation="vertical">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonConfirmEdit"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:text="@string/ConfirmEdit"
-                    android:background="@drawable/border_background_grey"
-                    app:backgroundTint="@color/grey"
-                    android:textColor="@color/black"
-                    android:layout_marginEnd="@dimen/_4sdp"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonCancelEdit"
-                    android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/memberImageView"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="@dimen/_100sdp"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/ic_launcher_round" />
+
+                        <TextView
+                            android:id="@+id/memberIdTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="@dimen/_6sdp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:text="@string/MemberId"
+                            android:textSize="@dimen/_7ssp"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/buttonDeleteMember"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:text="@string/DeleteMember"
+                            android:background="@drawable/border_background_grey"
+                            app:backgroundTint="@color/grey"
+                            android:textColor="@color/black"/>
+
+                        <TextView
+                            android:id="@+id/registrationDateTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:text="@string/StartDate"
+                            android:textSize="@dimen/_7ssp"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"/>
+
+                        <TextView
+                            android:id="@+id/expirationDateTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/_6sdp"
+                            android:text="@string/EndDate"
+                            android:textSize="@dimen/_7ssp"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/buttonRenewMembership"
+                            android:layout_width="@dimen/_100sdp"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:text="@string/renewMembership_Title"
+                            android:background="@drawable/border_background_grey"
+                            app:backgroundTint="@color/grey"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_30sdp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/firstNameEditText_Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:text="@string/FirstName"
+                            android:textSize="@dimen/_7ssp"/>
+
+                        <EditText
+                            android:id="@+id/firstNameEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_9ssp"
+                            android:minWidth="@dimen/_200sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:textStyle="bold"
+                            android:textColorHint="@color/black"
+                            android:hint="@string/hint_firstname"
+                            android:background="@drawable/border_background_grey"
+                            android:singleLine="true"
+                            android:inputType="text"/>
+
+                        <TextView
+                            android:id="@+id/lastNameEditText_Title"
+                            android:text="@string/LastName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_7ssp"/>
+
+                        <EditText
+                            android:id="@+id/lastNameEditText"
+                            android:hint="@string/hint_lastname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_9ssp"
+                            android:minWidth="@dimen/_200sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:textStyle="bold"
+                            android:textColorHint="@color/black"
+                            android:background="@drawable/border_background_grey"
+                            android:singleLine="true"
+                            android:inputType="text"/>
+
+                        <TextView
+                            android:id="@+id/membershipTypeTextView_Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:text="@string/MembershipType"
+                            android:textSize="@dimen/_7ssp"/>
+
+                        <TextView
+                            android:id="@+id/membershipTypeTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_9ssp"
+                            android:minWidth="@dimen/_200sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:background="@drawable/border_background_grey" />
+
+                        <TextView
+                            android:id="@+id/genderSpinner_Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:text="@string/Gender"
+                            android:textSize="@dimen/_7ssp"/>
+
+                        <Spinner
+                            android:id="@+id/genderSpinner2ndMember"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/_200sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:background="@drawable/border_background_grey" />
+
+                        <TextView
+                            android:id="@+id/receiptNumberEditText_Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:text="@string/ReceiptNumber"
+                            android:textSize="@dimen/_7ssp"/>
+
+                        <EditText
+                            android:id="@+id/receiptNumberEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_9ssp"
+                            android:minWidth="@dimen/_200sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:textStyle="bold"
+                            android:textColorHint="@color/black"
+                            android:hint="@string/hint_receiptnumber"
+                            android:background="@drawable/border_background_grey"
+                            android:singleLine="true"
+                            android:inputType="number"/>
+
+                        <TextView
+                            android:id="@+id/ageEditText_Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:text="@string/Age"
+                            android:textSize="@dimen/_7ssp"/>
+
+                        <EditText
+                            android:id="@+id/ageEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_10sdp"
+                            android:minWidth="@dimen/_200sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:textStyle="bold"
+                            android:textColorHint="@color/black"
+                            android:hint="@string/hint_age"
+                            android:background="@drawable/border_background_grey"
+                            android:singleLine="true"
+                            android:inputType="number"/>
+
+                        <TextView
+                            android:id="@+id/phoneNumberEditText_Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:text="@string/PhoneNumber"
+                            android:textSize="@dimen/_7ssp"/>
+
+                        <EditText
+                            android:id="@+id/phoneNumberEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_9ssp"
+                            android:textColor="@color/black"
+                            android:minWidth="@dimen/_200sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:textStyle="bold"
+                            android:textColorHint="@color/black"
+                            android:maxLength="11"
+                            android:hint="@string/hint_phonenumber"
+                            android:background="@drawable/border_background_grey"
+                            android:singleLine="true"
+                            android:inputType="phone"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_25sdp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/fingerprintTitle_TextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/RecaptureFingerprint"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_8ssp"
+                            android:textStyle="bold"/>
+
+                        <ImageView
+                            android:id="@+id/fingerprintImageView"
+                            android:layout_width="@dimen/_88sdp"
+                            android:layout_height="@dimen/_88sdp"
+
+                            android:background="@drawable/border_background_grey"
+                            android:src="@drawable/addfingerprint"
+                            android:scaleType="fitXY"/>
+
+                        <TextView
+                            android:id="@+id/fingerprintStatusTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/StartCapture"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_8ssp"
+                            android:textStyle="bold"
+                            android:gravity="center"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/buttonsLayout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:text="@string/CancelEdit"
-                    android:background="@drawable/border_background_grey"
-                    app:backgroundTint="@color/grey"
-                    android:textColor="@color/black"
-                    android:layout_marginStart="@dimen/_4sdp"/>
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_20sdp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonConfirmEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textStyle="bold"
+                        android:text="@string/ConfirmEdit"
+                        android:background="@drawable/border_background_grey"
+                        app:backgroundTint="@color/grey"
+                        android:textColor="@color/black"
+                        android:layout_marginEnd="@dimen/_4sdp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonCancelEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textStyle="bold"
+                        android:text="@string/CancelEdit"
+                        android:background="@drawable/border_background_grey"
+                        app:backgroundTint="@color/grey"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="@dimen/_4sdp"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+        </HorizontalScrollView>
 
     </ScrollView>
 

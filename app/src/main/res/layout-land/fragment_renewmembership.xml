@@ -100,402 +100,410 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/white"
         android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@+id/layoutGuidelineBottom"
-        app:layout_constraintEnd_toStartOf="@+id/layoutGuidelineRight"
-        app:layout_constraintStart_toStartOf="@+id/layoutGuidelineLeft"
-        app:layout_constraintTop_toTopOf="@+id/layoutGuidelineTop">
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toTopOf="@id/layoutGuidelineTop"
+        app:layout_constraintBottom_toTopOf="@id/layoutGuidelineBottom"
+        app:layout_constraintStart_toStartOf="@id/layoutGuidelineLeft"
+        app:layout_constraintEnd_toStartOf="@id/layoutGuidelineRight">
 
-        <LinearLayout
+        <HorizontalScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvTitle1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/renewMembership_MemberInfo"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="@dimen/_10ssp"/>
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:fillViewport="true">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tvTitle1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_22sdp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/memberImageView_Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/MemberPicture"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_8ssp"/>
-
-                    <ImageView
-                        android:id="@+id/memberImageView"
-                        android:layout_width="@dimen/_96sdp"
-                        android:layout_height="@dimen/_96sdp"
-                        android:layout_marginTop="@dimen/_6sdp"
-                        android:background="@drawable/border_background_grey"
-                        android:src="@drawable/addimage"
-                        android:scaleType="fitXY" />
-
-                </LinearLayout>
+                    android:text="@string/renewMembership_MemberInfo"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_10ssp"/>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_15sdp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/firstNameTextView_Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/_6sdp"
-                        android:text="@string/FirstName"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_7ssp"/>
-
-                    <TextView
-                        android:id="@+id/firstNameTextView"
-                        android:layout_width="@dimen/_150sdp"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_9ssp"
-                        android:background="@drawable/border_background_grey"/>
-
-                    <TextView
-                        android:id="@+id/lastNameTextView_Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_6sdp"
-                        android:layout_marginBottom="@dimen/_6sdp"
-                        android:text="@string/LastName"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_7ssp"/>
-
-                    <TextView
-                        android:id="@+id/lastNameTextView"
-                        android:layout_width="@dimen/_150sdp"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_9ssp"
-                        android:background="@drawable/border_background_grey"/>
-
-                    <TextView
-                        android:id="@+id/genderTextView_Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_6sdp"
-                        android:layout_marginBottom="@dimen/_6sdp"
-                        android:text="@string/Gender"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_7ssp"/>
-
-                    <TextView
-                        android:id="@+id/genderTextView"
-                        android:layout_width="@dimen/_150sdp"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_9ssp"
-                        android:background="@drawable/border_background_grey"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/phoneNumberTextView_Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/_6sdp"
-                        android:text="@string/PhoneNumber"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_7ssp"/>
-
-                    <TextView
-                        android:id="@+id/phoneNumberTextView"
-                        android:layout_width="@dimen/_150sdp"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_9ssp"
-                        android:background="@drawable/border_background_grey"/>
-
-                    <TextView
-                        android:id="@+id/ageTextView_Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_6sdp"
-                        android:layout_marginBottom="@dimen/_6sdp"
-                        android:text="@string/Age"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_7ssp"/>
-
-                    <TextView
-                        android:id="@+id/ageTextView"
-                        android:layout_width="@dimen/_150sdp"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_9ssp"
-                        android:background="@drawable/border_background_grey"/>
-
-                    <TextView
-                        android:id="@+id/memberIdTextView_Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_6sdp"
-                        android:layout_marginBottom="@dimen/_6sdp"
-                        android:text="@string/MemberId"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_7ssp"/>
-
-                    <TextView
-                        android:id="@+id/memberIdTextView"
-                        android:layout_width="@dimen/_150sdp"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_9ssp"
-                        android:background="@drawable/border_background_grey"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/secondMemberContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="@dimen/_11sdp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/secondMemberTitle_TextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/Partner"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_10ssp"/>
-
-                    <Spinner
-                        android:id="@+id/secondMemberSpinner"
-                        android:layout_width="@dimen/_175sdp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:background="@drawable/border_background_grey"/>
-
-                    <EditText
-                        android:id="@+id/existingMemberIdEditText"
-                        android:layout_width="@dimen/_110sdp"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:background="@drawable/border_background_grey"
-                        android:textSize="@dimen/_9ssp"
-                        android:textStyle="bold"
-                        android:hint="@string/hint_memberId"
-                        android:textColorHint="@color/black"
-                        android:inputType="text"
-                        android:singleLine="true" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/verifyExistingMemberButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="@dimen/_7sdp"
-                        app:backgroundTint="@color/grey"
-                        android:textSize="@dimen/_5ssp"
-                        android:text="@string/renewMembership_ConfirmExistingMember"
-                        android:background="@drawable/border_background_grey"
-                        android:textColor="@color/black"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/secondMemberViews"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginStart="@dimen/_10sdp">
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_marginEnd="@dimen/_22sdp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/memberImageView_Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/MemberPicture"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_8ssp"/>
+
+                        <ImageView
+                            android:id="@+id/memberImageView"
+                            android:layout_width="@dimen/_96sdp"
+                            android:layout_height="@dimen/_96sdp"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:background="@drawable/border_background_grey"
+                            android:src="@drawable/addimage"
+                            android:scaleType="fitXY" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/firstNameTextView_Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/_6sdp"
+                            android:text="@string/FirstName"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_7ssp"/>
+
+                        <TextView
+                            android:id="@+id/firstNameTextView"
+                            android:layout_width="@dimen/_150sdp"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_9ssp"
+                            android:background="@drawable/border_background_grey"/>
+
+                        <TextView
+                            android:id="@+id/lastNameTextView_Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:layout_marginBottom="@dimen/_6sdp"
+                            android:text="@string/LastName"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_7ssp"/>
+
+                        <TextView
+                            android:id="@+id/lastNameTextView"
+                            android:layout_width="@dimen/_150sdp"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_9ssp"
+                            android:background="@drawable/border_background_grey"/>
+
+                        <TextView
+                            android:id="@+id/genderTextView_Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:layout_marginBottom="@dimen/_6sdp"
+                            android:text="@string/Gender"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_7ssp"/>
+
+                        <TextView
+                            android:id="@+id/genderTextView"
+                            android:layout_width="@dimen/_150sdp"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_9ssp"
+                            android:background="@drawable/border_background_grey"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/phoneNumberTextView_Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/_6sdp"
+                            android:text="@string/PhoneNumber"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_7ssp"/>
+
+                        <TextView
+                            android:id="@+id/phoneNumberTextView"
+                            android:layout_width="@dimen/_150sdp"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_9ssp"
+                            android:background="@drawable/border_background_grey"/>
+
+                        <TextView
+                            android:id="@+id/ageTextView_Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:layout_marginBottom="@dimen/_6sdp"
+                            android:text="@string/Age"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_7ssp"/>
+
+                        <TextView
+                            android:id="@+id/ageTextView"
+                            android:layout_width="@dimen/_150sdp"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_9ssp"
+                            android:background="@drawable/border_background_grey"/>
+
+                        <TextView
+                            android:id="@+id/memberIdTextView_Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:layout_marginBottom="@dimen/_6sdp"
+                            android:text="@string/MemberId"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_7ssp"/>
+
+                        <TextView
+                            android:id="@+id/memberIdTextView"
+                            android:layout_width="@dimen/_150sdp"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_9ssp"
+                            android:background="@drawable/border_background_grey"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/secondMemberContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_11sdp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/secondMemberTitle_TextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/Partner"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_10ssp"/>
+
+                        <Spinner
+                            android:id="@+id/secondMemberSpinner"
+                            android:layout_width="@dimen/_175sdp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:background="@drawable/border_background_grey"/>
+
+                        <EditText
+                            android:id="@+id/existingMemberIdEditText"
+                            android:layout_width="@dimen/_110sdp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:background="@drawable/border_background_grey"
+                            android:textSize="@dimen/_9ssp"
+                            android:textStyle="bold"
+                            android:hint="@string/hint_memberId"
+                            android:textColorHint="@color/black"
+                            android:inputType="text"
+                            android:singleLine="true" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/verifyExistingMemberButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/_7sdp"
+                            app:backgroundTint="@color/grey"
+                            android:textSize="@dimen/_5ssp"
+                            android:text="@string/renewMembership_ConfirmExistingMember"
+                            android:background="@drawable/border_background_grey"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/secondMemberViews"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginStart="@dimen/_10sdp">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/_25sdp"
-                            android:orientation="vertical">
+                            android:orientation="horizontal">
 
-                            <TextView
-                                android:id="@+id/memberImageView_Title2"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/MemberPicture"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_8ssp"
-                                android:textStyle="bold"/>
+                                android:layout_marginEnd="@dimen/_25sdp"
+                                android:orientation="vertical">
 
-                            <ImageView
-                                android:id="@+id/memberImageView2ndMember"
-                                android:layout_width="@dimen/_88sdp"
-                                android:layout_height="@dimen/_88sdp"
-                                android:layout_marginTop="@dimen/_6sdp"
-                                android:background="@drawable/border_background_grey"
-                                android:src="@drawable/addimage"
-                                android:scaleType="fitXY" />
+                                <TextView
+                                    android:id="@+id/memberImageView_Title2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/MemberPicture"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_8ssp"
+                                    android:textStyle="bold"/>
 
-                        </LinearLayout>
+                                <ImageView
+                                    android:id="@+id/memberImageView2ndMember"
+                                    android:layout_width="@dimen/_88sdp"
+                                    android:layout_height="@dimen/_88sdp"
+                                    android:layout_marginTop="@dimen/_6sdp"
+                                    android:background="@drawable/border_background_grey"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/addimage" />
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/_25sdp"
-                            android:orientation="vertical">
+                            </LinearLayout>
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/Indicates"
-                                android:textColor="@color/black"
-                                android:textStyle="italic"
-                                android:textSize="@dimen/_8ssp"/>
+                                android:layout_marginEnd="@dimen/_25sdp"
+                                android:orientation="vertical">
 
-                            <EditText
-                                android:id="@+id/firstNameEditText2ndMember"
-                                android:layout_width="@dimen/_200sdp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_6sdp"
-                                android:background="@drawable/border_background_grey"
-                                android:textStyle="bold"
-                                android:hint="@string/hint_firstname"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_9ssp"
-                                android:textColorHint="@color/black"
-                                android:inputType="text"
-                                android:singleLine="true" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/Indicates"
+                                    android:textColor="@color/black"
+                                    android:textStyle="italic"
+                                    android:textSize="@dimen/_8ssp"/>
 
-                            <EditText
-                                android:id="@+id/lastNameEditText2ndMember"
-                                android:layout_width="@dimen/_200sdp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_6sdp"
-                                android:hint="@string/hint_lastname"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_9ssp"
-                                android:textColorHint="@color/black"
-                                android:background="@drawable/border_background_grey"
-                                android:textStyle="bold"
-                                android:singleLine="true"
-                                android:inputType="text"/>
+                                <EditText
+                                    android:id="@+id/firstNameEditText2ndMember"
+                                    android:layout_width="@dimen/_200sdp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_6sdp"
+                                    android:background="@drawable/border_background_grey"
+                                    android:textStyle="bold"
+                                    android:hint="@string/hint_firstname"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_9ssp"
+                                    android:textColorHint="@color/black"
+                                    android:inputType="text"
+                                    android:singleLine="true" />
 
-                            <EditText
-                                android:id="@+id/ageEditText2ndMember"
-                                android:layout_width="@dimen/_200sdp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_6sdp"
-                                android:hint="@string/hint_age"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_9ssp"
-                                android:textColorHint="@color/black"
-                                android:background="@drawable/border_background_grey"
-                                android:textStyle="bold"
-                                android:singleLine="true"
-                                android:inputType="number"/>
+                                <EditText
+                                    android:id="@+id/lastNameEditText2ndMember"
+                                    android:layout_width="@dimen/_200sdp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_6sdp"
+                                    android:hint="@string/hint_lastname"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_9ssp"
+                                    android:textColorHint="@color/black"
+                                    android:background="@drawable/border_background_grey"
+                                    android:textStyle="bold"
+                                    android:singleLine="true"
+                                    android:inputType="text"/>
 
-                            <Spinner
-                                android:id="@+id/genderSpinner2ndMember"
-                                android:layout_width="@dimen/_200sdp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_6sdp"
-                                android:background="@drawable/border_background_grey"/>
+                                <EditText
+                                    android:id="@+id/ageEditText2ndMember"
+                                    android:layout_width="@dimen/_200sdp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_6sdp"
+                                    android:hint="@string/hint_age"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_9ssp"
+                                    android:textColorHint="@color/black"
+                                    android:background="@drawable/border_background_grey"
+                                    android:textStyle="bold"
+                                    android:singleLine="true"
+                                    android:inputType="number"/>
 
-                            <EditText
-                                android:id="@+id/phoneNumberEditText2ndMember"
-                                android:layout_width="@dimen/_200sdp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_6sdp"
-                                android:hint="@string/PhoneNumber"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_9ssp"
-                                android:maxLength="11"
-                                android:textColorHint="@color/black"
-                                android:background="@drawable/border_background_grey"
-                                android:textStyle="bold"
-                                android:singleLine="true"
-                                android:inputType="phone"/>
+                                <Spinner
+                                    android:id="@+id/genderSpinner2ndMember"
+                                    android:layout_width="@dimen/_200sdp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_6sdp"
+                                    android:background="@drawable/border_background_grey"/>
 
-                        </LinearLayout>
+                                <EditText
+                                    android:id="@+id/phoneNumberEditText2ndMember"
+                                    android:layout_width="@dimen/_200sdp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_6sdp"
+                                    android:hint="@string/PhoneNumber"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_9ssp"
+                                    android:maxLength="11"
+                                    android:textColorHint="@color/black"
+                                    android:background="@drawable/border_background_grey"
+                                    android:textStyle="bold"
+                                    android:singleLine="true"
+                                    android:inputType="phone"/>
 
-                        <LinearLayout
-                            android:id="@+id/fingerprintContainer"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/fingerprintTitle_TextView"
+                            <LinearLayout
+                                android:id="@+id/fingerprintContainer"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/Fingerprint"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_8ssp"
-                                android:textStyle="bold"/>
+                                android:orientation="vertical">
 
-                            <ImageView
-                                android:id="@+id/fingerprintImageView"
-                                android:layout_width="@dimen/_88sdp"
-                                android:layout_height="@dimen/_88sdp"
-                                android:layout_marginTop="@dimen/_6sdp"
-                                android:background="@drawable/border_background_grey"
-                                android:src="@drawable/addfingerprint"
-                                android:scaleType="fitXY"/>
+                                <TextView
+                                    android:id="@+id/fingerprintTitle_TextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/Fingerprint"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_8ssp"
+                                    android:textStyle="bold"/>
 
-                            <TextView
-                                android:id="@+id/fingerprintStatusTextView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_3sdp"
-                                android:layout_marginStart="@dimen/_4sdp"
-                                android:text="@string/StartCapture"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_8ssp"
-                                android:textStyle="bold"/>
+                                <ImageView
+                                    android:id="@+id/fingerprintImageView"
+                                    android:layout_width="@dimen/_88sdp"
+                                    android:layout_height="@dimen/_88sdp"
+                                    android:layout_marginTop="@dimen/_6sdp"
+                                    android:background="@drawable/border_background_grey"
+                                    android:src="@drawable/addfingerprint"
+                                    android:scaleType="fitXY"/>
+
+                                <TextView
+                                    android:id="@+id/fingerprintStatusTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_3sdp"
+                                    android:layout_marginStart="@dimen/_4sdp"
+                                    android:text="@string/StartCapture"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_8ssp"
+                                    android:textStyle="bold"/>
+
+                            </LinearLayout>
 
                         </LinearLayout>
 
@@ -503,159 +511,159 @@
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tvTitle2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="@string/renewMembership_Title"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="@dimen/_10ssp"/>
-
-            <LinearLayout
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tvTitle2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/renewMembership_Title"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_10ssp"/>
 
-                    <TextView
-                        android:id="@+id/membershipTypeTextView_Title"
+                <LinearLayout
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/Membership"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_8ssp"/>
+                        android:orientation="vertical">
 
-                    <Spinner
-                        android:id="@+id/memberTypeSpinner"
-                        android:layout_width="@dimen/_175sdp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_6sdp"
-                        android:background="@drawable/border_background_grey"/>
+                        <TextView
+                            android:id="@+id/membershipTypeTextView_Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/Membership"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_8ssp"/>
 
-                    <TextView
-                        android:id="@+id/startDateTextView_Title"
+                        <Spinner
+                            android:id="@+id/memberTypeSpinner"
+                            android:layout_width="@dimen/_175sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:background="@drawable/border_background_grey"/>
+
+                        <TextView
+                            android:id="@+id/startDateTextView_Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:text="@string/StartDate"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_7ssp"/>
+
+                        <TextView
+                            android:id="@+id/startDateTextView"
+                            android:layout_width="@dimen/_175sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_7sdp"
+                            android:gravity="center_vertical"
+                            android:background="@drawable/border_background_grey"
+                            android:textStyle="bold"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:textSize="@dimen/_9ssp"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginStart="@dimen/_25sdp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_6sdp"
-                        android:text="@string/StartDate"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_7ssp"/>
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/startDateTextView"
-                        android:layout_width="@dimen/_175sdp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_7sdp"
-                        android:gravity="center_vertical"
-                        android:background="@drawable/border_background_grey"
-                        android:textStyle="bold"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:textSize="@dimen/_9ssp"
-                        android:textColor="@color/black"/>
+                        <TextView
+                            android:id="@+id/receiptNumberEditText_Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ReceiptNumber"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_8ssp"/>
+
+                        <EditText
+                            android:id="@+id/receiptNumberEditText"
+                            android:layout_width="@dimen/_175sdp"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_receiptnumber"
+                            android:textSize="@dimen/_9ssp"
+                            android:background="@drawable/border_background_grey"
+                            android:textColorHint="@color/black"
+                            android:textStyle="bold"
+                            android:singleLine="true"
+                            android:inputType="number"
+                            android:layout_marginTop="@dimen/_6sdp"/>
+
+                        <TextView
+                            android:id="@+id/endDateTextView_Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:text="@string/EndDate"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_7ssp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/endDateTextView"
+                            android:layout_width="@dimen/_175sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_7sdp"
+                            android:background="@drawable/border_background_grey"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_9ssp"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginStart="@dimen/_25sdp"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
-                    <TextView
-                        android:id="@+id/receiptNumberEditText_Title"
-                        android:layout_width="wrap_content"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/renewMemberbutton"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/ReceiptNumber"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_8ssp"/>
-
-                    <EditText
-                        android:id="@+id/receiptNumberEditText"
-                        android:layout_width="@dimen/_175sdp"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/hint_receiptnumber"
-                        android:textSize="@dimen/_9ssp"
-                        android:background="@drawable/border_background_grey"
-                        android:textColorHint="@color/black"
-                        android:textStyle="bold"
-                        android:singleLine="true"
-                        android:inputType="number"
-                        android:layout_marginTop="@dimen/_6sdp"/>
-
-                    <TextView
-                        android:id="@+id/endDateTextView_Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_6sdp"
-                        android:text="@string/EndDate"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_7ssp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/endDateTextView"
-                        android:layout_width="@dimen/_175sdp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_7sdp"
+                        android:layout_weight="1"
+                        android:text="@string/AddMember"
+                        android:textSize="@dimen/_10ssp"
                         android:background="@drawable/border_background_grey"
                         android:textStyle="bold"
-                        android:textSize="@dimen/_9ssp"
-                        android:textColor="@color/black"/>
+                        app:backgroundTint="@color/grey"
+                        android:textColor="@color/black"
+                        android:layout_marginEnd="@dimen/_10sdp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/cancelButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/Cancel"
+                        android:textSize="@dimen/_10ssp"
+                        android:background="@drawable/border_background_grey"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/grey"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="@dimen/_10sdp"/>
 
                 </LinearLayout>
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/renewMemberbutton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/AddMember"
-                    android:textSize="@dimen/_10ssp"
-                    android:background="@drawable/border_background_grey"
-                    android:textStyle="bold"
-                    app:backgroundTint="@color/grey"
-                    android:textColor="@color/black"
-                    android:layout_marginEnd="@dimen/_10sdp"/>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/cancelButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/Cancel"
-                    android:textSize="@dimen/_10ssp"
-                    android:background="@drawable/border_background_grey"
-                    android:textStyle="bold"
-                    app:backgroundTint="@color/grey"
-                    android:textColor="@color/black"
-                    android:layout_marginStart="@dimen/_10sdp"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
+        </HorizontalScrollView>
 
     </ScrollView>
 

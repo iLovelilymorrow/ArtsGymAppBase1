@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="regularTextHomeFragment">8.4sp</dimen>
-    <dimen name="titlepagesize">24sp</dimen>
-    <dimen name="regularTitleTextHomeFragment">13sp</dimen>
+    <dimen name="regularTextHomeFragment">10sp</dimen>
+    <dimen name="titlepagesize">28sp</dimen>
+    <dimen name="regularTitleTextHomeFragment">12sp</dimen>
     <dimen name="dayRemainingCounter">59sp</dimen>
     <dimen name="buttonTextHomeFragment">15sp</dimen>
     <dimen name="regularTextHomeFragmentPadding">3dp</dimen>
     <dimen name="navSizePadding">7dp</dimen>
+
+    <dimen name="radioTextSize">12sp</dimen>
+    <dimen name="regularTextSize">12sp</dimen>
+    <dimen name="mediumTextSize">14sp</dimen>
+    <dimen name="buttonTextSize">9sp</dimen>
 
 </resources>

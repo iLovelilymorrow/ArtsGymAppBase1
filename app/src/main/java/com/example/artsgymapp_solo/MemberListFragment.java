@@ -626,13 +626,15 @@ public class MemberListFragment extends Fragment
         });
     }
 
-    private void updateMemberTypeCounts(List<MemberDisplayInfo> displayedMembers) {
-        if (memberCountByMembershipType_TextView == null) {
+    private void updateMemberTypeCounts(List<MemberDisplayInfo> displayedMembers)
+    {
+        if (memberCountByMembershipType_TextView == null)
+        {
             return;
         }
 
         if (displayedMembers == null || displayedMembers.isEmpty()) {
-            memberCountByMembershipType_TextView.setText("Found Members: N/A");
+            memberCountByMembershipType_TextView.setText("Member Count: 0");
             memberCountByMembershipType_TextView.setVisibility(View.GONE);
             return;
         }
@@ -647,12 +649,12 @@ public class MemberListFragment extends Fragment
         }
 
         if (typeCounts.isEmpty()) {
-            memberCountByMembershipType_TextView.setText("Found Members: N/A");
+            memberCountByMembershipType_TextView.setText("Member Count: 0");
             memberCountByMembershipType_TextView.setVisibility(View.GONE);
             return;
         }
 
-        StringBuilder countsTextBuilder = new StringBuilder("Found Members: ");
+        StringBuilder countsTextBuilder = new StringBuilder("Member Count: ");
         boolean firstType = true;
         for (Map.Entry<String, Integer> entry : typeCounts.entrySet()) {
             if (!firstType) {
@@ -736,14 +738,14 @@ public class MemberListFragment extends Fragment
             Toast.makeText(getContext(), "No members found matching your criteria.", Toast.LENGTH_SHORT).show();
 
             if (memberCountByMembershipType_TextView != null) {
-                memberCountByMembershipType_TextView.setText("Found Members: N/A");
+                memberCountByMembershipType_TextView.setText("Member Count: 0");
                 memberCountByMembershipType_TextView.setVisibility(View.GONE);
             }
         } else if (finalList.isEmpty() && currentActiveFilter != ActiveFilter.NONE) {
             Toast.makeText(getContext(), "No members found for the selected filter.", Toast.LENGTH_SHORT).show();
 
             if (memberCountByMembershipType_TextView != null) {
-                memberCountByMembershipType_TextView.setText("Found Members: N/A");
+                memberCountByMembershipType_TextView.setText("Member Count: 0");
                 memberCountByMembershipType_TextView.setVisibility(View.GONE);
             }
         } else if (!finalList.isEmpty()){

@@ -1,0 +1,180 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTopBarMaxHeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".15" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/grey"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineTopBarMaxHeight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.449">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".085" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".15" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".28" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.8" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/bebasneue"
+            android:text="@string/ExpiredMembers"
+            android:textColor="@color/black"
+            android:textSize="@dimen/titlepagesize"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/glBottom"
+            app:layout_constraintEnd_toStartOf="@+id/glRight"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/glLeft"
+            app:layout_constraintTop_toTopOf="@+id/glTop"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/layoutGuidelineLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.02" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/layoutGuidelineRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".98" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/layoutGuidelineTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.185" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/layoutGuidelineBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".965" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/layoutGuidelineBottom"
+        app:layout_constraintEnd_toStartOf="@+id/layoutGuidelineRight"
+        app:layout_constraintStart_toStartOf="@+id/layoutGuidelineLeft"
+        app:layout_constraintTop_toTopOf="@+id/layoutGuidelineTop">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                app:layout_constraintBottom_toTopOf="@+id/marginGuidelineBottom"
+                app:layout_constraintEnd_toStartOf="@+id/marginGuidelineEnd"
+                app:layout_constraintStart_toStartOf="@+id/marginGuidelineStart"
+                app:layout_constraintTop_toTopOf="@+id/marginGuidelineTop">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@+id/marginGuidelineBottom"
+                    app:layout_constraintEnd_toStartOf="@+id/marginGuidelineEnd"
+                    app:layout_constraintStart_toStartOf="@+id/marginGuidelineStart"
+                    app:layout_constraintTop_toTopOf="@+id/marginGuidelineTop">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <androidx.appcompat.widget.SearchView
+                                android:id="@+id/searchBarView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/border_background_grey_corner"
+                                app:iconifiedByDefault="false"
+                                app:queryHint="@string/SearchExpiredMembers"/>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/recyclerViewExpiredMembers"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_below="@id/searchBarView"
+                                android:layout_alignParentBottom="true"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                tools:listitem="@layout/item_member_display" />
+
+                            <TextView
+                                android:id="@+id/textViewNoExpiredMembers"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="No expired members found."
+                                android:textSize="18sp"
+                                android:visibility="gone" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
